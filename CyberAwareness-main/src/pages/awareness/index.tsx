@@ -24,9 +24,9 @@ export default function AwarenessIndex() {
       {/* Top bar */}
       <div className="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
-          <a href="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors">
+          <Link to="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors">
             ← Back to Home
-          </a>
+          </Link>
           <span className="text-slate-700">/</span>
           <span className="text-xs text-slate-400">Cyber Awareness Module</span>
         </div>
