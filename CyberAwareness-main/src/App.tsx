@@ -15,6 +15,7 @@ import SocialMedia     from './pages/awareness/SocialMedia';
 import Deepfake        from './pages/awareness/Deepfake';
 import IdentityTheft   from './pages/awareness/IdentityTheft';
 import PasswordMfa     from './pages/awareness/PasswordMfa';
+import IndianCyberLawPage from './pages/Indian Cyber law/IndianCyberlaw';
 
 function HomePage() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/awareness/deepfake"        element={<Deepfake />} />
         <Route path="/awareness/identity-theft"  element={<IdentityTheft />} />
         <Route path="/awareness/password-mfa"    element={<PasswordMfa />} />
+        <Route path="/laws"                      element={<IndianCyberLawPage />} />
       </Routes>
     </BrowserRouter>
   );
