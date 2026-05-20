@@ -16,7 +16,7 @@ const modules = [
     title: 'Indian Cyber Law',
     description: 'Simplified IT Act overview, IPC/BNS sections, and the legal rights of victims — know your protection under Indian law.',
     tag: 'Legal',
-    href: '#laws',
+    href: '/laws',
   },
   {
     icon: Siren,

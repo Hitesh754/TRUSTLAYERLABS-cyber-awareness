@@ -3,7 +3,7 @@ import { Shield, Menu, X, Bot } from 'lucide-react';
 
 const navLinks = [
   { label: 'Awareness', href: '#awareness' },
-  { label: 'Cyber Laws', href: '#laws' },
+  { label: 'Cyber Laws', href: '/laws' },
   { label: 'Report', href: '#report' },
   { label: 'Learning', href: '#learning' },
 ];
