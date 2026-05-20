@@ -1,0 +1,11 @@
+{
+  "name": "cyberawareness-workspace-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix CyberAwareness-main run dev",
+    "build": "npm --prefix CyberAwareness-main run build",
+    "lint": "npm --prefix CyberAwareness-main run lint",
+    "preview": "npm --prefix CyberAwareness-main run preview",
+    "typecheck": "npm --prefix CyberAwareness-main run typecheck"
+  }
+}
