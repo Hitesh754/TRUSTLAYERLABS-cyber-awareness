@@ -42,10 +42,10 @@ export default function Navbar() {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center">
-            <button className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-400/30">
+            <a href="#ai-assistant" className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-400/30">
               <Bot className="w-4 h-4" />
               AI Guidance Assistant
-            </button>
+            </a>
           </div>
 
           {/* Mobile Toggle */}
@@ -72,10 +72,10 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <button className="w-full flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm px-4 py-2.5 rounded-lg transition-all mt-2">
+          <a href="#ai-assistant" className="w-full flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-sm px-4 py-2.5 rounded-lg transition-all mt-2">
             <Bot className="w-4 h-4" />
             AI Guidance Assistant
-          </button>
+          </a>
         </div>
       )}
     </header>

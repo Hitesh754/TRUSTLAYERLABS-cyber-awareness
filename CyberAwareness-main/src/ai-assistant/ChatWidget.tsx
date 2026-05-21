@@ -1,0 +1,104 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { detectScam } from './heuristics';
+import { useAssistant } from './assistantStore';
+
+function uid() {
+  return Math.random().toString(36).slice(2, 10);
+}
+
+export default function ChatWidget() {
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const { messages, loading, sendMessage } = useAssistant();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (open) {
+      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+    }
+  }, [messages, open]);
+
+  const hint = useMemo(() => {
+    const detection = detectScam(input);
+    return detection
+      ? `${detection.summary} likely detected. Confidence ${Math.round(detection.confidence * 100)}%.`
+      : '';
+  }, [input]);
+
+  async function send(textOverride?: string) {
+    const text = (textOverride ?? input).trim();
+    if (!text || loading) return;
+    setInput('');
+    await sendMessage(text);
+  }
+
+  return (
+    <div className="fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6">
+      <button
+        aria-label="Open AI Guidance Assistant"
+        onClick={() => setOpen((value) => !value)}
+        className="h-14 w-14 rounded-full border border-cyan-300/20 bg-gradient-to-br from-cyan-400 to-sky-500 text-slate-950 shadow-2xl shadow-cyan-500/20 flex items-center justify-center text-2xl hover:scale-105 transition-transform"
+      >
+        🤖
+      </button>
+
+      {open && (
+        <div className="absolute bottom-16 right-0 w-[min(92vw,360px)] overflow-hidden rounded-[24px] border border-white/10 bg-[#07111e] shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+          <div className="flex items-center justify-between border-b border-white/5 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 px-4 py-3">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-2xl bg-cyan-400/15 flex items-center justify-center text-lg">🤖</div>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold leading-tight">AI Guidance Assistant</div>
+              </div>
+            </div>
+            <button onClick={() => setOpen(false)} className="rounded-full px-2.5 py-1.5 text-slate-300 hover:bg-white/5">✕</button>
+          </div>
+
+          <div ref={scrollRef} className="max-h-[46vh] overflow-auto px-3 py-3 space-y-3">
+            {messages.slice(-6).map((message) => (
+              <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[92%] rounded-2xl border px-3 py-2.5 leading-relaxed whitespace-pre-wrap text-[13px] ${message.role === 'user' ? 'bg-cyan-400 text-slate-950 border-cyan-300/20' : 'bg-slate-900/90 text-slate-100 border-white/5'}`}>
+                  {message.text}
+                </div>
+              </div>
+            ))}
+
+            {loading && (
+              <div className="flex justify-start">
+                <div className="rounded-2xl border border-white/5 bg-slate-900/90 px-3 py-2.5 text-[13px] text-slate-400">
+                  Checking the safest response...
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="border-t border-white/5 px-3 py-3">
+            <div className="flex items-end gap-2 rounded-2xl border border-white/6 bg-slate-950/80 px-3 py-3 shadow-inner shadow-black/20">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    send();
+                  }
+                }}
+                rows={2}
+                placeholder="Ask a question..."
+                className="min-h-[44px] flex-1 resize-none bg-transparent text-[13px] text-white outline-none placeholder:text-slate-500"
+              />
+              <button
+                onClick={() => send()}
+                disabled={loading}
+                className="rounded-xl bg-gradient-to-r from-cyan-400 to-sky-500 px-4 py-2.5 text-[13px] font-semibold text-slate-950 transition-transform hover:scale-[1.01] disabled:opacity-60 disabled:hover:scale-100"
+              >
+                Send
+              </button>
+            </div>
+            {hint ? <div className="mt-2 text-[11px] text-cyan-100/80">{hint}</div> : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
