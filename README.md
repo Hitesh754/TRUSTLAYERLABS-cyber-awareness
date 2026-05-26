@@ -340,6 +340,28 @@ This project is licensed under the MIT License.
 Built with ❤️ for cybersecurity awareness and digital safety.
 
 ---
+---
 
+<div align="center">
+
+```ascii
+╔══════════════════════════════════════════════════════════════════════╗
+║                TRUSTLAYERLABS SENTINEL CORE ONLINE                 ║
+╠══════════════════════════════════════════════════════════════════════╣
+║  🟢 Threat Monitoring ................. ACTIVE                      ║
+║  🟢 Scam Intelligence Grid ........... ACTIVE                      ║
+║  🟢 AI Sentinel Network .............. ACTIVE                      ║
+║  🟢 Cyber Law Intelligence ........... ACTIVE                      ║
+║  🟢 Multilingual Awareness ........... ACTIVE                      ║
+║  🟢 Emergency Response Matrix ........ ACTIVE                      ║
+║  🟢 Digital Fraud Detection .......... ACTIVE                      ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+        ░▒▓█ CYBER AWARENESS • DIGITAL SAFETY • AI INTELLIGENCE █▓▒░
+
+> INITIALIZING NATIONAL CYBER DEFENSE AWARENESS ECOSYSTEM...
+> PROTECTING USERS AGAINST DIGITAL FRAUD & CYBER THREATS...
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=16&duration=2200&pause=900&color=00F7FF&center=true&vCenter=true&width=900&lines=Initializing+Sentinel+AI+Systems...;Scanning+Cyber+Threat+Landscape...;Loading+Threat+Intelligence+Modules...;Detecting+Scam+Patterns+Across+India...;Securing+Digital+India+Through+Awareness+%26+Intelligence" /> </div> ```
 ```
 ```
