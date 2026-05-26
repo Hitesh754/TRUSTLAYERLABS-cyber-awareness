@@ -167,7 +167,7 @@ TRUSTLAYERLABS-cyber-awareness/
 ## Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone <https://github.com/RAMINENI-TEJA-24MEI10040/TRUSTLAYERLABS-cyber-awareness.git>
 cd TRUSTLAYERLABS-cyber-awareness
 ```
 
