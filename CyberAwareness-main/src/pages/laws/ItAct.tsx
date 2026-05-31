@@ -24,7 +24,7 @@ export default function ItAct() {
           <Link className="active" to="/laws/it-act">
             IT Act
           </Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
         </div>
       </nav>
 
@@ -46,7 +46,7 @@ export default function ItAct() {
             data-law-search="[data-accordion]"
           />
           <div className="chip-row">
-            <Link className="chip" to="/laws/reporting">
+            <Link className="chip" to="/reporting">
               Report incident
             </Link>
             <Link className="chip" to="/laws/penalties">

@@ -5,7 +5,9 @@ import MainLayout from './layouts/MainLayout';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingScreen from './components/LoadingScreen';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-
+import { ErrorBoundary } from './components/ErrorBoundary';
+import ScamLibrary from "./pages/scam-library/Index";
+import ScamDetailPage from "./pages/scam-library/[id]";
 const NotFound = lazy(() => import('./pages/NotFound'));
 const HomePage = lazy(() => import('./pages/index'));
 const AnalyzerPage = lazy(() => import('./pages/analyzer'));
@@ -24,6 +26,8 @@ const DeepfakeChallenge = lazy(() => import('./pages/deepfake/Challenge'));
 const DeepfakeCaseStudy = lazy(() => import('./pages/deepfake/CaseStudy'));
 const DeepfakeReport = lazy(() => import('./pages/deepfake/Report'));
 
+
+
 const QR = lazy(() => import('./pages/qr'));
 const QRScanner = lazy(() => import('./pages/qr/Scanner'));
 const QRChallenge = lazy(() => import('./pages/qr/Challenge'));
@@ -36,12 +40,13 @@ const UPIAwareness = lazy(() => import('./pages/upi/Awareness'));
 const UPICaseStudy = lazy(() => import('./pages/upi/CaseStudy'));
 const UPIDemo = lazy(() => import('./pages/upi/Demo'));
 const UPIReport = lazy(() => import('./pages/upi/Report'));
+const CaseStudies = lazy(() => import('./pages/casestudies/CaseStudiesPage'));
+const CaseStudyDetailPage = lazy(() => import('./pages/casestudies/CaseStudyDetailPage'));
 
 const Laws = lazy(() => import('./pages/laws'));
 const LawIpc = lazy(() => import('./pages/laws/Ipc'));
 const LawBns = lazy(() => import('./pages/laws/Bns'));
 const LawItAct = lazy(() => import('./pages/laws/ItAct'));
-const LawReporting = lazy(() => import('./pages/laws/Reporting'));
 const LawRights = lazy(() => import('./pages/laws/Rights'));
 const LawAwareness = lazy(() => import('./pages/laws/Awareness'));
 const LawPenalties = lazy(() => import('./pages/laws/Penalties'));
@@ -58,14 +63,17 @@ const AwarenessIdentityTheft = lazy(() => import('./pages/awareness/IdentityThef
 const AwarenessPasswordMfa = lazy(() => import('./pages/awareness/PasswordMfa'));
 
 const Reporting = lazy(() => import('./pages/reporting'));
+const CyberJusticeAI = lazy(() => import('./pages/cyber-justice-ai'));
+const CyberCrimeLocatorPage = lazy(() => import('./pages/cyber-crime-locator'));
 
 export default function App() {
   return (
     <>
       <ScrollToTop />
 
-      <Suspense fallback={<LoadingScreen />}>
-        <Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<LoadingScreen />}>
+          <Routes>
           {/* Full-screen cinematic pages — no MainLayout navbar/footer */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -77,10 +85,13 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/admin/*" element={<Navigate to="/admin" replace />} />
           <Route path="/dashboard" element={<Navigate to="/awareness" replace />} />
 
           <Route element={<MainLayout />}>
+            <Route path="/scam-library" element={<ScamLibrary />} />
+            <Route path="/scam-library/:id" element={<ScamDetailPage />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/case-studies/:id" element={<CaseStudyDetailPage />} />
             <Route path="/analyzer" element={<AnalyzerPage />} />
             <Route path="/ai-scanner" element={<Navigate to="/analyzer" replace />} />
             <Route path="/url-scanner" element={<UrlScannerPage />} />
@@ -129,13 +140,16 @@ export default function App() {
             <Route path="/report" element={<Navigate to="/reporting" replace />} />
             <Route path="/reporting" element={<Reporting />} />
 
-            <Route path="/cyber-laws" element={<Navigate to="/laws" replace />} />
+            <Route path="/cyber-justice-ai" element={<CyberJusticeAI />} />
+            <Route path="/legal-ai" element={<Navigate to="/cyber-justice-ai" replace />} />
+            <Route path="/cyber-crime-locator" element={<CyberCrimeLocatorPage />} />
+
+            <Route path="/cyber-laws" element={<Navigate to="/cyber-justice-ai" replace />} />
             <Route path="/laws" element={<Laws />} />
             <Route path="/laws/dashboard" element={<Navigate to="/laws" replace />} />
             <Route path="/laws/ipc" element={<LawIpc />} />
             <Route path="/laws/bns" element={<LawBns />} />
             <Route path="/laws/it-act" element={<LawItAct />} />
-            <Route path="/laws/reporting" element={<LawReporting />} />
             <Route path="/laws/rights" element={<LawRights />} />
             <Route path="/laws/awareness" element={<LawAwareness />} />
             <Route path="/laws/penalties" element={<LawPenalties />} />
@@ -151,7 +165,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </Suspense>
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

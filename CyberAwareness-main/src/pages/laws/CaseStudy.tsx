@@ -15,7 +15,7 @@ export default function CaseStudy() {
           <Link className="dashboard-link" to="/">
             Back to Dashboard
           </Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
           <Link className="active" to="/laws/case-study">
             Cases
           </Link>
@@ -40,7 +40,7 @@ export default function CaseStudy() {
           <button className="law-btn primary" data-next-case>
             Next case
           </button>
-          <Link className="law-btn" to="/laws/reporting">
+          <Link className="law-btn" to="/reporting">
             Open report flow
           </Link>
         </div>

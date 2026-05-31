@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface NavItem {
   id: string;
-  label: string;
+  label?: string;
+  labelKey?: string;
   href: string;
   icon: React.ReactNode;
   status?: "live" | "new" | "beta";
-  description: string;
+  description?: string;
+  descriptionKey?: string;
   color: string;
 }
 
@@ -46,6 +50,13 @@ const IconBrain = () => (
   </svg>
 );
 
+const IconMarker = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 21s-6-5.33-6-10a6 6 0 0 1 12 0c0 4.67-6 10-6 10z" />
+    <circle cx="12" cy="11" r="2.5" />
+  </svg>
+);
+
 const IconEye = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -59,6 +70,15 @@ const IconBook = () => (
     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
     <path d="M8 7h8M8 11h6" strokeLinecap="round" />
+  </svg>
+);
+
+const IconCases = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <rect x="4" y="5" width="16" height="14" rx="3" />
+    <path d="M8 5v3M16 5v3" strokeLinecap="round" />
+    <path d="M4 10h16" />
+    <path d="M9 14h6" strokeLinecap="round" />
   </svg>
 );
 
@@ -106,7 +126,8 @@ const IconX = () => (
 const NAV_ITEMS: NavItem[] = [
   {
     id: "threat-feed",
-    label: "Threat Feed",
+    labelKey: "nav.threat_feed",
+    descriptionKey: "nav.threat_feed_desc",
     href: "/threat-feed",
     icon: <IconRadar />,
     status: "live",
@@ -115,7 +136,8 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "ai-scanner",
-    label: "AI Scanner",
+    labelKey: "nav.ai_scanner",
+    descriptionKey: "nav.ai_scanner_desc",
     href: "/analyzer",
     icon: <IconBrain />,
     status: "new",
@@ -123,8 +145,27 @@ const NAV_ITEMS: NavItem[] = [
     color: "#06b6d4",
   },
   {
+    id: "scam-library",
+    labelKey: "nav.scam_library",
+    descriptionKey: "nav.scam_library_desc",
+    href: "/scam-library",
+    icon: <IconShield />,
+    description: "Comprehensive scam & fraud database",
+    color: "#22d3ee",
+  },
+  {
+    id: "case-studies",
+    labelKey: "nav.case_studies",
+    descriptionKey: "nav.case_studies_desc",
+    href: "/case-studies",
+    icon: <IconCases />,
+    description: "Browse curated cyber incident reports",
+    color: "#22c55e",
+  },
+  {
     id: "learn",
-    label: "Learn",
+    labelKey: "nav.learn",
+    descriptionKey: "nav.learn_desc",
     href: "/awareness",
     icon: <IconBook />,
     description: "Structured cyber awareness curriculum",
@@ -132,7 +173,8 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "deepfake-lab",
-    label: "Deepfake Lab",
+    labelKey: "nav.deepfake_lab",
+    descriptionKey: "nav.deepfake_lab_desc",
     href: "/deepfake",
     icon: <IconEye />,
     status: "beta",
@@ -141,15 +183,27 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "cyber-laws",
-    label: "Cyber Laws",
-    href: "/laws",
+    labelKey: "nav.cyber_laws",
+    descriptionKey: "nav.cyber_laws_desc",
+    href: "/cyber-justice-ai",
     icon: <IconLaw />,
-    description: "Know your rights and digital protections",
+    description: "AI-guided cybercrime complaint drafting",
     color: "#f59e0b",
   },
   {
+    id: "locator",
+    labelKey: "nav.locator",
+    descriptionKey: "nav.locator_desc",
+    href: "/cyber-crime-locator",
+    icon: <IconMarker />,
+    status: "new",
+    description: "Locate cybercrime cells and reporting centers.",
+    color: "#22d3ee",
+  },
+  {
     id: "reporting",
-    label: "Reporting",
+    labelKey: "nav.reporting",
+    descriptionKey: "nav.reporting_desc",
     href: "/reporting",
     icon: <IconFlag />,
     description: "Report incidents. Stay protected.",
@@ -157,7 +211,8 @@ const NAV_ITEMS: NavItem[] = [
   },
   {
     id: "challenges",
-    label: "Challenges",
+    labelKey: "nav.challenges",
+    descriptionKey: "nav.challenges_desc",
     href: "/quiz",
     icon: <IconTrophy />,
     description: "Test your cyber knowledge & earn badges",
@@ -344,7 +399,8 @@ interface NavLinkProps {
   onClick: () => void;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ item, isActive, onClick }) => {
+const NavLink: React.FC<NavLinkProps> = React.memo(({ item, isActive, onClick }) => {
+  const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -385,7 +441,7 @@ const NavLink: React.FC<NavLinkProps> = ({ item, isActive, onClick }) => {
         </motion.span>
 
         {/* Label */}
-        <span className="relative z-10 whitespace-nowrap">{item.label}</span>
+        <span className="relative z-10 whitespace-nowrap">{t(item.labelKey ?? item.label ?? '')}</span>
 
         {/* Status badge */}
         {item.status && <span className="relative z-10"><StatusBadge status={item.status} /></span>}
@@ -426,14 +482,16 @@ const NavLink: React.FC<NavLinkProps> = ({ item, isActive, onClick }) => {
               }}
             >
               <span style={{ color: item.color }} className="font-semibold mr-1">//</span>
-              {item.description}
+              {t(item.descriptionKey ?? item.description ?? '')}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+});
+
+NavLink.displayName = "NavLink";
 
 // ─── Scan line component ──────────────────────────────────────────────────────
 
@@ -461,6 +519,7 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, activeId, onClose, onNavigate, threatLevel }) => {
+  const { t } = useTranslation();
   return (
     <AnimatePresence>
       {isOpen && (
@@ -573,7 +632,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, activeId, onClose, onNa
                     </div>
 
                     {/* Description */}
-                    <p className="text-[11px] text-slate-500 leading-tight">{item.description}</p>
+                    <p className="text-[11px] text-slate-500 leading-tight">{t(item.descriptionKey ?? item.description ?? '')}</p>
 
                     {/* Active glow */}
                     {isActive && (
@@ -590,10 +649,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, activeId, onClose, onNa
             </div>
 
             <div className="flex flex-wrap gap-2 px-4 pb-2">
-              {[
-                { to: "/login", label: "Login" },
-                { to: "/signup", label: "Signup" },
-                { to: "/admin", label: "Access Terminal" },
+{[
+                { to: "/login", label: t('auth.loginBtn') },
+                { to: "/signup", label: t('auth.signupBtn') },
+                { to: "/admin", label: t('auth.accessTerminal') },
               ].map((link) => (
                 <Link
                   key={link.to}
@@ -681,7 +740,12 @@ const Navbar: React.FC = () => {
           location.pathname === item.href ||
           (item.href !== "/" && location.pathname.startsWith(`${item.href}/`))
       );
-    if (match) setActiveId(match.id);
+    if (match) {
+      setActiveId(match.id);
+    } else {
+      // Fallback: reset to threat-feed if no match found
+      setActiveId("threat-feed");
+    }
   }, [location.pathname]);
 
   const handleNavigate = useCallback(
@@ -767,6 +831,9 @@ const Navbar: React.FC = () => {
             {/* Right cluster */}
             <div className="flex items-center gap-2 ml-auto lg:ml-0 flex-shrink-0">
               <AuthNavLinks />
+
+              {/* Language switcher */}
+              <LanguageSwitcher />
 
               {/* Threat level pill */}
               <ThreatPill threatLevel={threatLevel} />

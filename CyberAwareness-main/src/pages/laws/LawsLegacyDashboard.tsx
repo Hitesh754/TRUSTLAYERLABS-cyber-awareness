@@ -23,7 +23,7 @@ export default function LawsLegacyDashboard() {
           <Link to="/laws/ipc">IPC</Link>
           <Link to="/laws/bns">BNS</Link>
           <Link to="/laws/it-act">IT Act</Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
           <Link to="/laws/rights">Rights</Link>
           <Link to="/laws/awareness">Awareness</Link>
           <Link to="/laws/penalties">Penalties</Link>
@@ -44,7 +44,7 @@ export default function LawsLegacyDashboard() {
               <Link className="law-btn primary" to="/laws/ipc">
                 Explore sections
               </Link>
-              <Link className="law-btn danger" to="/laws/reporting">
+              <Link className="law-btn danger" to="/reporting">
                 Start report flow
               </Link>
             </div>

@@ -1,0 +1,764 @@
+﻿[
+  {
+    "file": "src\\pages\\admin\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\analyzer\\ScamAnalyzer.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\auth\\Login.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\auth\\Signup.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\Deepfake.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\IdentityTheft.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\PasswordMfa.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\Phishing.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\QrScam.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\SocialMedia.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\awareness\\UpiFraud.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\breach-checker\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\casestudies\\CaseStudiesPage.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\casestudies\\CaseStudyDetailPage.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\cyber-crime-locator\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\Awareness.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\CaseStudy.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\Challenge.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\DeepfakeCommandCenter.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\deepfakeReact.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\js\\detector.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\js\\scams.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\deepfake\\Report.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\indian-cyber-law\\IndianCyberlaw.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\ip-scanner\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\Awareness.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\Bns.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\CaseStudy.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\CyberLawCommandCenter.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\Ipc.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\ItAct.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\js\\case-study.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\js\\laws.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\LawsLegacyDashboard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\Penalties.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\laws\\Rights.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\legal-ai\\components\\Capabilities.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\legal-ai\\components\\ComplaintPreview.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\legal-ai\\components\\Hero.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\legal-ai\\components\\Workflow.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\legal-ai\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\NotFound.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\BadgeUnlock.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\EducationSection.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\EmailCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\FinalResults.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\Hero.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\LevelCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\Navbar.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\ProgressBar.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\ResultModal.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\ScorePopup.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\Simulator.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\components\\TipCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\phishing\\Simulator.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\Awareness.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\CaseStudy.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\Challenge.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\js\\challenge.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\js\\qr.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\js\\scanner.js",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\Report.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\qr\\Scanner.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\CaseStudy.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\Challenge.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\CyberAwarenessCommandCenter.jsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\Leaderboard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\Quiz.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\quiz\\QuizShell.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\EmergencyActions.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\EvidenceChecklist.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\HelplineCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\Hero.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\ReportingSteps.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\components\\SafetyTips.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\ReportingCommandCenter.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\reporting\\ReportingLegacyPage.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\scam-library\\Index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\scam-library\\[id].tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\threat-feed\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\upi\\Awareness.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\upi\\CaseStudy.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\upi\\Demo.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\upi\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\upi\\Report.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\pages\\url-scanner\\index.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\auth\\ProtectedRoute.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\awareness\\AwarenessCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\awareness\\TopicLayout.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\CoreModules.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\dashboard\\CyberHeatmap.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\dashboard\\LiveAlerts.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\DashboardPreview.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ErrorBoundary.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\Footer.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\Hero.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\LoadingScreen.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scam-library\\CategoryFilter.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scam-library\\ScamCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scam-library\\ScamDetail.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scam-library\\SearchBar.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scanner\\BreachChecker.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scanner\\IPScanner.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\scanner\\UrlScanner.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ScrollToTop.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\AIThreatSummary.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\LiveClock.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatCard.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatMap.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatModal.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatScore.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatSearch.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatStats.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\threat-feed\\ThreatTickerLive.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ThreatBanner.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ThreatTicker.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\Badge.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\Button.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\Card.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\LoadingSkeleton.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\PageHeader.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\ResultPanel.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  },
+  {
+    "file": "src\\components\\ui\\SectionHeader.tsx",
+    "issues": [
+      "JSX has visible text nodes but file does not use useTranslation()"
+    ]
+  }
+]

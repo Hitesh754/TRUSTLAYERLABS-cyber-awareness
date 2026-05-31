@@ -33,7 +33,7 @@ export default function Bns() {
           <NavLink to="/laws/it-act" className={tabLinkClass}>
             IT Act
           </NavLink>
-          <NavLink to="/laws/reporting" className={tabLinkClass}>
+          <NavLink to="/reporting" className={tabLinkClass}>
             Reporting
           </NavLink>
         </div>

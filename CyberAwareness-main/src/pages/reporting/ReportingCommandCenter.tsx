@@ -40,26 +40,26 @@ const C = {
   sans: "'Inter', sans-serif",
 } as const;
 
+import { getAllLawSections } from '../../data/lawMappings';
+
 // ─── DATA ──────────────────────────────────────────────────────────────────────
-const LAWS = [
-  { sec: "Section 66", cat: "it-act", name: "Computer Related Offences", desc: "Hacking, data theft, unauthorized access to computer systems", penalty: "Up to 3 years imprisonment or ₹5 lakh fine", severity: "high", tags: ["Hacking", "Data Theft", "Unauthorized Access"] },
-  { sec: "Section 66C", cat: "it-act", name: "Identity Theft", desc: "Fraudulently using electronic signature, password or unique identification feature", penalty: "Up to 3 years imprisonment and ₹1 lakh fine", severity: "high", tags: ["Identity", "Fraud", "Electronic Signature"] },
-  { sec: "Section 66D", cat: "it-act", name: "Cheating by Impersonation", desc: "Cheating using communication device or computer resource while impersonating another person", penalty: "Up to 3 years imprisonment and ₹1 lakh fine", severity: "high", tags: ["Impersonation", "Cheating", "Online Fraud"] },
-  { sec: "Section 66E", cat: "it-act", name: "Privacy Violation", desc: "Capturing, publishing or transmitting image of private areas of any person without consent", penalty: "Up to 3 years imprisonment or ₹2 lakh fine", severity: "high", tags: ["Privacy", "Image", "Non-Consensual"] },
-  { sec: "Section 66F", cat: "it-act", name: "Cyber Terrorism", desc: "Acts threatening unity, integrity, sovereignty of India or creating terror through cyberspace", penalty: "Life imprisonment", severity: "high", tags: ["Terrorism", "National Security", "Critical Infrastructure"] },
-  { sec: "Section 67", cat: "it-act", name: "Publishing Obscene Material", desc: "Publishing or transmitting obscene material in electronic form", penalty: "First conviction: 3 years, ₹5 lakh. Subsequent: 5 years, ₹10 lakh", severity: "high", tags: ["Obscenity", "Online Content"] },
-  { sec: "Section 67A", cat: "it-act", name: "Sexually Explicit Content", desc: "Publishing or transmitting material containing sexually explicit act in electronic form", penalty: "First conviction: 5 years, ₹10 lakh. Subsequent: 7 years, ₹10 lakh", severity: "high", tags: ["Explicit Content", "CSAM Prevention"] },
-  { sec: "Section 67B", cat: "it-act", name: "Child Pornography", desc: "Publishing sexually explicit content involving children in electronic form", penalty: "First conviction: 5 years, ₹10 lakh. Subsequent: 7 years, ₹10 lakh", severity: "high", tags: ["Child Protection", "POCSO"] },
-  { sec: "Section 43", cat: "it-act", name: "Unauthorized Access/Damage", desc: "Accessing, downloading, introducing viruses, denying service to computer systems without permission", penalty: "Compensation up to ₹1 crore", severity: "med", tags: ["Civil Liability", "Hacking", "DOS"] },
-  { sec: "Section 72", cat: "it-act", name: "Breach of Confidentiality", desc: "Disclosure of information in breach of lawful contract by authorized persons", penalty: "Up to 2 years imprisonment or ₹1 lakh fine", severity: "med", tags: ["Confidentiality", "Data Breach"] },
-  { sec: "BNS 318", cat: "bns", name: "Cheating", desc: "Fraudulently inducing delivery of property or causing damage. Covers online fraud, UPI fraud", penalty: "Up to 7 years imprisonment and fine", severity: "high", tags: ["Fraud", "Online Scam", "UPI"] },
-  { sec: "BNS 319", cat: "bns", name: "Cheating by Impersonation", desc: "Cheating by pretending to be another person online or offline", penalty: "Up to 3 years imprisonment and fine", severity: "med", tags: ["Impersonation", "Catfishing"] },
-  { sec: "BNS 351", cat: "bns", name: "Criminal Intimidation", desc: "Threats via electronic messages, email, social media to cause alarm", penalty: "Up to 2 years imprisonment or fine or both", severity: "med", tags: ["Threats", "Online Harassment"] },
-  { sec: "BNS 74", cat: "bns", name: "Assault/Sexual Harassment Online", desc: "Sexual harassment via electronic communication including unsolicited messages", penalty: "Up to 3 years imprisonment and fine", severity: "high", tags: ["Sexual Harassment", "Online Abuse"] },
-  { sec: "Section 420 IPC", cat: "ipc", name: "Cheating & Dishonest Inducement", desc: "Legacy IPC section for cheating — still applicable for pre-2024 cases, now covered under BNS 318", penalty: "Up to 7 years imprisonment and fine", severity: "high", tags: ["Legacy", "Fraud", "Cheating"] },
-  { sec: "DPDP 2023", cat: "rights", name: "Digital Personal Data Protection", desc: "Right to information about data processing, correction, erasure of personal data. Data Principal rights", penalty: "Penalty on non-compliance up to ₹250 crore", severity: "med", tags: ["Privacy", "Data Rights", "Consent"] },
-  { sec: "IT Rules 2021", cat: "rights", name: "Intermediary Liability Rules", desc: "Social media platforms must remove harmful content within 24-36 hours of complaint. Grievance officer required", penalty: "Platform loses safe harbour protection", severity: "low", tags: ["Platform Accountability", "Content Removal"] },
-];
+const LAWS = getAllLawSections().map((s) => {
+  const actMap = s.act === 'IT_ACT' ? 'it-act' : s.act === 'BNS' ? 'bns' : s.act === 'IPC' ? 'ipc' : 'rights';
+  const imprisonment = s.punishment?.imprisonment ?? '';
+  const fine = s.punishment?.fine ?? '';
+  let penalty = imprisonment || fine || 'See statute';
+  if (imprisonment && fine) penalty = `${imprisonment} / ${fine}`;
+  const severity = /life/i.test(imprisonment) || (imprisonment && Number(imprisonment.replace(/\D/g, '')) > 5) ? 'high' : 'med';
+  return {
+    sec: s.section,
+    cat: actMap,
+    name: s.title,
+    desc: s.description,
+    penalty,
+    severity,
+    tags: s.tags || [],
+  };
+});
 
 const CRIMES = [
   { icon: "🎣", color: C.alert, title: "Phishing Fraud", sub: "Email / Link Scam", laws: ["IT Act Sec 66D", "BNS 318 - Cheating", "BNS 319 - Impersonation"], penalty: "3–7 years + ₹1–5 lakh fine", threat: 85 },
@@ -543,10 +543,17 @@ function RightsCenter() {
   );
 }
 
+import { InterviewWizard } from "../../modules/incident-wizard/components/InterviewWizard";
+
 // ─── REPORTING TIMELINE ────────────────────────────────────────────────────────
 function ReportingTimeline() {
   return (
     <section id="reporting" style={{ padding: "5rem 4rem", background: C.surface }}>
+      <SectionHeader label="INCIDENT REPORTING WIZARD" title="Report an Incident" sub="Use our guided wizard to analyze and document your cyber incident." />
+      <div style={{ marginBottom: "4rem" }}>
+        <InterviewWizard />
+      </div>
+
       <SectionHeader label="RESPONSE PROTOCOL SYSTEM" title="Reporting Protocol Timeline" sub="Follow this intelligence-grade incident response protocol to maximize legal protection and recovery." />
       <div style={{ position: "relative", padding: "0 2rem", maxWidth: 900, margin: "0 auto" }}>
         <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: `linear-gradient(180deg, transparent, ${C.cyanDim}, ${C.emeraldDim}, transparent)`, transform: "translateX(-50%)" }} />

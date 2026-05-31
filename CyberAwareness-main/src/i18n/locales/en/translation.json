@@ -130,5 +130,313 @@
   "analyzer": "AI Scam Analyzer",
   "dashboard": "Cyber Dashboard",
   "login": "Login",
-  "signup": "Signup"
+  "signup": "Signup",
+
+  "nav": {
+    "threat_feed": "Threat Feed",
+    "threat_feed_desc": "Real-time global cyber threat intelligence",
+    "ai_scanner": "AI Scanner",
+    "ai_scanner_desc": "Scan links, files & content with AI",
+    "scam_library": "Scam Library",
+    "scam_library_desc": "Comprehensive scam & fraud database",
+    "case_studies": "Case Studies",
+    "case_studies_desc": "Browse curated cyber incident reports",
+    "learn": "Learn",
+    "learn_desc": "Structured cyber awareness curriculum",
+    "deepfake_lab": "Deepfake Lab",
+    "deepfake_lab_desc": "Detect and understand AI-generated media",
+    "cyber_laws": "Legal AI",
+    "cyber_laws_desc": "AI-guided cybercrime complaint drafting",
+    "locator": "Locator",
+    "locator_desc": "Locate cybercrime cells and reporting centers.",
+    "reporting": "Reporting",
+    "reporting_desc": "Report incidents. Stay protected.",
+    "challenges": "Challenges",
+    "challenges_desc": "Test your cyber knowledge & earn badges",
+    "stayProtected": "Stay Protected",
+    "languageSelector": "Select language"
+  },
+
+  "auth": {
+    "accessTerminal": "Access Terminal",
+    "loginBtn": "Login",
+    "signupBtn": "Signup"
+  },
+
+  "complaint": {
+    "coverTitle": "Official Cybercrime Complaint Packet",
+    "packetNumberLabel": "Packet Number:",
+    "generatedAtLabel": "Generated At:",
+    "packetContentsLabel": "Packet Contents",
+    "mainComplaintLabel": "Main Complaint",
+    "signatureBlockLabel": "Signature Block",
+    "subjectLabel": "Subject:",
+    "declarationHeading": "7. Declaration",
+    "narrativeHeading": "1. Incident Narrative",
+    "timelineHeading": "2. Incident Timeline",
+    "lossHeading": "3. Financial Loss Details",
+    "evidenceHeading": "4. Evidence & Identifiers Summary",
+    "accusedHeading": "5. Accused Information",
+    "legalHeading": "6. Applicable Legal Sections",
+    "signOff": "Yours faithfully,",
+    "subjectTemplate": "Formal Complaint Regarding Cybercrime Incident: {{category}}",
+    "salutation": "To The Station House Officer / Cyber Crime Cell,",
+    "bodyIntroTemplate": "I, {{victimName}}, respectfully submit this formal complaint to report a cybercrime incident that has occurred against me.",
+    "declarationTemplate": "I, {{victimName}}, hereby declare that the information provided in this complaint is true and accurate to the best of my knowledge and belief. I understand that submitting false information is a punishable offense under law.\n\nDate: {{dateStr}}\nPlace: _________________",
+    "preparedBy": "Prepared by TrustLayerLabs Sentinel Legal AI using deterministic legal mappings and user-provided facts.",
+    "signatureLabel": "[Signature]"
+  },
+  "cyberJustice": {
+    "greeting": "Tell me what happened in simple words. I will help classify the cybercrime, identify useful evidence, build a timeline, and prepare a complaint draft.",
+    "greetingShort": "Tell me what happened in simple words.",
+    "captured": "I captured those details. Review the proposed updates, then confirm them when ready.",
+    "analysisResult": "I classified this as {{category}} with {{confidence}}% confidence and extracted available identifiers.",
+    "phaseLabel": "Phase 2 Case Builder",
+    "title": "Cyber Justice AI",
+    "button": {
+      "reset": "Reset",
+      "back": "Back",
+      "analyze": "Analyze Incident",
+      "analyzing": "Analyzing...",
+      "next": "Next Step"
+    },
+    "steps": {
+      "NARRATIVE": "Narrative",
+      "ANALYSIS": "Analysis",
+      "EVIDENCE": "Evidence",
+      "TIMELINE": "Timeline",
+      "REVIEW": "Review"
+    },
+    "questions": {
+      "upi-utr": "What is the UTR, RRN, or transaction reference number for the payment?",
+      "upi-amount": "How much money was lost in this incident?",
+      "phishing-url": "What suspicious link or website did you receive or open?",
+      "phishing-email": "Do you have the sender email address or reply-to email?",
+      "sextortion-platform": "Which platform did the threats, messages, or impersonation happen on?",
+      "suspect-phone": "What phone number did the suspect use, if any?",
+      "bank-name": "Which bank account or bank app was used for the transaction?",
+      "evidence-refs": "What evidence do you have, such as screenshots, chats, emails, recordings, or bank statements?",
+      "general-narrative": "Please describe what happened in your own words, including contact method, money loss, and any evidence you have."
+    },
+    "ui": {
+      "conversation": {
+        "title": "Conversation intake",
+        "nextBestQuestion": "Next best question",
+        "proposedUpdates": "Proposed case updates are ready for review.",
+        "apply": "Apply",
+        "reject": "Reject",
+        "naturalUpdateLabel": "Natural incident update",
+        "placeholder": "Add details naturally: I lost INR 25000, UTR was..., the suspect used WhatsApp...",
+        "send": "Send"
+      },
+      "header": {
+        "badge": "Cyber Justice AI Phase 2",
+        "title": "Build a legal-ready cybercrime case file.",
+        "subtitle": "Narrative analysis, evidence vault, timeline builder, party details, financial loss, complaint generation, and PDF export now share one case file."
+      },
+      "emergency": {
+        "title": "Emergency financial fraud?",
+        "desc": "Call 1930 immediately and contact your bank to try freezing funds."
+      },
+      "legalOutput": {
+        "title": "Legal engine output",
+        "confidence": "Confidence",
+        "noAnalysis": "The classification and laws will appear here after analysis."
+      },
+      "timeline": {
+        "title": "Timeline builder",
+        "description": "Generate events from the conversation, extracted entities, and evidence, then add manual corrections.",
+        "action": {
+          "fromConversation": "From conversation",
+          "fromEntities": "From entities",
+          "fromEvidence": "From evidence"
+        },
+        "field": {
+          "eventTitle": "Event title",
+          "eventTitlePlaceholder": "Money transferred, phishing link received...",
+          "timestamp": "Timestamp",
+          "timestampPlaceholder": "2026-05-29T10:30:00+05:30",
+          "description": "Description",
+          "descriptionPlaceholder": "What happened at this moment"
+        },
+        "option": { "noLinkedEvidence": "No linked evidence" },
+        "button": { "addEvent": "Add event" },
+        "confirmed": "Confirmed",
+        "confirm": "Confirm",
+        "noTimelineEvents": "No timeline events yet."
+      },
+      "evidence": {
+        "title": "Evidence vault",
+        "description": "Add evidence records and paste extracted text, OCR, transcripts, or parsed statement rows. The existing entity extractor finds identifiers.",
+        "label": { "type": "Evidence type" },
+        "name": { "label": "Name", "placeholder": "WhatsApp screenshot, bank statement, call recording..." },
+        "timestamp": { "label": "Timestamp", "placeholder": "2026-05-29T10:30:00+05:30" },
+        "description": { "label": "Description", "placeholder": "What this item proves" },
+        "extractableLabel": "Extractable text",
+        "extractable": { "placeholder": "Paste OCR text, email body, chat export, transcript, statement text, UTR/RRN, UPI IDs, URLs, wallet IDs..." },
+        "addButton": "Add evidence",
+        "stat": { "vaultItems": "Vault items", "verified": "Verified", "extracted": "Extracted entities" },
+        "noDescription": "No description provided.",
+        "verified": "Verified",
+        "markVerified": "Mark verified",
+        "noEvidence": "No evidence added yet.",
+        "types": { "SCREENSHOT": "Screenshot", "PDF": "PDF", "AUDIO": "Audio", "VIDEO": "Video", "CHAT": "Chat", "EMAIL": "Email", "BANK_STATEMENT": "Bank Statement" }
+      },
+      "analysis": {
+        "noNarrative": "Add an incident narrative first, then run analysis.",
+        "title": "Classification and laws",
+        "description": "Review the mapped Sentinel Legal analysis before collecting evidence.",
+        "detectedCategory": "Detected category",
+        "confidence": "Confidence",
+        "manualOverride": "Manual override"
+      },
+      "review": {
+        "title": "Review center",
+        "description": "Validate the complete Phase 2 case file before generating the complaint and PDF.",
+        "noNarrative": "No incident narrative provided.",
+        "classification": "Classification",
+        "notAnalyzed": "Not analyzed",
+        "confidence": "Confidence",
+        "pending": "Pending",
+        "mappedSections": "Mapped sections",
+        "evidenceInventory": "Evidence inventory",
+        "noEvidenceItems": "No evidence items added.",
+        "noDescription": "No description provided.",
+        "verified": "Verified",
+        "pendingReview": "Pending review",
+        "financialLoss": "Financial loss",
+        "fields": { "amount": "Amount", "currency": "Currency", "bank": "Bank", "transactionId": "Transaction ID", "paymentMethod": "Payment Method", "recoveryStatus": "Recovery Status" },
+        "victim": "Victim",
+        "accused": "Accused",
+        "timeline": "Timeline",
+        "noTimelineEvents": "No timeline events added.",
+        "extractedEntities": "Extracted entities",
+        "officialPacketTitle": "Official packet generation",
+        "officialPacketDesc": "Creates a complaint packet with cover page, annexures, page numbers, and signature block.",
+        "generatePacket": { "generating": "Generating...", "button": "Generate Packet" },
+        "downloadPdf": "Download PDF",
+        "exportSummary": "Export summary",
+        "summary": { "packetNumber": "Packet Number", "annexures": "Annexures", "evidenceItems": "Evidence Items", "timelineEvents": "Timeline Events", "mappedLaws": "Mapped Laws", "financialLossIncluded": "Included", "financialLossNotRecorded": "Not recorded", "pdfReady": "Ready", "pdfPending": "Pending", "generated": "Generated" },
+        "pdfErrorPrefix": "PDF error:",
+        "annexurePreview": "Annexure preview",
+        "packetPreview": "Packet preview"
+      },
+      "submission": {
+        "packagePreviewTitle": "Submission package preview",
+        "noPacket": "No official complaint packet generated yet. Use \"Generate Packet\" to create an export-ready complaint packet.",
+        "packetNumber": "Packet number",
+        "annexures": "Annexures",
+        "summary": "Summary",
+        "summaryFormat": "{{evidenceCount}} evidence items • {{timelineCount}} timeline events"
+      },
+      "checklist": {
+        "title": "Submission checklist",
+        "allSet": "All set — no immediate checklist items.",
+        "required": "Required",
+        "recommended": "Recommended"
+      },
+      "authority": { "title": "Recommended authorities" },
+      "engines": {
+        "timeline": {
+          "suggestions": {
+            "instagram": { "title": "Instagram contact established", "description": "The narrative mentions the suspect first contacted the victim through Instagram.", "reason": "Social media platform was explicitly referenced in the incident report." },
+            "videoCall": { "title": "Video call interaction occurred", "description": "A video call happened during the incident.", "reason": "The user described a video call exchange, which is a key timeline event in sextortion cases." },
+            "recording": { "title": "Recording or footage was captured", "description": "A recording or similar media was referenced in the incident narrative.", "reason": "Recording of the victim or interaction can anchor an extortion timeline event." },
+            "threat": { "title": "Threat or extortion demand was issued", "description": "A direct threat or extortion demand was described by the victim.", "reason": "Threat language is an important event marker for sextortion timelines." },
+            "paymentDemand": { "title": "Payment demand was requested", "description": "The user mentioned a monetary demand or amount in the narrative.", "reason": "Monetary demands are essential to reconstruct the incident timeline." },
+            "narrative": { "title": "Incident described by complainant", "reason": "The user provided a natural-language incident account." },
+            "evidence": { "title": "{{type}} evidence available", "description": "{{name}}: {{desc}}", "defaultDescription": "Evidence item added to vault.", "reason": "Evidence vault item has a timestamp and can anchor the case timeline." }
+          },
+          "entityGroups": {
+            "utr": { "title": "UTR/RRN reference identified" },
+            "upi": { "title": "UPI ID identified" },
+            "url": { "title": "Suspicious URL identified" },
+            "contact": { "title": "Suspect contact identified" },
+            "wallet": { "title": "Wallet ID identified" },
+            "reason": "The deterministic entity extractor found identifiers that may belong on the incident timeline."
+          }
+        },
+        "emergency": {
+          "preserveEvidence": { "title": "Preserve evidence", "detail": "Take screenshots, save messages, download attachments and do not delete logs." },
+          "contactHelpline": { "title": "Call 1930", "detail": "Contact National Cyber Crime Helpline 1930 for guidance and immediate assistance." },
+          "call1930": { "title": "Call 1930", "detail": "Call the National Cyber Crime Helpline 1930 immediately and report the unauthorized transaction." },
+          "contactBank": { "title": "Contact your bank", "detail": "Notify your bank, request account freeze and reversal, provide transaction IDs and evidence." },
+          "otpCall": { "title": "Call 1930", "detail": "Report OTP interception or misuse via the helpline for immediate advice." },
+          "notifyBank": { "title": "Notify bank", "detail": "Inform the bank and request account freeze. Change banking credentials and enable stronger 2FA." },
+          "preservePhishing": { "title": "Preserve phishing sample", "detail": "Save the email, screenshot the URL and download headers where possible." },
+          "doNotClick": { "title": "Do not click links", "detail": "Do not follow any links or provide credentials. Change passwords for exposed accounts." },
+          "reportPlatform": { "title": "Report to platform", "detail": "Report the phishing page to the hosting platform and to CERT-In / National portal." },
+          "doNotPay": { "title": "Do not pay", "detail": "Do not pay or negotiate with extortionists — payment often escalates demands." },
+          "contactPolice": { "title": "Contact Cyber Police", "detail": "File a complaint with local cyber cell and the National Cyber Crime Portal." },
+          "blockReport": { "title": "Block and report", "detail": "Block the perpetrator on platforms and report to platform grievance officers." },
+          "freezeAccounts": { "title": "Freeze affected accounts", "detail": "Contact banks and platforms to freeze or secure accounts." },
+          "collectProof": { "title": "Collect proof", "detail": "Gather evidence of impersonation, fake profiles, and transactions." },
+          "changeCredentials": { "title": "Change credentials", "detail": "Change passwords for affected accounts and enable MFA immediately." },
+          "notifyPlatforms": { "title": "Notify affected platforms", "detail": "Inform service providers and follow their incident response guidance." },
+          "reportCert": { "title": "Report to CERT-In", "detail": "File a report with CERT-In for technical advisory and mitigation." },
+          "isolateSystems": { "title": "Isolate affected systems", "detail": "Disconnect compromised devices from network to prevent further access." },
+          "preserveLogs": { "title": "Preserve logs", "detail": "Collect and preserve logs, system images and timestamps for forensic analysis." }
+        },
+        "evidence": {
+          "recommendations": {
+            "upi-transaction-screenshot": { "title": "Transaction screenshot", "description": "Upload a screenshot showing the fraudulent UPI transaction, amount, UPI ID, or reference number.", "reason": "This proves the transfer details and supports bank escalation." },
+            "upi-bank-statement": { "title": "Bank statement", "description": "Upload a statement or passbook entry showing the debit.", "reason": "This validates the claimed financial loss." },
+            "phishing-page-record": { "title": "Phishing page or message record", "description": "Upload the suspicious page, email, or message that led to the incident.", "reason": "This preserves the deception path and malicious URL before it disappears." },
+            "sextortion-threat-record": { "title": "Threat messages or recordings", "description": "Upload chats, screenshots, audio, or video showing threats or coercion.", "reason": "Threat content is central to intimidation and extortion claims." },
+            "profile-impersonation-proof": { "title": "Profile or impersonation proof", "description": "Upload screenshots of fake profiles, job posts, or impersonation pages.", "reason": "This connects the accused identity or fake profile to the harm." },
+            "crypto-wallet-transaction": { "title": "Wallet or investment transaction record", "description": "Upload wallet transfer proof, investment dashboard screenshots, or payment records.", "reason": "This links wallet IDs and payment trail to the complaint." },
+            "communication-history": { "title": "Communication history", "description": "Upload chats, emails, or screenshots showing how the suspect contacted you.", "reason": "Communication records explain the deception and suspect identifiers." }
+          }
+        },
+        "authority": {
+          "nationalPortal": { "name": "National Cyber Crime Portal", "notes": "Official government portal for cybercrime complaints" },
+          "cyberPolice": { "name": "Cyber Police (Local Cyber Cell)", "notes": "Visit or contact your nearest cyber crime police station with printed evidence" },
+          "nationalHelpline": { "name": "National Cyber Crime Helpline", "notes": "24x7 helpline — call for urgent assistance" },
+          "cert": { "name": "CERT-In", "notes": "Computer Emergency Response Team — report breaches and incidents" },
+          "phishing": { "notes": "Report phishing incidents and provide evidence", "localNotes": "File FIR at local cyber cell if financial loss occurred", "certNotes": "CERT-In accepts technical reports of phishing campaigns" },
+          "dataBreach": { "certNotes": "Report data breaches for mitigation and advisories", "localNotes": "Notify local cyber cell for investigation and FIR" },
+          "hacking": { "certNotes": "Report intrusions and request incident response guidance", "localNotes": "Contact local cyber cell for criminal investigation" }
+        },
+        "law": {
+          "evidenceNeeds": {
+            "financial": { "label": "Transaction and bank proof", "description": "Transaction screenshot, bank statement, UTR/RRN, or payment reference." },
+            "communication": { "label": "Suspect communication", "description": "Chats, emails, screenshots, calls, or recordings showing deception, threats, or demands." },
+            "identity": { "label": "Impersonation or account proof", "description": "Fake profile, forged document, account compromise, or impersonation screenshots." },
+            "platform": { "label": "Platform record", "description": "Platform profile URL, account handle, report/takedown reference, or message export." }
+          },
+          "whyMapped": "Mapped for {{category}}."
+        },
+        "questions": {
+          "reasons": {
+            "upi-utr": "Transaction references help banks and police trace the fraudulent transfer.",
+            "upi-amount": "The loss amount is needed for the complaint and financial loss annexure.",
+            "phishing-url": "The URL is a primary identifier for phishing investigation.",
+            "phishing-email": "Email identifiers help preserve the impersonation trail.",
+            "sextortion-platform": "Platform context helps request takedown, account tracing, and evidence preservation.",
+            "suspect-phone": "Phone numbers are actionable identifiers for investigation.",
+            "bank-name": "Bank details support the financial loss annexure and recovery workflow.",
+            "evidence-refs": "Evidence references help build the complaint packet annexures.",
+            "general-narrative": "The narrative is needed before classification-specific questions can be selected."
+          }
+        },
+        "adapters": {
+          "packetHeader": "OFFICIAL CYBERCRIME COMPLAINT PACKET",
+          "packetNumber": "Packet Number",
+          "generatedAt": "Generated At",
+          "subject": "Subject",
+          "annexureIndex": "Annexure Index",
+          "item": "item",
+          "items": "items",
+          "signatureBlock": "Signature Block",
+          "complainantSignature": "Complainant Signature",
+          "name": "Name",
+          "date": "Date",
+          "financialLossHeading": "Expanded Financial Loss Details"
+        },
+        "store": {
+          "userMentioned": "User mentioned {{keyword}}"
+        }
+      }
+    }
+  }
 }

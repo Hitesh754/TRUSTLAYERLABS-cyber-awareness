@@ -14,7 +14,7 @@ export default function Rights() {
           <Link className="dashboard-link" to="/">
             Back to Dashboard
           </Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
           <Link className="active" to="/laws/rights">
             Rights
           </Link>

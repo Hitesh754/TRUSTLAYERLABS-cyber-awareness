@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
@@ -10,12 +8,13 @@ const MODULE_ROUTES: Record<string, string> = {
   "deepfake-lab": "/deepfake",
   "qr-scanner": "/qr",
   "phishing-sim": "/phishing",
-  "cyber-laws": "/laws",
+  "cyber-laws": "/cyber-justice-ai",
   challenges: "/quiz",
   reporting: "/reporting",
   "upi-fraud": "/upi",
   "ip-scanner": "/ip-scanner",
   "url-scanner": "/url-scanner",
+  "scam-library": "/scam-library",
 };
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -164,6 +163,17 @@ const URLScannerIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const ScamLibraryIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 6h24v26H8V6z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+    <path d="M12 10v20M28 10v20" stroke="currentColor" strokeWidth="1.2" opacity="0.6" />
+    <path d="M8 14h24M8 18h24M8 22h24M8 26h24" stroke="currentColor" strokeWidth="1" opacity="0.5" strokeDasharray="2 2" />
+    <circle cx="20" cy="20" r="3" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M18 20h4M20 18v4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" opacity="0.7" />
+    <path d="M10 30l2-2M28 30l2-2M15 30l2-2M23 30l2-2" stroke="currentColor" strokeWidth="1" opacity="0.5" strokeLinecap="round" />
+  </svg>
+);
+
 // ─── Module Data ──────────────────────────────────────────────────────────────
 
 const CYBER_MODULES: CyberModule[] = [
@@ -249,9 +259,9 @@ const CYBER_MODULES: CyberModule[] = [
   },
   {
     id: "cyber-laws",
-    title: "Cyber Laws Hub",
-    subtitle: "Legal Intelligence System",
-    description: "Navigate India's IT Act 2000, DPDP Bill, and global cyber regulations. AI-guided summaries help citizens understand their digital rights and legal recourse.",
+    title: "Legal AI Command Center",
+    subtitle: "Complaint Intelligence System",
+    description: "Transform cybercrime incident narratives into structured complaints with guided interviews, legal mapping, evidence summaries, and PDF export.",
     icon: CyberLawsIcon,
     accentColor: "text-sky-400",
     glowColor: "rgba(56,189,248,0.15)",
@@ -261,7 +271,7 @@ const CYBER_MODULES: CyberModule[] = [
     tags: ["IT Act 2000", "DPDP Bill", "Cyber Rights"],
     pulseRings: 1,
     gridPattern: "circuit",
-    liveData: ["Section 66A explained", "DPDP rights clarified", "Complaint process mapped"],
+    liveData: ["Complaint draft generated", "Legal sections mapped", "PDF export ready"],
   },
   {
     id: "challenges",
@@ -342,6 +352,22 @@ const CYBER_MODULES: CyberModule[] = [
     pulseRings: 2,
     gridPattern: "wave",
     liveData: ["Phishing URL detected", "Typosquat identified", "Clean URL — safe"],
+  },
+  {
+    id: "scam-library",
+    title: "Scam Intelligence Archive",
+    subtitle: "Fraud Pattern Database",
+    description: "Comprehensive classified archive of documented scams, fraud schemes, and deception patterns. Search historical scam campaigns, analyze fraud tactics, and explore indexed threat intelligence from India's cyber threat landscape.",
+    icon: ScamLibraryIcon,
+    accentColor: "text-indigo-400",
+    glowColor: "rgba(129,140,248,0.15)",
+    borderColor: "rgba(129,140,248,0.3)",
+    statusLabel: "ARCHIVE INDEXED",
+    statusType: "learning",
+    tags: ["Fraud Patterns", "Scam History", "Threat Intelligence"],
+    pulseRings: 2,
+    gridPattern: "circuit",
+    liveData: ["Archive entries: 2,400+", "Scam patterns categorized", "Fraud threats mapped"],
   },
 ];
 
@@ -859,7 +885,7 @@ const SectionHeader: React.FC = () => (
       className="mt-6 flex items-center justify-center gap-6 text-[11px] font-mono text-white/30"
     >
       {[
-        { label: "ACTIVE MODULES", value: "11" },
+        { label: "ACTIVE MODULES", value: "12" },
         { label: "THREAT VECTORS", value: "40+" },
         { label: "AWARENESS SYSTEMS", value: "ONLINE" },
       ].map(({ label, value }) => (

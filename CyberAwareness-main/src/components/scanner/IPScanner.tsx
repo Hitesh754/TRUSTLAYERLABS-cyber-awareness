@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { AlertCircle, Search, Globe, Building2, MapPin, BarChart3, Zap } from 'lucide-react';
 

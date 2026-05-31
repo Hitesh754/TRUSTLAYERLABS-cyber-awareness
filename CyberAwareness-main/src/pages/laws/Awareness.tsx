@@ -19,7 +19,7 @@ export default function Awareness() {
           <Link className="active" to="/laws/awareness">
             Awareness
           </Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
         </div>
       </nav>
 

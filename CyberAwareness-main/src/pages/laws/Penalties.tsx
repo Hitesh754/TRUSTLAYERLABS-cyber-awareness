@@ -15,7 +15,7 @@ export default function Penalties() {
             Back to Dashboard
           </Link>
           <Link to="/laws/it-act">IT Act</Link>
-          <Link to="/laws/reporting">Reporting</Link>
+          <Link to="/reporting">Reporting</Link>
           <Link className="active" to="/laws/penalties">
             Penalties
           </Link>
