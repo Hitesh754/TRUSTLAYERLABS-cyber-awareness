@@ -26,6 +26,12 @@ export default function Navbar() {
   const [learningOpen, setLearningOpen] =
     useState(false);
 
+  const [toolsOpen, setToolsOpen] =
+    useState(false);
+
+  const [mobileToolsOpen, setMobileToolsOpen] =
+    useState(false);
+
   const [languageOpen, setLanguageOpen] =
     useState(false);
 
@@ -191,27 +197,42 @@ export default function Navbar() {
         label: t("navbar.report"),
         to: "/reporting",
       },
-
-      {
-        label: "Threat Feed",
-        to: "/threat-feed",
-      },
-
-      {
-        label: "URL Scanner",
-        to: "/url-scanner",
-      },
-
-      {
-        label: "IP Scanner",
-        to: "/ip-scanner",
-      },
-
-      {
-        label: "Breach Checker",
-        to: "/breach-checker",
-      },
     ];
+
+  const toolsLinks = [
+    {
+      to: "/threat-feed",
+      label: "Threat Feed",
+    },
+    {
+      to: "/url-scanner",
+      label: "URL Reputation Scanner",
+    },
+    {
+      to: "/ip-scanner",
+      label: "IP Reputation Scanner",
+    },
+    {
+      to: "/breach-checker",
+      label: "Data Breach Checker",
+    },
+    {
+      to: "/phone-lookup",
+      label: "Mobile Number Lookup",
+    },
+    {
+      to: "/email-lookup",
+      label: "Email Address Lookup",
+    },
+    {
+      to: "/domain-lookup",
+      label: "Domain & WHOIS Lookup",
+    },
+    {
+      to: "/crypto-lookup",
+      label: "Crypto Wallet Lookup",
+    },
+  ];
 
   const learningLinks = [
     {
@@ -385,6 +406,36 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            {/* OSINT Tools Dropdown */}
+            <div
+              className="relative flex items-center h-full"
+              onMouseEnter={() =>
+                setToolsOpen(true)
+              }
+              onMouseLeave={() =>
+                setToolsOpen(false)
+              }
+            >
+              <button className="flex items-center gap-1 h-16 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-cyan-400 transition-colors">
+                OSINT Tools
+                <ChevronDown className="w-4 h-4" />
+              </button>
+
+              {toolsOpen && (
+                <div className="absolute top-full left-0 pt-2 w-64 rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-slate-900 shadow-2xl p-3 space-y-1 transition-colors duration-300">
+                  {toolsLinks.map((link) => (
+                    <Link
+                      key={link.to}
+                      to={link.to}
+                      className="block rounded-lg px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-cyan-500/10 hover:text-cyan-400 transition"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             
             {/* Theme Toggle */}
             <div className="flex items-center gap-2">
@@ -496,6 +547,34 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Mobile OSINT Tools */}
+              <div className="pt-2 border-t border-slate-700 dark:border-gray-700">
+                <button
+                  onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
+                  className="flex w-full items-center justify-between text-2xl font-semibold text-slate-200 dark:text-gray-200 hover:text-cyan-400 transition text-left"
+                >
+                  OSINT Tools
+                  <ChevronDown className={`w-6 h-6 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {mobileToolsOpen && (
+                  <div className="mt-3 pl-4 space-y-3 border-l border-slate-700 dark:border-gray-700 max-h-48 overflow-y-auto">
+                    {toolsLinks.map((link) => (
+                      <Link
+                        key={link.to}
+                        to={link.to}
+                        className="block text-lg font-medium text-slate-400 dark:text-gray-400 hover:text-cyan-400 transition"
+                        onClick={() => {
+                          setOpen(false);
+                          setMobileToolsOpen(false);
+                        }}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
 
               {/* Mobile Theme Toggle */}
               <div className="pt-2 pb-4 border-t border-slate-700 dark:border-gray-700">

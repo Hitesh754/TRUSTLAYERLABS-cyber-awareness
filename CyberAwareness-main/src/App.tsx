@@ -52,6 +52,10 @@ import UrlScannerPage from "./pages/url-scanner";
 import ThreatFeedPage from "./pages/threat-feed";
 import IPScannerPage from "./pages/ip-scanner";
 import BreachCheckerPage from "./pages/breach-checker";
+import PhoneLookupPage from "./pages/phone-lookup";
+import EmailLookupPage from "./pages/email-lookup";
+import DomainLookupPage from "./pages/domain-lookup";
+import CryptoLookupPage from "./pages/crypto-lookup";
 import HomePage from './pages/index';
 import AnalyzerPage from "./pages/analyzer";
 import { Login, Signup } from "./pages/auth";
@@ -78,6 +82,10 @@ export default function App() {
             <Route path="/threat-feed" element={<ThreatFeedPage />} />
             <Route path="/ip-scanner" element={<IPScannerPage />} />
             <Route path="/breach-checker" element={<BreachCheckerPage />} />
+            <Route path="/phone-lookup" element={<PhoneLookupPage />} />
+            <Route path="/email-lookup" element={<EmailLookupPage />} />
+            <Route path="/domain-lookup" element={<DomainLookupPage />} />
+            <Route path="/crypto-lookup" element={<CryptoLookupPage />} />
             <Route index element={<HomePage />} />
 
             <Route
