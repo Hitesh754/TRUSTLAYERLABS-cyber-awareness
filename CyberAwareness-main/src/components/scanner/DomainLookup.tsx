@@ -56,67 +56,111 @@ export default function DomainLookup() {
 
     setLoading(true);
 
-    const steps = [
-      'Sending WHOIS registry query...',
-      'Resolving DNS network mapping (A, AAAA, MX)...',
-      'Inspecting SSL/TLS certificate details...',
-      'Auditing blacklists and phishing intelligence feeds...',
-      'Calculating aggregated domain safety score...'
-    ];
-
-    for (const step of steps) {
-      setScanStep(step);
-      await new Promise((r) => setTimeout(r, 600));
-    }
-
     try {
+      setScanStep('Sending WHOIS registry query (via open RDAP)...');
+      await new Promise((r) => setTimeout(r, 400));
+      
       let safetyScore = 100;
-      let registrar = 'MarkMonitor Inc.';
-      let creationDate = '1997-09-15';
-      let expirationDate = '2028-09-14';
+      let registrar = 'Unknown Registrar / Protected';
+      let creationDate = 'N/A';
+      let expirationDate = 'N/A';
       let isBlacklisted = false;
       let sslStatus: 'VALID' | 'EXPIRED_OR_SELF_SIGNED' | 'NONE' = 'VALID';
-      let age = '28 Years';
+      let age = 'N/A';
       let riskCategory: 'SAFE' | 'SUSPICIOUS' | 'MALICIOUS' = 'SAFE';
-      let dnsRecords: DnsRecord[] = [];
 
-      // Check for phishing keywords
+      // 1. RDAP Registry Query (Modern open WHOIS protocol)
+      try {
+        const rdapResponse = await fetch(`https://rdap.org/domain/${cleanDomain}`);
+        if (rdapResponse.ok) {
+          const rdapData = await rdapResponse.json();
+          
+          // Extract registrar
+          const registrarEntity = rdapData.entities?.find((ent: any) => ent.roles?.includes('registrar'));
+          if (registrarEntity) {
+            const fnVal = registrarEntity.vcardArray?.[1]?.find((prop: any) => prop[0] === 'fn');
+            registrar = fnVal ? fnVal[3] : 'Registered';
+          }
+
+          // Extract registration/expiration events
+          const regEvent = rdapData.events?.find((ev: any) => ev.eventAction === 'registration');
+          const expEvent = rdapData.events?.find((ev: any) => ev.eventAction === 'expiration');
+          
+          if (regEvent) {
+            creationDate = regEvent.eventDate.split('T')[0];
+            const createdYear = new Date(regEvent.eventDate).getFullYear();
+            const currentYear = new Date().getFullYear();
+            const ageYears = currentYear - createdYear;
+            age = ageYears > 0 ? `${ageYears} Year(s)` : 'New Registration (<1 Year)';
+            
+            if (ageYears === 0) {
+              safetyScore -= 20; // Newly registered domains are suspicious
+              riskCategory = 'SUSPICIOUS';
+            }
+          }
+          if (expEvent) {
+            expirationDate = expEvent.eventDate.split('T')[0];
+          }
+        }
+      } catch (err) {
+        console.warn('RDAP WHOIS fetch failed, skipping...');
+      }
+
+      setScanStep('Resolving DNS A records (via Cloudflare DNS)...');
+      await new Promise((r) => setTimeout(r, 400));
+
+      // 2. DNS Lookup via Cloudflare DNS over HTTPS
+      let dnsRecords: DnsRecord[] = [];
+      try {
+        const dnsResponse = await fetch(`https://cloudflare-dns.com/dns-query?name=${cleanDomain}&type=A`, {
+          headers: { 'Accept': 'application/dns-json' }
+        });
+        if (dnsResponse.ok) {
+          const dnsData = await dnsResponse.json();
+          if (dnsData.Answer) {
+            dnsData.Answer.forEach((ans: any) => {
+              if (ans.type === 1) { // Type 1 is A record
+                dnsRecords.push({ type: 'A', value: ans.data });
+              }
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('DNS lookup failed');
+      }
+
+      // Add default dummy record if DNS resolved nothing (rare for valid domains)
+      if (dnsRecords.length === 0) {
+        dnsRecords.push({ type: 'A', value: 'No active IP record mapped' });
+        safetyScore -= 30;
+      }
+
+      setScanStep('Auditing domain structure and keywords...');
+      await new Promise((r) => setTimeout(r, 300));
+
+      // 3. Phishing Indicators Check
       const lowerD = cleanDomain;
       const isSuspiciousKeyword = lowerD.includes('refund') || lowerD.includes('claim') || lowerD.includes('kyc') || 
                                   lowerD.includes('support') || lowerD.includes('bank') || lowerD.includes('rbi') || 
-                                  lowerD.includes('pay') || lowerD.includes('verify');
-
-      if (lowerD === 'paypal-refund-claims.net' || isSuspiciousKeyword) {
-        safetyScore = Math.floor(Math.random() * 20) + 5; // 5-25%
-        registrar = 'NameSilo, LLC';
-        creationDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 3 days ago
-        expirationDate = new Date(Date.now() + 362 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 1 year
-        isBlacklisted = true;
-        sslStatus = Math.random() > 0.5 ? 'EXPIRED_OR_SELF_SIGNED' : 'NONE';
-        age = '3 Days';
+                                  lowerD.includes('pay') || lowerD.includes('verify') || lowerD.includes('login');
+      
+      if (isSuspiciousKeyword) {
+        safetyScore = Math.max(5, safetyScore - 55);
         riskCategory = 'MALICIOUS';
-        
-        dnsRecords = [
-          { type: 'A', value: '185.112.144.10' },
-          { type: 'MX', value: '10 mail.paypal-refund-claims.net' },
-          { type: 'TXT', value: 'v=spf1 include:_spf.google.com ~all' }
-        ];
-      } else {
-        // Safe domain mock
-        safetyScore = Math.floor(Math.random() * 15) + 85; // 85-100%
-        registrar = 'GoDaddy Operating Company, LLC';
-        creationDate = '2012-04-18';
-        expirationDate = '2030-04-18';
-        isBlacklisted = false;
-        sslStatus = 'VALID';
-        age = '14 Years';
-        riskCategory = 'SAFE';
+        isBlacklisted = true;
+      }
 
-        dnsRecords = [
-          { type: 'A', value: '142.250.190.46' },
-          { type: 'AAAA', value: '2607:f8b0:4005:802::200e' },
-          { type: 'MX', value: '10 mail.google-analytics.com' }
-        ];
+      setScanStep('Checking SSL/TLS active credentials...');
+      await new Promise((r) => setTimeout(r, 300));
+
+      // 4. SSL Validation Check (simulated request to check if HTTPS resolves)
+      try {
+        await fetch(`https://${cleanDomain}`, { mode: 'no-cors', method: 'HEAD' });
+        sslStatus = 'VALID';
+      } catch (e) {
+        sslStatus = 'NONE';
+        safetyScore = Math.max(5, safetyScore - 30);
+        if (riskCategory === 'SAFE') riskCategory = 'SUSPICIOUS';
       }
 
       setResult({
@@ -155,7 +199,7 @@ export default function DomainLookup() {
           </h2>
         </div>
         <p className="text-slate-400 text-sm">
-          Scan domain registrar dates, analyze active DNS record mappings, evaluate SSL status, and calculate safety credibility scores.
+          Queries real WHOIS databases dynamically and checks live DNS resolutions to test safety reputation.
         </p>
       </div>
 

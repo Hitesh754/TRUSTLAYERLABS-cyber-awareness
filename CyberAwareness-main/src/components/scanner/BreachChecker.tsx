@@ -1,144 +1,298 @@
+'use client';
 
-import React, { useState } from 'react'
+import { useState } from 'react';
+import { ShieldAlert, CheckCircle, Search, Key, ShieldCheck } from 'lucide-react';
+import hibpService from '../../services/hibp';
 
 type Breach = {
-	id: string
-	name: string
-	date: string
-	compromised_data: string[]
-	description?: string
-}
+	id: string;
+	name: string;
+	date: string;
+	compromised_data: string[];
+	description?: string;
+};
 
-type Props = {
-	initialEmail?: string
-	onScan?: (email: string) => Promise<Breach[]>
-}
+export default function BreachChecker() {
+	const [email, setEmail] = useState('');
+	const [passwordToCheck, setPasswordToCheck] = useState('');
+	const [activeTab, setActiveTab] = useState<'email' | 'password'>('email');
+	const [loading, setLoading] = useState(false);
+	const [results, setResults] = useState<Breach[] | null>(null);
+	const [pwnedCount, setPwnedCount] = useState<number | null>(null);
+	const [error, setError] = useState<string | null>(null);
+	const [infoMessage, setInfoMessage] = useState<string | null>(null);
 
-// Minimal, production-ready BreachChecker
-export default function BreachChecker({ initialEmail = '', onScan }: Props) {
-	const [email, setEmail] = useState(initialEmail)
-	const [loading, setLoading] = useState(false)
-	const [results, setResults] = useState<Breach[] | null>(null)
-	const [error, setError] = useState<string | null>(null)
+	const apiKey = import.meta.env.VITE_HIBP_API_KEY;
 
-	const mockFetch = async (q: string) => {
-		// lightweight mock data to avoid external deps
-		await new Promise((r) => setTimeout(r, 900))
-		if (!q.includes('@')) throw new Error('Invalid email')
-		return [
-			{
-				id: '1',
-				name: 'ShadowNet Leak',
-				date: '2023-11-09',
-				compromised_data: ['email', 'password', 'ip_address'],
-				description: 'Large credential dump from multiple services.',
-			},
-			{
-				id: '2',
-				name: 'CloudStorage Misconfig',
-				date: '2022-06-21',
-				compromised_data: ['email', 'phone_number'],
-				description: 'Exposed PII in public buckets.',
-			},
-		] as Breach[]
-	}
+	const runEmailScan = async () => {
+		setError(null);
+		setResults(null);
+		setInfoMessage(null);
 
-	const handleScan = async () => {
-		setError(null)
-		setResults(null)
-		setLoading(true)
-		try {
-			const res = onScan ? await onScan(email) : await mockFetch(email)
-			setResults(res)
-		} catch (e: any) {
-			setError(e?.message || 'Scan failed')
-		} finally {
-			setLoading(false)
+		if (!email.includes('@')) {
+			setError('Invalid email address format');
+			return;
 		}
-	}
+
+		setLoading(true);
+
+		if (apiKey) {
+			try {
+				const response = await hibpService.checkEmailBreach(email);
+				if (response.breaches && response.breaches.length > 0) {
+					const mapped: Breach[] = response.breaches.map((b, idx) => ({
+						id: String(idx + 1),
+						name: b.Title || b.Name,
+						date: b.BreachDate,
+						compromised_data: b.DataClasses || [],
+						description: b.Description
+					}));
+					setResults(mapped);
+				} else {
+					setResults([]);
+				}
+			} catch (e: any) {
+				setError(e?.message || 'Failed to query Have I Been Pwned API.');
+			} finally {
+				setLoading(false);
+			}
+		} else {
+			// Mock fallback with warning
+			setInfoMessage('No VITE_HIBP_API_KEY configured. Running offline simulation check.');
+			await new Promise((r) => setTimeout(r, 800));
+			
+			if (email === 'compromised@gmail.com' || email.length % 2 === 1) {
+				setResults([
+					{
+						id: '1',
+						name: 'ShadowNet Credential Leak',
+						date: '2023-11-09',
+						compromised_data: ['email', 'password', 'ip_address'],
+						description: 'Large credential dump from multiple services.',
+					},
+					{
+						id: '2',
+						name: 'CloudStorage Misconfig',
+						date: '2022-06-21',
+						compromised_data: ['email', 'phone_number'],
+						description: 'Exposed PII in public buckets.',
+					},
+				]);
+			} else {
+				setResults([]);
+			}
+			setLoading(false);
+		}
+	};
+
+	const runPasswordScan = async () => {
+		setError(null);
+		setPwnedCount(null);
+		setInfoMessage(null);
+
+		if (!passwordToCheck) {
+			setError('Please enter a password to evaluate');
+			return;
+		}
+
+		setLoading(true);
+
+		try {
+			// Password checker endpoint is completely keyless and open!
+			const count = await hibpService.checkPassword(passwordToCheck);
+			setPwnedCount(count);
+		} catch (e: any) {
+			setError('Failed to query the live Pwned Passwords API. Try again.');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
-		<div className="min-h-0 p-6 rounded-lg bg-gradient-to-br from-gray-900 via-slate-900 to-black text-slate-200 shadow-xl max-w-3xl mx-auto">
-			<div className="flex items-center justify-between mb-4">
-				<h2 className="text-2xl font-semibold tracking-tight">Breach Checker</h2>
-				<span className="text-sm text-slate-400">Dark Cyber · Secure Scan</span>
+		<div className="p-6 rounded-2xl bg-gradient-to-br from-gray-900 via-slate-900 to-black text-slate-200 border border-cyan-900/30 shadow-xl max-w-3xl mx-auto">
+			<div className="flex items-center justify-between mb-6">
+				<h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+					Data Breach Auditor
+				</h2>
+				<span className="text-xs text-slate-400">Secure Live OSINT Scan</span>
 			</div>
 
-			<div className="grid gap-4 sm:grid-cols-3 mb-6">
-				<label className="col-span-2">
-					<input
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						placeholder="name@example.com"
-						className="w-full px-4 py-3 rounded-md bg-slate-800 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 placeholder:text-slate-500"
-						aria-label="email"
-					/>
-				</label>
+			{/* Tabs */}
+			<div className="flex gap-2 mb-6 border-b border-slate-800 pb-3">
+				<button
+					onClick={() => {
+						setActiveTab('email');
+						setResults(null);
+						setPwnedCount(null);
+						setError(null);
+						setInfoMessage(null);
+					}}
+					className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${
+						activeTab === 'email' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
+					}`}
+				>
+					Email Leak Audit
+				</button>
+				<button
+					onClick={() => {
+						setActiveTab('password');
+						setResults(null);
+						setPwnedCount(null);
+						setError(null);
+						setInfoMessage(null);
+					}}
+					className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${
+						activeTab === 'password' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
+					}`}
+				>
+					Keyless Password Leak Checker
+				</button>
+			</div>
 
-				<div className="flex items-center">
-					<button
-						onClick={handleScan}
-						disabled={loading}
-						className="w-full py-3 px-4 rounded-md bg-cyan-600 hover:bg-cyan-500 disabled:opacity-60 text-black font-semibold"
-					>
-						{loading ? 'Scanning...' : 'Scan'}
-					</button>
+			{/* Info Message Banner */}
+			{infoMessage && (
+				<div className="mb-4 p-3 bg-amber-950/40 border border-amber-800/40 text-amber-400 rounded-lg text-xs">
+					⚠️ {infoMessage}
 				</div>
-			</div>
+			)}
 
-			{error && <div className="mb-4 text-sm text-rose-400">{error}</div>}
+			{/* Error Banner */}
+			{error && (
+				<div className="mb-4 p-3 bg-red-950/40 border border-red-800/40 text-red-400 rounded-lg text-xs">
+					{error}
+				</div>
+			)}
 
-			<div>
-				{!results && !loading && (
-					<div className="p-4 rounded-md bg-slate-800 text-slate-400 text-sm">Enter an email and click Scan to check exposures.</div>
-				)}
-
-				{results && (
-					<div className="space-y-4">
-						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-							<div className="text-sm text-slate-400">Found {results.length} breach(es)</div>
-							<div className="flex gap-2 text-xs text-slate-400">
-								<div className="px-2 py-1 bg-slate-800 rounded">Risk: Elevated</div>
-								<div className="px-2 py-1 bg-slate-800 rounded">Action: Review</div>
-							</div>
+			{/* Tab Contents */}
+			{activeTab === 'email' ? (
+				<div className="space-y-6">
+					<div className="grid gap-3 sm:grid-cols-3">
+						<div className="col-span-2">
+							<input
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								placeholder="name@example.com"
+								className="w-full h-12 px-4 rounded-lg bg-slate-850 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder:text-slate-500"
+								aria-label="email"
+							/>
 						</div>
-
-						<ul className="grid gap-3">
-							{results.map((b) => (
-								<li key={b.id} className="p-4 bg-gradient-to-r from-slate-800 to-slate-900 rounded-md border border-slate-700">
-									<div className="flex items-start justify-between">
-										<div>
-											<div className="text-lg font-medium">{b.name}</div>
-											<div className="text-sm text-slate-400">{b.date}</div>
-										</div>
-										<div className="text-xs text-slate-300">ID: {b.id}</div>
-									</div>
-									<p className="mt-2 text-sm text-slate-300">{b.description}</p>
-
-									<div className="mt-3">
-										<div className="text-xs text-slate-400 mb-2">Exposed Data</div>
-										<div className="flex flex-wrap gap-2">
-											{b.compromised_data.map((d) => (
-												<span key={d} className="text-xs px-2 py-1 bg-slate-700 rounded text-cyan-200">{d}</span>
-											))}
-										</div>
-									</div>
-								</li>
-							))}
-						</ul>
-
-						<div className="p-4 rounded-md bg-gradient-to-t from-slate-800 to-slate-900 border border-slate-700">
-							<h3 className="text-sm font-semibold">Recommendations</h3>
-							<ul className="mt-2 text-sm text-slate-300 list-inside list-disc space-y-1">
-								<li>Change passwords and enable MFA on affected accounts.</li>
-								<li>Search for unique passwords reused across services.</li>
-								<li>Monitor accounts for suspicious activity; consider credit freeze if PII exposed.</li>
-								<li>Run a full security review and rotate API keys if applicable.</li>
-							</ul>
-						</div>
+						<button
+							onClick={runEmailScan}
+							disabled={loading}
+							className="h-12 w-full px-4 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold flex items-center justify-center gap-2 transition duration-200"
+						>
+							<Search className="w-4 h-4" />
+							{loading ? 'Auditing...' : 'Audit Email'}
+						</button>
 					</div>
-				)}
-			</div>
+
+					{loading && (
+						<div className="flex flex-col items-center justify-center py-8 gap-3">
+							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
+							<p className="text-slate-400 text-xs font-mono animate-pulse">Running data registry query...</p>
+						</div>
+					)}
+
+					{results && !loading && (
+						<div className="space-y-4">
+							{results.length > 0 ? (
+								<>
+									<div className="text-sm text-red-400 font-semibold flex items-center gap-2">
+										<ShieldAlert className="w-4 h-4" /> Found {results.length} breach exposure(s)
+									</div>
+									<ul className="space-y-3">
+										{results.map((b) => (
+											<li key={b.id} className="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+												<div className="flex justify-between items-start">
+													<div>
+														<h4 className="font-bold text-white text-sm">{b.name}</h4>
+														<p className="text-[10px] text-slate-500 mt-0.5">{b.date}</p>
+													</div>
+												</div>
+												{b.description && (
+													<p className="mt-2 text-xs text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: b.description }}></p>
+												)}
+												<div className="mt-3">
+													<p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Exposed Parameters</p>
+													<div className="flex flex-wrap gap-1.5">
+														{b.compromised_data.map((d) => (
+															<span key={d} className="text-[9px] px-2 py-0.5 bg-red-950/40 text-red-400 border border-red-900/40 rounded-full">
+																{d}
+															</span>
+														))}
+													</div>
+												</div>
+											</li>
+										))}
+									</ul>
+								</>
+							) : (
+								<div className="p-5 bg-emerald-950/15 border border-emerald-900/30 rounded-xl flex gap-3.5 items-center">
+									<ShieldCheck className="w-6 h-6 text-emerald-400" />
+									<div>
+										<h3 className="text-sm font-bold text-emerald-300">No public leaks discovered</h3>
+										<p className="text-slate-400 text-xs mt-0.5">This email address was not found in known public cyber breach datasets.</p>
+									</div>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			) : (
+				<div className="space-y-6">
+					<div className="grid gap-3 sm:grid-cols-3">
+						<div className="col-span-2">
+							<input
+								type="password"
+								value={passwordToCheck}
+								onChange={(e) => setPasswordToCheck(e.target.value)}
+								placeholder="Enter password to check..."
+								className="w-full h-12 px-4 rounded-lg bg-slate-850 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder:text-slate-500"
+							/>
+						</div>
+						<button
+							onClick={runPasswordScan}
+							disabled={loading}
+							className="h-12 w-full px-4 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold flex items-center justify-center gap-2 transition duration-200"
+						>
+							<Key className="w-4 h-4" />
+							{loading ? 'Evaluating...' : 'Check Leak'}
+						</button>
+					</div>
+
+					{loading && (
+						<div className="flex flex-col items-center justify-center py-8 gap-3">
+							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
+							<p className="text-slate-400 text-xs font-mono animate-pulse">Checking pwned passwords database...</p>
+						</div>
+					)}
+
+					{pwnedCount !== null && !loading && (
+						<div className="p-5 rounded-xl border transition-all duration-300">
+							{pwnedCount > 0 ? (
+								<div className="space-y-2">
+									<div className="text-red-400 font-bold text-sm flex items-center gap-2">
+										<ShieldAlert className="w-5 h-5" /> This password was leaked in data breaches!
+									</div>
+									<p className="text-xs text-slate-300 leading-relaxed">
+										This password has been seen <span className="text-red-400 font-bold font-mono text-sm">{pwnedCount.toLocaleString()}</span> times in credentials dumps. 
+										**Do not use this password** for any profile or account!
+									</p>
+								</div>
+							) : (
+								<div className="space-y-2">
+									<div className="text-emerald-400 font-bold text-sm flex items-center gap-2">
+										<CheckCircle className="w-5 h-5" /> No exposures found
+									</div>
+									<p className="text-xs text-slate-300 leading-relaxed">
+										This password has not been found in any known compromised datasets. It is currently safe to use, provided it meets complexity guidelines.
+									</p>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+			)}
 		</div>
-	)
+	);
 }
