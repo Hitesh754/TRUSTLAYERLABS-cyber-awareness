@@ -57,30 +57,8 @@ export default function BreachChecker() {
 				setLoading(false);
 			}
 		} else {
-			// Mock fallback with warning
-			setInfoMessage('No VITE_HIBP_API_KEY configured. Running offline simulation check.');
-			await new Promise((r) => setTimeout(r, 800));
-			
-			if (email === 'compromised@gmail.com' || email.length % 2 === 1) {
-				setResults([
-					{
-						id: '1',
-						name: 'ShadowNet Credential Leak',
-						date: '2023-11-09',
-						compromised_data: ['email', 'password', 'ip_address'],
-						description: 'Large credential dump from multiple services.',
-					},
-					{
-						id: '2',
-						name: 'CloudStorage Misconfig',
-						date: '2022-06-21',
-						compromised_data: ['email', 'phone_number'],
-						description: 'Exposed PII in public buckets.',
-					},
-				]);
-			} else {
-				setResults([]);
-			}
+			setInfoMessage('No VITE_HIBP_API_KEY configured. Set a real Have I Been Pwned key to query live breach data.');
+			setResults(null);
 			setLoading(false);
 		}
 	};

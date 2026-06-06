@@ -41,7 +41,9 @@ export default function UrlScanner() {
       console.error(err);
 
       setError(
-        "Failed to analyze URL"
+        err instanceof Error
+          ? err.message
+          : "Failed to analyze URL"
       );
     } finally {
       setLoading(false);

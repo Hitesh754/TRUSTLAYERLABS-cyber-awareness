@@ -7,6 +7,7 @@
 type HttpMethod = 'GET' | 'POST'
 
 const DEFAULT_BASE = 'https://api.abuseipdb.com/api/v2'
+const PROXY_BASE = '/api/abuseipdb'
 
 export interface AbuseIPDBOptions {
   apiKey?: string
@@ -37,19 +38,23 @@ async function request<T>(path: string, method: HttpMethod = 'GET', options: Abu
     ? (globalThis as any).process.env?.ABUSEIPDB_API_KEY
     : undefined
   const apiKey = options.apiKey || envKey
-  if (!apiKey) throw { message: 'AbuseIPDB API key missing. Set ABUSEIPDB_API_KEY' } as AbuseIPDBError
 
-  const base = options.baseUrl || DEFAULT_BASE
-  const url = new URL(base + path)
+  const base = options.baseUrl || PROXY_BASE
+  const useDirectApi = base === DEFAULT_BASE
+  if (useDirectApi && !apiKey) throw { message: 'AbuseIPDB API key missing. Set ABUSEIPDB_API_KEY' } as AbuseIPDBError
+
+  let urlString = base + path
   if (params && method === 'GET') {
-    Object.entries(params).forEach(([k, v]) => url.searchParams.append(k, String(v)))
+    const queryParams = new URLSearchParams()
+    Object.entries(params).forEach(([k, v]) => queryParams.append(k, String(v)))
+    urlString = `${urlString}?${queryParams.toString()}`
   }
 
-  const res = await fetch(url.toString(), {
+  const res = await fetch(urlString, {
     method,
     headers: {
       'Accept': 'application/json',
-      'Key': apiKey,
+      ...(useDirectApi && apiKey ? { 'Key': apiKey } : {}),
       'Content-Type': 'application/json'
     },
     body: method === 'POST' && params ? JSON.stringify(params) : undefined

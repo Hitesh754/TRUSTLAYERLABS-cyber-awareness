@@ -16,13 +16,11 @@ interface IPReputation {
 interface IPScannerProps {
   onScan?: (data: IPReputation) => void;
   placeholder?: string;
-  apiKey?: string;
 }
 
 const IPScanner: React.FC<IPScannerProps> = ({
   onScan,
   placeholder = 'Enter IP address to scan...',
-  apiKey = import.meta.env.VITE_ABUSEIPDB_KEY as string | undefined,
 }) => {
   const [ip, setIp] = useState('');
   const [loading, setLoading] = useState(false);
@@ -61,75 +59,22 @@ const IPScanner: React.FC<IPScannerProps> = ({
 
     setLoading(true);
 
-    if (apiKey) {
-      try {
-        const data = await checkIP(ip, { apiKey });
-        const rep: IPReputation = {
-          ip: data.ipAddress,
-          abuseConfidenceScore: data.abuseConfidenceScore,
-          isp: data.isp || 'Unknown ISP',
-          country: data.countryCode || 'Unknown',
-          reports: data.abuseConfidenceScore > 0 ? Math.floor(data.abuseConfidenceScore / 4) + 1 : 0,
-          isWhitelisted: !!data.isWhitelisted
-        };
-        setResult(rep);
-        onScan?.(rep);
-      } catch (err: any) {
-        setError(err?.message || 'Failed to scan IP using AbuseIPDB API.');
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // Mock Fallback
-      setInfoMessage('No VITE_ABUSEIPDB_KEY configured. Running offline simulation.');
-      try {
-        await new Promise((r) => setTimeout(r, 700));
-
-        const safeIPs = ['8.8.8.8', '1.1.1.1'];
-        const suspiciousIPs = ['185.220.101.1', '45.33.32.156'];
-
-        let abuseConfidenceScore = 0;
-        let isp = 'Unknown ISP';
-        let country = 'Unknown';
-        let reports = 0;
-        let isWhitelisted = false;
-
-        if (safeIPs.includes(ip)) {
-          abuseConfidenceScore = Math.floor(Math.random() * 5) + 1;
-          isp = ip === '8.8.8.8' ? 'Google LLC' : 'Cloudflare, Inc.';
-          country = 'United States';
-          reports = 0;
-          isWhitelisted = true;
-        } else if (suspiciousIPs.includes(ip)) {
-          abuseConfidenceScore = ip === '185.220.101.1' ? 88 : 78;
-          isp = ip === '185.220.101.1' ? 'Reported TOR Exit / VPN' : 'Hosting Provider (suspicious)';
-          country = 'Unknown';
-          reports = ip === '185.220.101.1' ? 54 : 28;
-          isWhitelisted = false;
-        } else {
-          abuseConfidenceScore = Math.floor(20 + Math.random() * 40);
-          isp = ['Residential ISP', 'Cloud Host', 'Mobile ISP'][Math.floor(Math.random() * 3)];
-          country = ['United States','Germany','Netherlands','Brazil'][Math.floor(Math.random()*4)];
-          reports = Math.floor(Math.random() * 10);
-          isWhitelisted = Math.random() > 0.85;
-        }
-
-        const reputationData: IPReputation = {
-          ip,
-          abuseConfidenceScore,
-          isp,
-          country,
-          reports,
-          isWhitelisted,
-        };
-
-        setResult(reputationData);
-        onScan?.(reputationData);
-      } catch (err) {
-        setError('Failed to scan IP. Please try again.');
-      } finally {
-        setLoading(false);
-      }
+    try {
+      const data = await checkIP(ip);
+      const rep: IPReputation = {
+        ip: data.ipAddress,
+        abuseConfidenceScore: data.abuseConfidenceScore,
+        isp: data.isp || 'Unknown ISP',
+        country: data.countryCode || 'Unknown',
+        reports: data.abuseConfidenceScore > 0 ? Math.floor(data.abuseConfidenceScore / 4) + 1 : 0,
+        isWhitelisted: !!data.isWhitelisted
+      };
+      setResult(rep);
+      onScan?.(rep);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to scan IP using AbuseIPDB API.');
+    } finally {
+      setLoading(false);
     }
   };
 
