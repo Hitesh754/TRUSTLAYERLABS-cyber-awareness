@@ -45,7 +45,88 @@ const TrustLayerLabs = () => {
   const [scanProgress, setScanProgress] = useState(0);
   const [currentStage, setCurrentStage] = useState('');
   const [analysis, setAnalysis] = useState<ThreatAnalysis | null>(null);
+  const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
   const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number }>>([]);
+
+  const API_KEY =
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    import.meta.env.VITE_OPENAI_API_KEY ||
+    import.meta.env.VITE_ANTHROPIC_API_KEY ||
+    '';
+
+  const isAnthropicKey = API_KEY.startsWith('AQ.');
+  const providerName = isAnthropicKey ? 'Claude AI' : 'Gemini AI';
+
+  const extractResponseText = (payload: any): string => {
+    if (!payload) return '';
+    if (typeof payload === 'string') return payload;
+    if (typeof payload.output_text === 'string') return payload.output_text;
+    if (typeof payload.text === 'string') return payload.text;
+    if (Array.isArray(payload.output)) {
+      return payload.output
+        .map((item: any) => extractResponseText(item))
+        .join('');
+    }
+    if (Array.isArray(payload.content)) {
+      return payload.content
+        .map((item: any) => typeof item === 'string' ? item : extractResponseText(item))
+        .join('');
+    }
+    if (Array.isArray(payload.choices)) {
+      return payload.choices
+        .map((choice: any) => extractResponseText(choice.message || choice.delta || choice))
+        .join('');
+    }
+    return '';
+  };
+
+  const fetchThreatAnalysis = async (inputUrl: string): Promise<ThreatAnalysis> => {
+    if (!API_KEY) {
+      return simulateUrlAnalysis(inputUrl);
+    }
+
+    const instruction = `You are a cybersecurity URL analysis expert. Analyze the following URL and return ONLY valid JSON that matches the schema exactly. Do not include any explanation outside the JSON object. The response must use double quotes and valid JSON syntax.\n\nURL: ${inputUrl}`;
+
+    const payload = isAnthropicKey
+      ? {
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          messages: [
+            { role: 'system', content: instruction },
+            { role: 'user', content: `Analyze this URL for safety: ${inputUrl}` },
+          ],
+        }
+      : {
+          model: 'gpt-4.1-mini',
+          temperature: 0,
+          input: instruction,
+        };
+
+    const endpoint = isAnthropicKey
+      ? '/api/anthropic/v1/messages'
+      : '/api/openai/v1/responses';
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(isAnthropicKey ? { 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' } : { Authorization: `Bearer ${API_KEY}` }),
+  };
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`AI API request failed (${response.status}): ${text}`);
+    }
+
+    const data = await response.json();
+    const rawText = extractResponseText(data);
+    const clean = rawText.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean) as ThreatAnalysis;
+  };
 
   // Cyber facts ticker
   const cyberFacts = [
@@ -87,7 +168,7 @@ const TrustLayerLabs = () => {
     { name: 'Domain Reputation', duration: 900 },
     { name: 'Script Inspection', duration: 1100 },
     { name: 'Threat Intelligence', duration: 1000 },
-    { name: 'AI Risk Analysis', duration: 1200 },
+    { name: `${providerName} Analysis`, duration: 1200 },
   ];
 
   const simulateUrlAnalysis = (inputUrl: string): ThreatAnalysis => {
@@ -232,9 +313,17 @@ const TrustLayerLabs = () => {
   const handleScan = async () => {
     if (!url.trim()) return;
 
+    setError('');
+    setWarning('');
     setIsScanning(true);
     setScanProgress(0);
     setAnalysis(null);
+
+    if (!API_KEY) {
+      setWarning('Unable to use Gemini AI because no API key is present. Showing heuristic output.');
+    }
+
+    const analysisPromise = fetchThreatAnalysis(url);
 
     for (let i = 0; i < scanStages.length; i++) {
       setCurrentStage(scanStages[i].name);
@@ -242,9 +331,16 @@ const TrustLayerLabs = () => {
       setScanProgress(((i + 1) / scanStages.length) * 100);
     }
 
-    const result = simulateUrlAnalysis(url);
-    setAnalysis(result);
-    setIsScanning(false);
+    try {
+      const result = await analysisPromise;
+      setAnalysis(result);
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || 'Failed to analyze URL with the AI API.');
+      setAnalysis(simulateUrlAnalysis(url));
+    } finally {
+      setIsScanning(false);
+    }
   };
 
   const getVerdictColor = (verdict: string) => {
@@ -394,9 +490,17 @@ const TrustLayerLabs = () => {
               </h2>
             </motion.div>
             <p className="text-lg text-cyan-100/60 max-w-2xl mx-auto">
-              Advanced AI-powered threat intelligence system for analyzing suspicious URLs, 
+              Advanced {providerName} powered threat intelligence system for analyzing suspicious URLs, 
               detecting phishing attacks, and understanding social engineering tactics
             </p>
+            <div className="mt-6 inline-flex items-center justify-center gap-3 text-sm text-cyan-200/80">
+              <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-cyan-100 tracking-wide">
+                Powered by
+              </span>
+              <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#22d3ee] via-cyan-400 to-[#06b6d4]">
+                {providerName}
+              </span>
+            </div>
           </motion.div>
 
           {/* Main Scanner Interface */}
@@ -475,6 +579,18 @@ const TrustLayerLabs = () => {
                     {isScanning ? 'SCANNING...' : 'INITIATE THREAT SCAN'}
                   </span>
                 </motion.button>
+
+                {warning && (
+                  <div className="mt-6 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm text-amber-100">
+                    <strong className="font-semibold">AI unavailable:</strong> {warning}
+                  </div>
+                )}
+
+                {error && (
+                  <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300">
+                    <strong className="font-semibold">AI scan failed:</strong> {error}
+                  </div>
+                )}
 
                 {/* Scan Progress */}
                 <AnimatePresence>
@@ -600,7 +716,7 @@ const TrustLayerLabs = () => {
                       className="w-8 h-8 border-2 border-[#8b5cf6]/50 rounded-lg shrink-0"
                     />
                     <div>
-                      <h4 className="text-lg font-bold text-[#a78bfa] mb-3 tracking-wide">AI THREAT ANALYSIS</h4>
+                      <h4 className="text-lg font-bold text-[#a78bfa] mb-3 tracking-wide">{providerName} THREAT ANALYSIS</h4>
                       <p className="text-cyan-100/80 leading-relaxed">{analysis.aiExplanation}</p>
                     </div>
                   </div>

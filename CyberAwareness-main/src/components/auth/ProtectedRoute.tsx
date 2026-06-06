@@ -15,6 +15,19 @@ export default function ProtectedRoute({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  if (!auth) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-white p-6">
+        <div className="max-w-md text-center">
+          <h1 className="text-3xl font-bold mb-4">Authentication Not Configured</h1>
+          <p className="text-slate-400 mb-6">
+            Firebase auth is not set up. Please add the required VITE_FIREBASE_* environment variables and restart the app.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   useEffect(() => {
     // Timeout fallback: if auth doesn't respond in 5 seconds, show error
     const timeoutId = setTimeout(() => {

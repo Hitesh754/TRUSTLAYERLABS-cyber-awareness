@@ -1,31 +1,163 @@
-import { useState } from 'react';
-import { AlertCircle, Search, Globe, Building2, MapPin, BarChart3, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertCircle, Search, Globe, Building2, MapPin, BarChart3, Zap, Bot, ShieldAlert, ShieldCheck, Activity, Network, Tag, Clock } from 'lucide-react';
 
 interface IPReputation {
   ip: string;
   abuseConfidenceScore: number;
   isp: string;
   country: string;
+  city: string;
   reports: number;
   isWhitelisted: boolean;
+  ipType: string;           // e.g. Residential, Datacenter, TOR, VPN, CDN
+  usageType: string;        // e.g. Data Center, ISP, Government
+  domain: string;           // reverse DNS / associated domain
+  threatTypes: string[];    // e.g. ["Spam", "Phishing", "Brute Force"]
+  lastReported: string;     // e.g. "2 days ago" or "Never"
+  verdict: 'safe' | 'suspicious' | 'dangerous';
+  summary: string;
+  analysisNotes: string[];
 }
 
 interface IPScannerProps {
   onScan?: (data: IPReputation) => void;
   placeholder?: string;
-  apiKey?: string;
+}
+
+const extractResponseText = (payload: any): string => {
+  if (!payload) return '';
+  if (typeof payload === 'string') return payload;
+  if (typeof payload.output_text === 'string') return payload.output_text;
+  if (typeof payload.text === 'string') return payload.text;
+  if (Array.isArray(payload.output)) {
+    return payload.output.map((item: any) => extractResponseText(item)).join('');
+  }
+  if (Array.isArray(payload.content)) {
+    return payload.content
+      .map((item: any) => typeof item === 'string' ? item : extractResponseText(item))
+      .join('');
+  }
+  if (Array.isArray(payload.choices)) {
+    return payload.choices
+      .map((choice: any) => extractResponseText(choice.message || choice.delta || choice))
+      .join('');
+  }
+  return '';
+};
+
+const simulateIPReputation = (ip: string): IPReputation => {
+  const seed = ip
+    .split('.')
+    .reduce((sum, part) => sum + (parseInt(part, 10) || 0), 0) % 100;
+  const verdict: IPReputation['verdict'] = seed > 70 ? 'dangerous' : seed > 40 ? 'suspicious' : 'safe';
+  const abuseConfidenceScore = Math.min(100, Math.max(0, seed + (verdict === 'dangerous' ? 25 : verdict === 'suspicious' ? 10 : 0)));
+  const reports = verdict === 'dangerous' ? 12 : verdict === 'suspicious' ? 5 : 0;
+  const threatTypes = verdict === 'dangerous'
+    ? ['Spam', 'Botnet', 'Credential Harvesting']
+    : verdict === 'suspicious'
+    ? ['Proxy', 'Botnet Suspicions']
+    : ['None'];
+
+  return {
+    ip,
+    abuseConfidenceScore,
+    isp: 'Unknown ISP',
+    country: 'Unknown',
+    city: 'Unknown',
+    reports,
+    isWhitelisted: verdict === 'safe',
+    ipType: verdict === 'dangerous' ? 'Datacenter' : 'Residential',
+    usageType: verdict === 'dangerous' ? 'Proxy' : 'ISP',
+    domain: `host-${seed}.example.com`,
+    threatTypes,
+    lastReported: verdict === 'dangerous' ? '2 hours ago' : verdict === 'suspicious' ? '1 day ago' : 'Never',
+    verdict,
+    summary: verdict === 'dangerous'
+      ? 'This IP appears to be part of high-risk infrastructure.'
+      : verdict === 'suspicious'
+      ? 'This IP shows suspicious reputation signals and may be risky.'
+      : 'This IP appears to have a clean reputation.',
+    analysisNotes: [
+      verdict === 'dangerous'
+        ? 'High abuse confidence and infrastructure risk detected.'
+        : verdict === 'suspicious'
+        ? 'Some suspicious signals were found in this IP reputation profile.'
+        : 'No major threat indicators were detected.',
+    ],
+  };
+};
+
+async function analyzeIPWithAI(ip: string, API_KEY: string, isAnthropicKey: boolean): Promise<IPReputation> {
+  if (!API_KEY) {
+    throw new Error('Missing API key. Set VITE_ANTHROPIC_API_KEY, VITE_GEMINI_API_KEY, or VITE_OPENAI_API_KEY.');
+  }
+
+  const instruction = `You are a cybersecurity IP threat intelligence expert. Analyze the following IP address and return only valid JSON that matches the schema exactly. Do not include markdown or any extra text outside the JSON object.\n\nIP: ${ip}`;
+
+  const payload = isAnthropicKey
+    ? {
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [
+          { role: 'system', content: instruction },
+          { role: 'user', content: `Analyze this IP address for threat intelligence: ${ip}` },
+        ],
+      }
+    : {
+        model: 'gpt-4.1-mini',
+        temperature: 0,
+        input: instruction,
+      };
+
+  const endpoint = isAnthropicKey
+    ? '/api/anthropic/v1/messages'
+    : '/api/openai/v1/responses';
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...(isAnthropicKey ? { 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01' } : { Authorization: `Bearer ${API_KEY}` }),
+  };
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`API error (${response.status}): ${err}`);
+  }
+
+  const data = await response.json();
+  const rawText = extractResponseText(data);
+  const clean = rawText.replace(/```json|```/g, '').trim();
+  const parsed = JSON.parse(clean);
+
+  return {
+    ip,
+    ...parsed,
+  } as IPReputation;
 }
 
 const IPScanner: React.FC<IPScannerProps> = ({
   onScan,
   placeholder = 'Enter IP address to scan...',
-  apiKey: _apiKey = import.meta.env.VITE_ABUSEIPDB_KEY as string | undefined,
 }) => {
-  void _apiKey;
   const [ip, setIp] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<IPReputation | null>(null);
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
+
+  const API_KEY =
+    import.meta.env.VITE_ANTHROPIC_API_KEY ||
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    import.meta.env.VITE_OPENAI_API_KEY ||
+    '';
+
+  const isAnthropicKey = API_KEY.startsWith('AQ.');
+  const providerName = isAnthropicKey ? 'Claude AI' : 'Gemini AI';
 
   const getSeverity = (score: number): { label: string; color: string; bg: string } => {
     if (score >= 75) return { label: 'CRITICAL', color: 'text-red-400', bg: 'bg-red-900/30' };
@@ -35,74 +167,37 @@ const IPScanner: React.FC<IPScannerProps> = ({
   };
 
   const validateIP = (ipStr: string): boolean => {
-    const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
-    const ipv6Regex = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
-    return ipv4Regex.test(ipStr) || ipv6Regex.test(ipStr);
+    const ipv4 = /^(\d{1,3}\.){3}\d{1,3}$/;
+    const ipv6 = /^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}$/;
+    return ipv4.test(ipStr) || ipv6.test(ipStr);
   };
 
   const handleScan = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setWarning('');
 
-    if (!ip.trim()) {
-      setError('Please enter an IP address');
-      return;
-    }
+    if (!ip.trim()) { setError('Please enter an IP address'); return; }
+    if (!validateIP(ip.trim())) { setError('Invalid IP address format'); return; }
 
-    if (!validateIP(ip)) {
-      setError('Invalid IP address format');
+    if (!API_KEY) {
+      const fallback = simulateIPReputation(ip.trim());
+      setResult(fallback);
+      setWarning('Gemini AI unavailable because no API key is present. Showing fallback output.');
+      onScan?.(fallback);
       return;
     }
 
     setLoading(true);
+    setResult(null);
 
     try {
-      // Simulate realistic scanning delay
-      await new Promise((r) => setTimeout(r, 700 + Math.random() * 800));
-
-      const safeIPs = ['8.8.8.8', '1.1.1.1'];
-      const suspiciousIPs = ['185.220.101.1', '45.33.32.156'];
-
-      let abuseConfidenceScore = 0;
-      let isp = 'Unknown ISP';
-      let country = 'Unknown';
-      let reports = 0;
-      let isWhitelisted = false;
-
-      if (safeIPs.includes(ip)) {
-        abuseConfidenceScore = Math.floor(Math.random() * 5) + 1; // 1-5
-        isp = ip === '8.8.8.8' ? 'Google LLC' : 'Cloudflare, Inc.';
-        country = 'United States';
-        reports = 0;
-        isWhitelisted = true;
-      } else if (suspiciousIPs.includes(ip)) {
-        abuseConfidenceScore = ip === '185.220.101.1' ? 88 : 78;
-        isp = ip === '185.220.101.1' ? 'Reported TOR Exit / VPN' : 'Hosting Provider (suspicious)';
-        country = 'Unknown';
-        reports = ip === '185.220.101.1' ? 54 : 28;
-        isWhitelisted = false;
-      } else {
-        // unknown: generate medium-risk demo results
-        abuseConfidenceScore = Math.floor(20 + Math.random() * 40); // 20-60
-        isp = ['Residential ISP', 'Cloud Host', 'Mobile ISP'][Math.floor(Math.random() * 3)];
-        country = ['United States','Germany','Netherlands','Brazil'][Math.floor(Math.random()*4)];
-        reports = Math.floor(Math.random() * 10);
-        isWhitelisted = Math.random() > 0.85;
-      }
-
-      const reputationData: IPReputation = {
-        ip,
-        abuseConfidenceScore,
-        isp,
-        country,
-        reports,
-        isWhitelisted,
-      };
-
-      setResult(reputationData);
-      onScan?.(reputationData);
-    } catch {
-      setError('Failed to scan IP. Please try again.');
+      const data = await analyzeIPWithAI(ip.trim(), API_KEY, isAnthropicKey);
+      setResult(data);
+      onScan?.(data);
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || 'Failed to analyze IP. Check your API key and try again.');
     } finally {
       setLoading(false);
     }
@@ -112,6 +207,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 rounded-lg border border-cyan-900/30 shadow-2xl overflow-hidden">
+
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -125,6 +221,14 @@ const IPScanner: React.FC<IPScannerProps> = ({
 
       {/* Scan Form */}
       <form onSubmit={handleScan} className="mb-8">
+        <div className="mb-4 flex items-center gap-2 text-slate-500 text-xs">
+          <Bot className="w-3.5 h-3.5 text-cyan-500/60" />
+          <span>
+            Powered by{' '}
+            <span className="text-cyan-400/80 font-medium">Gemini AI</span>
+            {' '}— AI-based threat intelligence
+          </span>
+        </div>
         <div className="flex gap-2">
           <div className="flex-1 relative min-w-0">
             <input
@@ -147,7 +251,13 @@ const IPScanner: React.FC<IPScannerProps> = ({
         </div>
       </form>
 
-      {/* Error Message */}
+      {/* Error */}
+      {warning && (
+        <div className="mb-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg text-amber-100">
+          {warning}
+        </div>
+      )}
+
       {error && (
         <div className="mb-6 p-4 bg-red-900/20 border border-red-700/50 rounded-lg flex items-center gap-3">
           <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
@@ -155,16 +265,37 @@ const IPScanner: React.FC<IPScannerProps> = ({
         </div>
       )}
 
+      {/* Loading */}
+      {loading && (
+        <div className="flex flex-col items-center justify-center py-12 gap-3">
+          <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin" />
+          <p className="text-slate-400 text-sm">{providerName} is analyzing IP reputation...</p>
+        </div>
+      )}
+
       {/* Results */}
-      {result && (
-        <div className="space-y-4 animate-in fade-in duration-300">
-          {/* IP & Severity */}
-          <div className="flex items-start justify-between p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
-            <div>
-              <p className="text-slate-400 text-sm">Scanned IP</p>
-              <p className="text-xl font-mono text-cyan-300">{result.ip}</p>
+      {result && !loading && (
+        <div className="space-y-4">
+
+          {/* IP + Verdict Banner */}
+          <div className={`flex items-start justify-between p-4 rounded-lg border ${
+            result.verdict === 'dangerous'
+              ? 'bg-red-900/20 border-red-700/40'
+              : result.verdict === 'suspicious'
+              ? 'bg-yellow-900/20 border-yellow-700/40'
+              : 'bg-green-900/20 border-green-700/40'
+          }`}>
+            <div className="flex items-center gap-3">
+              {result.verdict === 'safe'
+                ? <ShieldCheck className="w-7 h-7 text-green-400 flex-shrink-0" />
+                : <ShieldAlert className="w-7 h-7 text-red-400 flex-shrink-0" />}
+              <div>
+                <p className="text-slate-400 text-xs">Scanned IP</p>
+                <p className="text-xl font-mono text-cyan-300">{result.ip}</p>
+                <p className="text-sm text-slate-300 mt-0.5">{result.summary}</p>
+              </div>
             </div>
-            <div className={`px-3 py-1 rounded-full flex flex-col items-end justify-center ${severity?.bg} border border-cyan-700/30 min-w-0`}>
+            <div className={`px-3 py-1 rounded-full flex flex-col items-end justify-center ${severity?.bg} border border-cyan-700/30`}>
               <p className={`text-[10px] font-bold tracking-wider uppercase ${severity?.color}`}>
                 {severity?.label}
               </p>
@@ -172,7 +303,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
             </div>
           </div>
 
-          {/* Threat Level Indicator */}
+          {/* Threat Level Bar */}
           <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-400 text-sm">Threat Level</span>
@@ -182,14 +313,11 @@ const IPScanner: React.FC<IPScannerProps> = ({
             </div>
             <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-300 ${
-                  result.abuseConfidenceScore >= 75
-                    ? 'bg-red-500'
-                    : result.abuseConfidenceScore >= 50
-                    ? 'bg-orange-500'
-                    : result.abuseConfidenceScore >= 25
-                    ? 'bg-yellow-500'
-                    : 'bg-green-500'
+                className={`h-full rounded-full transition-all duration-700 ${
+                  result.abuseConfidenceScore >= 75 ? 'bg-red-500'
+                  : result.abuseConfidenceScore >= 50 ? 'bg-orange-500'
+                  : result.abuseConfidenceScore >= 25 ? 'bg-yellow-500'
+                  : 'bg-green-500'
                 }`}
                 style={{ width: `${result.abuseConfidenceScore}%` }}
               />
@@ -198,26 +326,24 @@ const IPScanner: React.FC<IPScannerProps> = ({
 
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* ISP */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
                 <Building2 className="w-4 h-4 text-blue-400" />
-                <p className="text-slate-400 text-sm">ISP</p>
+                <p className="text-slate-400 text-sm">ISP / Organization</p>
               </div>
               <p className="text-white font-semibold">{result.isp}</p>
             </div>
 
-            {/* Country */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
                 <MapPin className="w-4 h-4 text-green-400" />
-                <p className="text-slate-400 text-sm">Country</p>
+                <p className="text-slate-400 text-sm">Location</p>
               </div>
-              <p className="text-white font-semibold">{result.country}</p>
+              <p className="text-white font-semibold">{result.city !== 'Unknown' ? `${result.city}, ` : ''}{result.country}</p>
             </div>
 
-            {/* Reports Count */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
               <div className="flex items-center gap-2 mb-2">
                 <BarChart3 className="w-4 h-4 text-purple-400" />
                 <p className="text-slate-400 text-sm">Abuse Reports</p>
@@ -225,28 +351,85 @@ const IPScanner: React.FC<IPScannerProps> = ({
               <p className="text-white font-semibold">{result.reports}</p>
             </div>
 
-            {/* Status */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
-              <p className="text-slate-400 text-sm mb-2">Status</p>
-              <span
-                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-                  result.isWhitelisted
-                    ? 'bg-green-900/30 text-green-300 border border-green-700/50'
-                    : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
-                }`}
-              >
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Network className="w-4 h-4 text-cyan-400" />
+                <p className="text-slate-400 text-sm">IP Type</p>
+              </div>
+              <p className="text-white font-semibold">{result.ipType}</p>
+            </div>
+
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Activity className="w-4 h-4 text-orange-400" />
+                <p className="text-slate-400 text-sm">Usage Type</p>
+              </div>
+              <p className="text-white font-semibold">{result.usageType}</p>
+            </div>
+
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Globe className="w-4 h-4 text-teal-400" />
+                <p className="text-slate-400 text-sm">Domain / rDNS</p>
+              </div>
+              <p className="text-white font-semibold truncate">{result.domain}</p>
+            </div>
+
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-4 h-4 text-pink-400" />
+                <p className="text-slate-400 text-sm">Last Reported</p>
+              </div>
+              <p className="text-white font-semibold">{result.lastReported}</p>
+            </div>
+
+            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+              <p className="text-slate-400 text-sm mb-2">Whitelist Status</p>
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
+                result.isWhitelisted
+                  ? 'bg-green-900/30 text-green-300 border border-green-700/50'
+                  : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
+              }`}>
                 {result.isWhitelisted ? '✓ Whitelisted' : 'Not Whitelisted'}
               </span>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* Loading State */}
-      {loading && (
-        <div className="flex flex-col items-center justify-center py-12 gap-3">
-          <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">Analyzing IP reputation...</p>
+          {/* Threat Types */}
+          {result.threatTypes?.length > 0 && (
+            <div className="p-4 bg-red-900/10 border border-red-700/30 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Tag className="w-4 h-4 text-red-400" />
+                <p className="text-slate-400 text-sm">Detected Threat Categories</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {result.threatTypes.map((t, i) => (
+                  <span key={i} className="px-3 py-1 bg-red-900/30 border border-red-700/40 text-red-300 text-xs rounded-full font-medium">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Claude Analysis Notes */}
+          {result.analysisNotes?.length > 0 && (
+            <div className="p-4 bg-slate-800/30 border border-cyan-900/30 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Bot className="w-4 h-4 text-cyan-400" />
+                <p className="text-slate-400 text-sm uppercase tracking-widest text-xs font-semibold">Claude AI Analysis</p>
+              </div>
+              <ul className="space-y-2">
+                {result.analysisNotes.map((note, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+                    <span className="text-cyan-500 mt-0.5 flex-shrink-0">›</span>
+                    {note}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         </div>
       )}
     </div>

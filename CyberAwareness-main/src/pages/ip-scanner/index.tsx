@@ -742,6 +742,10 @@ export default function App() {
         <AnimatePresence>
           {phase === "hero" && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="w-full max-w-md space-y-4">
+              <div className="flex items-center justify-center gap-2 text-xs text-cyan-300/80">
+                <span className="font-medium text-cyan-200">Powered by Gemini AI</span>
+                <span className="text-slate-500">— threat intelligence analysis</span>
+              </div>
               <div className="relative">
                 <input
                   type="text"

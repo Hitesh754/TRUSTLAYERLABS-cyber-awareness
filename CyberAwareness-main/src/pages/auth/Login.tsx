@@ -374,6 +374,19 @@ export default function Login() {
   const [scanActive, setScanActive] = useState(false);
   const [emailError, setEmailError] = useState("");
 
+  if (!auth) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center text-white p-6">
+        <div className="max-w-md text-center">
+          <h1 className="text-3xl font-bold mb-4">Authentication Service Unavailable</h1>
+          <p className="text-slate-400 mb-6">
+            Firebase is not configured. Set VITE_FIREBASE_* environment variables and restart the app.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Clock
   useEffect(() => {
     const t = setInterval(() => setCurrentTime(formatTime()), 1000);
