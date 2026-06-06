@@ -3,8 +3,8 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  AnimatePresence,
 } from "framer-motion";
+import UrlScanner from "./scanner/UrlScanner";
 
 // ─── Font Injection ────────────────────────────────────────────────────────────
 const FontStyles: React.FC = () => (
@@ -58,15 +58,6 @@ const FontStyles: React.FC = () => (
 );
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
-interface ThreatEntry {
-  id: string;
-  type: string;
-  source: string;
-  severity: "critical" | "high" | "medium" | "low";
-  time: string;
-  status: "intercepted" | "monitoring" | "neutralized";
-}
-
 interface ScanEntry {
   id: string;
   target: string;
@@ -76,29 +67,12 @@ interface ScanEntry {
 }
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
-const SEVERITY_COLORS: Record<string, string> = {
-  critical: "#f43f5e",
-  high:     "#f97316",
-  medium:   "#f59e0b",
-  low:      "#10b981",
-};
-
 const RESULT_COLORS: Record<string, string> = {
   phishing:  "#f43f5e",
   suspicious:"#f59e0b",
   deepfake:  "#8b5cf6",
   safe:      "#10b981",
 };
-
-const THREAT_LOG: ThreatEntry[] = [
-  { id:"t1", type:"Phishing Campaign",   source:"IP 185.220.x.x",  severity:"critical", time:"00:12s", status:"intercepted" },
-  { id:"t2", type:"QR Code Fraud",        source:"IN/MH Region",    severity:"high",     time:"01:44s", status:"monitoring"  },
-  { id:"t3", type:"Deepfake Audio",       source:"Telegram Bot",    severity:"high",     time:"03:02s", status:"intercepted" },
-  { id:"t4", type:"SIM Swap Attempt",     source:"Telecom API",     severity:"medium",   time:"04:55s", status:"neutralized" },
-  { id:"t5", type:"OTP Harvesting",       source:"SMS Gateway",     severity:"critical", time:"06:11s", status:"intercepted" },
-  { id:"t6", type:"Vishing Call",         source:"+91-9XXX-XXXX",   severity:"medium",   time:"07:30s", status:"monitoring"  },
-  { id:"t7", type:"Fake Gov Portal",      source:"Domain Spoof",    severity:"high",     time:"09:18s", status:"intercepted" },
-];
 
 const SCAN_LOG: ScanEntry[] = [
   { id:"s1", target:"bit.ly/gov-refund",     result:"phishing",   confidence:98, time:"now"     },
@@ -295,84 +269,15 @@ const RadarPanel: React.FC = () => {
   );
 };
 
-// ─── Threat Feed Panel ─────────────────────────────────────────────────────────
-const ThreatFeedPanel: React.FC = () => {
-  const [visible, setVisible] = useState(THREAT_LOG.slice(0, 5));
-  const idx = useRef(5);
-
-  useEffect(() => {
-    const iv = setInterval(() => {
-      const next = THREAT_LOG[idx.current % THREAT_LOG.length];
-      idx.current++;
-      setVisible(prev => [next, ...prev].slice(0, 5));
-    }, 3200);
-    return () => clearInterval(iv);
-  }, []);
-
-  return (
-    <div className="relative rounded-2xl p-4 overflow-hidden h-full" style={glassStyle("rgba(244,63,94,0.1)", "rgba(244,63,94,0.2)")}>
-      <PanelHeader title="LIVE THREAT FEED" accent="#f43f5e" live />
-
-      {/* Scan line */}
-      <div className="absolute inset-x-4 overflow-hidden pointer-events-none" style={{ height: 2, top: 52 }}>
-        <motion.div
-          className="h-full"
-          style={{ background: "linear-gradient(90deg,transparent,rgba(244,63,94,0.8),transparent)" }}
-          animate={{ x: ["-100%", "200%"] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
-      <div className="space-y-2 mt-1">
-        <AnimatePresence>
-          {visible.map((t, i) => (
-            <motion.div
-              key={t.id + i}
-              initial={{ opacity: 0, x: -20, height: 0 }}
-              animate={{ opacity: 1, x: 0, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
-              className="relative flex items-start gap-2 rounded-lg p-2"
-              style={{
-                background: `${SEVERITY_COLORS[t.severity]}0d`,
-                border: `1px solid ${SEVERITY_COLORS[t.severity]}25`,
-              }}
-            >
-              {/* Severity indicator */}
-              <div className="flex-shrink-0 mt-0.5">
-                <motion.div
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: SEVERITY_COLORS[t.severity] }}
-                  animate={{ opacity: t.severity === "critical" ? [1, 0.2, 1] : 1 }}
-                  transition={{ duration: 0.8, repeat: Infinity }}
-                />
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <span className="font-rajdhani text-[11px] font-semibold text-white truncate">{t.type}</span>
-                  <span className="font-mono-cyber text-[9px] text-slate-500 flex-shrink-0">{t.time}</span>
-                </div>
-                <div className="flex items-center justify-between mt-0.5">
-                  <span className="font-mono-cyber text-[9px] text-slate-500 truncate">{t.source}</span>
-                  <span
-                    className="font-mono-cyber text-[8px] px-1.5 py-0.5 rounded flex-shrink-0"
-                    style={{
-                      background: t.status === "intercepted" ? "rgba(16,185,129,0.12)" : t.status === "monitoring" ? "rgba(245,158,11,0.12)" : "rgba(6,182,212,0.12)",
-                      color:      t.status === "intercepted" ? "#10b981" : t.status === "monitoring" ? "#f59e0b" : "#06b6d4",
-                    }}
-                  >
-                    {t.status.toUpperCase()}
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+// ─── URL Safety Scanner Panel ────────────────────────────────────────────────
+const UrlSafetyScannerPanel: React.FC = () => (
+  <div className="relative rounded-2xl p-4 overflow-hidden h-full" style={glassStyle("rgba(6,182,212,0.12)", "rgba(6,182,212,0.2)")}>
+    <PanelHeader title="URL SAFETY SCANNER" accent="#06b6d4" live badge="LINK DEFENSE" />
+    <div className="mt-3">
+      <UrlScanner />
     </div>
-  );
-};
+  </div>
+);
 
 // ─── AI Scanner Panel ──────────────────────────────────────────────────────────
 const AIScannerPanel: React.FC = () => {
@@ -987,7 +892,7 @@ const DashboardPreview: React.FC = () => {
                 whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
                 className="md:col-span-1"
               >
-                <ThreatFeedPanel />
+                <UrlSafetyScannerPanel />
               </motion.div>
 
               <motion.div
