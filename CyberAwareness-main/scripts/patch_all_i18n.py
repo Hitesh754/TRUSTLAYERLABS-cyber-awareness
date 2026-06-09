@@ -101,7 +101,7 @@ def update_en_json():
     with open(EN_JSON, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    print("✅ Updated en/translation.json with all new keys")
+    print("[OK] Updated en/translation.json with all new keys")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2. Page wrapper patches
@@ -164,13 +164,13 @@ import {{ useTranslation }} from "react-i18next";
 export default function {fn_name}() {{
   const {{ t }} = useTranslation();
   return (
-    <div className="min-h-screen bg-[#0b1020] text-white pt-28 px-6">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0b1020] dark:text-white pt-28 px-6 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
         <div className="mb-10 text-center sm:text-left">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500 bg-clip-text text-transparent">
             {{t("{title_key}")}}
           </h1>
-          <p className="text-slate-400 text-lg">
+          <p className="text-slate-600 dark:text-slate-400 text-lg">
             {{t("{desc_key}")}}
           </p>
         </div>
@@ -195,7 +195,7 @@ def patch_page_wrappers():
         os.makedirs(os.path.dirname(full_path), exist_ok=True)
         with open(full_path, "w", encoding="utf-8") as f:
             f.write(content)
-        print(f"  ✅ Patched {rel_path}")
+        print(f"  [OK] Patched {rel_path}")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. Patch awareness/index.tsx
@@ -225,36 +225,35 @@ export default function AwarenessIndex() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
+      <div className="border-b border-gray-200 bg-white/90 dark:border-slate-800 dark:bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors">
+          <Link to="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
             {t('awareness.backHome')}
           </Link>
-          <span className="text-slate-700">/</span>
-          <span className="text-xs text-slate-400">{t('awareness.breadcrumb')}</span>
+          <span className="text-slate-300 dark:text-slate-700">/</span>
+          <span className="text-xs text-slate-600 dark:text-slate-400">{t('awareness.breadcrumb')}</span>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-14">
-        <div className="relative rounded-2xl overflow-hidden px-8 py-16 text-center"
-          style={{ background: 'linear-gradient(160deg, #0f172a 0%, #0c1a2e 50%, #0f172a 100%)', border: '1px solid #1e293b' }}>
-          <div className="absolute -top-16 left-1/4 w-80 h-80 rounded-full pointer-events-none"
+        <div className="relative rounded-2xl overflow-hidden px-8 py-16 text-center border border-slate-250 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:border-slate-800 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 shadow-sm transition-colors duration-300">
+          <div className="absolute -top-16 left-1/4 w-80 h-80 rounded-full pointer-events-none opacity-50 dark:opacity-100"
             style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.12) 0%, transparent 65%)' }} />
-          <div className="absolute -bottom-16 right-1/4 w-80 h-80 rounded-full pointer-events-none"
+          <div className="absolute -bottom-16 right-1/4 w-80 h-80 rounded-full pointer-events-none opacity-50 dark:opacity-100"
             style={{ background: 'radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 65%)' }} />
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-7 uppercase tracking-wider"
               style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.2)', color: '#22d3ee' }}>
               <Shield className="w-3.5 h-3.5" /> {t('awareness.badgeText')}
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight text-white">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight text-slate-900 dark:text-white">
               {t('awareness.heroTitle').split(' in the')[0]}{' '}
               <span style={{ background: 'linear-gradient(90deg,#22d3ee,#2dd4bf)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 {t('awareness.heroTitle').includes(' in the') ? 'Digital World' : ''}
               </span>
             </h1>
-            <p className="text-sm max-w-lg mx-auto mb-9 text-slate-500">
+            <p className="text-sm max-w-lg mx-auto mb-9 text-slate-650 dark:text-slate-400">
               {t('awareness.heroDesc')}
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -264,8 +263,7 @@ export default function AwarenessIndex() {
                 {t('awareness.startLearning')}
               </Link>
               <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer"
-                className="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 text-slate-300"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid #1e293b' }}>
+                className="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 bg-slate-100 hover:bg-slate-200 border border-gray-250 text-slate-800 dark:bg-white/5 dark:hover:bg-white/10 dark:border-slate-800 dark:text-slate-300">
                 {t('awareness.reportCrime')}
               </a>
             </div>
@@ -274,16 +272,16 @@ export default function AwarenessIndex() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {stats.map((s) => (
-            <div key={s.labelKey} className="rounded-xl p-4 text-center bg-slate-900 border border-slate-800">
-              <div className="text-xl font-bold mb-1 text-cyan-400">{s.value}</div>
-              <div className="text-xs text-slate-500">{t(`awareness.${s.labelKey}`)}</div>
+            <div key={s.labelKey} className="rounded-xl p-4 text-center bg-white border border-gray-250 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
+              <div className="text-xl font-bold mb-1 text-cyan-600 dark:text-cyan-400">{s.value}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-500">{t(`awareness.${s.labelKey}`)}</div>
             </div>
           ))}
         </div>
 
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-base font-bold text-slate-200">{t('awareness.modulesHeading')}</h2>
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">{t('awareness.modulesHeading')}</h2>
             <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
               style={{ background: 'rgba(34,211,238,0.1)', color: '#22d3ee', border: '1px solid rgba(34,211,238,0.2)' }}>
               7 Topics
@@ -292,10 +290,9 @@ export default function AwarenessIndex() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {modules.map((m) => (
               <Link key={m.href} to={m.href}
-                className="group block rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 bg-slate-900 border border-slate-800 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5">
+                className="group block rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 bg-white border border-gray-250 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5 dark:bg-slate-900 dark:border-slate-800 dark:hover:border-cyan-500/30">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-                    style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.15)' }}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl bg-cyan-500/10 border border-cyan-500/20 dark:bg-cyan-500/5 dark:border-cyan-500/15">
                     {m.icon}
                   </div>
                   <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
@@ -303,11 +300,11 @@ export default function AwarenessIndex() {
                     {t(`awareness.modules.${m.key}.tag`)}
                   </span>
                 </div>
-                <h3 className="font-semibold text-sm mb-1.5 text-white group-hover:text-cyan-400 transition-colors">
+                <h3 className="font-semibold text-sm mb-1.5 text-slate-800 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   {t(`awareness.modules.${m.key}.title`)}
                 </h3>
-                <p className="text-xs leading-relaxed text-slate-500">{t(`awareness.modules.${m.key}.desc`)}</p>
-                <div className="mt-4 flex items-center gap-1 text-xs font-medium text-cyan-700 group-hover:text-cyan-400 transition-colors">
+                <p className="text-xs leading-relaxed text-slate-650 dark:text-slate-400">{t(`awareness.modules.${m.key}.desc`)}</p>
+                <div className="mt-4 flex items-center gap-1 text-xs font-medium text-cyan-600 dark:text-cyan-400 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors">
                   {t('awareness.learnMore')} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
@@ -315,11 +312,10 @@ export default function AwarenessIndex() {
           </div>
         </div>
 
-        <div className="rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5"
-          style={{ background: 'linear-gradient(135deg, #0f172a 0%, rgba(14,116,144,0.18) 100%)', border: '1px solid rgba(34,211,238,0.18)' }}>
+        <div className="rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5 border border-cyan-500/20 bg-gradient-to-r from-cyan-500/5 to-cyan-500/10 dark:from-cyan-950/10 dark:to-cyan-900/10 transition-colors duration-300">
           <div>
-            <div className="font-bold text-base text-white mb-1">{t('awareness.victimTitle')}</div>
-            <p className="text-sm text-slate-500">{t('awareness.victimDesc')}</p>
+            <div className="font-bold text-base text-slate-800 dark:text-white mb-1">{t('awareness.victimTitle')}</div>
+            <p className="text-sm text-slate-650 dark:text-slate-400">{t('awareness.victimDesc')}</p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <a href="tel:1930"
@@ -328,8 +324,7 @@ export default function AwarenessIndex() {
               {t('awareness.callHelpline')}
             </a>
             <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer"
-              className="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.25)', color: '#22d3ee' }}>
+              className="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 bg-cyan-500/10 hover:bg-cyan-500/25 border border-cyan-500/25 text-cyan-700 dark:text-cyan-300">
               {t('awareness.reportOnline')}
             </a>
           </div>
@@ -344,19 +339,19 @@ def patch_awareness_index():
     path = os.path.join(SRC, "pages", "awareness", "index.tsx")
     with open(path, "w", encoding="utf-8") as f:
         f.write(AWARENESS_INDEX)
-    print("  ✅ Patched awareness/index.tsx")
+    print("  [OK] Patched awareness/index.tsx")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. Run translation script
 # ─────────────────────────────────────────────────────────────────────────────
 def run_translate():
     script = os.path.join(BASE, "scripts", "translate_i18n.py")
-    print("\n🌐 Running translation script for all 9 languages...")
+    print("\n[INFO] Running translation script for all 9 languages...")
     result = subprocess.run([sys.executable, script], capture_output=False, text=True)
     if result.returncode != 0:
-        print("❌ Translation script failed")
+        print("[ERROR] Translation script failed")
     else:
-        print("✅ All languages translated")
+        print("[OK] All languages translated")
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Main
@@ -374,4 +369,4 @@ if __name__ == "__main__":
     print("\n=== Step 4: Translate all missing keys ===")
     run_translate()
 
-    print("\n🎉 Done! All pages and OSINT tool wrappers are now i18n-ready.")
+    print("\n[DONE] All pages and OSINT tool wrappers are now i18n-ready.")

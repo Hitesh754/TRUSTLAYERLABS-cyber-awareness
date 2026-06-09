@@ -8,10 +8,10 @@ export default function CryptoLookupPage() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-10 text-center sm:text-left">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500 bg-clip-text text-transparent">
-            {t('pages.cryptoLookup.title')}
+            {t("pages.cryptoLookup.title")}
           </h1>
-          <p className="text-slate-655 dark:text-slate-400 text-lg">
-            Audit cryptocurrency wallets, analyze transaction histories, trace balance metadata, and check mixer/scam blacklist statuses.
+          <p className="text-slate-600 dark:text-slate-400 text-lg">
+            {t("pages.cryptoLookup.description")}
           </p>
         </div>
         <CryptoLookup />

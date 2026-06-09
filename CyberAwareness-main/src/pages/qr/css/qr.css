@@ -1,4 +1,35 @@
 :root {
+  --qr-bg: #f8fafc;
+  --qr-panel: rgba(255, 255, 255, 0.9);
+  --qr-panel-strong: rgba(241, 245, 249, 0.95);
+  --qr-line: rgba(14, 116, 144, 0.18);
+  --qr-line-hot: rgba(239, 68, 68, 0.25);
+  --qr-text: #0f172a;
+  --qr-muted: #475569;
+  --qr-cyan: #0891b2;
+  --qr-red: #ef4444;
+  --qr-green: #15803d;
+  --qr-amber: #d97706;
+  --qr-blue: #1d4ed8;
+  --qr-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  --qr-radius: 8px;
+  --qr-font: "Segoe UI", "Inter", system-ui, sans-serif;
+  --qr-mono: "Consolas", "Courier New", monospace;
+  
+  --qr-bg-gradient: radial-gradient(circle at 12% 8%, rgba(8, 145, 178, 0.05), transparent 32%),
+    radial-gradient(circle at 86% 22%, rgba(239, 68, 68, 0.05), transparent 30%),
+    linear-gradient(135deg, #f8fafc 0%, #f1f5f9 46%, #e2e8f0 100%);
+  --qr-grid-line: rgba(14, 116, 144, 0.02);
+  --qr-scanline-color: rgba(14, 116, 144, 0.05);
+  --qr-nav-bg: rgba(255, 255, 255, 0.82);
+  --qr-dot-cyan-text: #ffffff;
+  --qr-panel-end: rgba(248, 250, 252, 0.95);
+  --qr-progress-bg: rgba(241, 245, 249, 0.92);
+  --qr-terminal-bar-bg: rgba(0, 0, 0, 0.03);
+  --qr-modal-bg: rgba(248, 250, 252, 0.82);
+}
+
+.dark {
   --qr-bg: #020817;
   --qr-panel: rgba(8, 18, 38, 0.88);
   --qr-panel-strong: rgba(11, 28, 55, 0.95);
@@ -12,9 +43,18 @@
   --qr-amber: #ffd166;
   --qr-blue: #5b8cff;
   --qr-shadow: 0 0 28px rgba(34, 211, 238, 0.18);
-  --qr-radius: 8px;
-  --qr-font: "Segoe UI", "Inter", system-ui, sans-serif;
-  --qr-mono: "Consolas", "Courier New", monospace;
+  
+  --qr-bg-gradient: radial-gradient(circle at 12% 8%, rgba(34, 211, 238, 0.12), transparent 32%),
+    radial-gradient(circle at 86% 22%, rgba(255, 57, 87, 0.11), transparent 30%),
+    linear-gradient(135deg, #020817 0%, #071124 46%, #020817 100%);
+  --qr-grid-line: rgba(34, 211, 238, 0.04);
+  --qr-scanline-color: rgba(34, 211, 238, 0.12);
+  --qr-nav-bg: rgba(2, 8, 23, 0.82);
+  --qr-dot-cyan-text: #020817;
+  --qr-panel-end: rgba(3, 10, 24, 0.94);
+  --qr-progress-bg: rgba(3, 10, 24, 0.92);
+  --qr-terminal-bar-bg: rgba(255, 255, 255, 0.03);
+  --qr-modal-bg: rgba(2, 8, 23, 0.82);
 }
 
 * {
@@ -30,11 +70,9 @@ body.qr-body {
   margin: 0;
   color: var(--qr-text);
   font-family: var(--qr-font);
-  background:
-    radial-gradient(circle at 12% 8%, rgba(34, 211, 238, 0.12), transparent 32%),
-    radial-gradient(circle at 86% 22%, rgba(255, 57, 87, 0.11), transparent 30%),
-    linear-gradient(135deg, #020817 0%, #071124 46%, #020817 100%);
+  background: var(--qr-bg-gradient);
   overflow-x: hidden;
+  transition: background 300ms ease, color 300ms ease;
 }
 
 body.qr-body::before {
@@ -43,8 +81,8 @@ body.qr-body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+    linear-gradient(var(--qr-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--qr-grid-line) 1px, transparent 1px);
   background-size: 46px 46px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.15));
 }
@@ -59,7 +97,7 @@ body.qr-body::before {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.12), transparent);
+  background: linear-gradient(to bottom, transparent, var(--qr-scanline-color), transparent);
   height: 140px;
   animation: qrScanline 7s linear infinite;
 }
@@ -74,8 +112,9 @@ body.qr-body::before {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(2, 8, 23, 0.82);
+  background: var(--qr-nav-bg);
   border-bottom: 1px solid var(--qr-line);
+  transition: background 300ms ease, border-color 300ms ease;
 }
 
 .qr-nav-inner {
@@ -109,7 +148,7 @@ body.qr-body::before {
   place-items: center;
   width: 34px;
   height: 34px;
-  color: var(--qr-bg);
+  color: var(--qr-dot-cyan-text);
   background: var(--qr-cyan);
   border-radius: 6px;
   box-shadow: 0 0 24px rgba(34, 211, 238, 0.55);
@@ -267,7 +306,16 @@ body.qr-body::before {
 .qr-alert {
   border: 1px solid var(--qr-line);
   border-radius: var(--qr-radius);
-  background: linear-gradient(180deg, var(--qr-panel), rgba(3, 10, 24, 0.94));
+  background: linear-gradient(180deg, var(--qr-panel), var(--qr-panel-end));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.dark .qr-card,
+.dark .qr-terminal,
+.dark .qr-modal-card,
+.dark .qr-toast,
+.dark .qr-alert {
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
 }
 
@@ -362,7 +410,8 @@ body.qr-body::before {
   overflow: hidden;
   border: 1px solid rgba(34, 211, 238, 0.22);
   border-radius: 999px;
-  background: rgba(3, 10, 24, 0.92);
+  background: var(--qr-progress-bg);
+  transition: background 300ms ease;
 }
 
 .qr-progress-fill {
@@ -385,7 +434,8 @@ body.qr-body::before {
   gap: 7px;
   padding: 11px 14px;
   border-bottom: 1px solid var(--qr-line);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--qr-terminal-bar-bg);
+  transition: background 300ms ease, border-color 300ms ease;
 }
 
 .qr-dot {
@@ -489,8 +539,9 @@ body.qr-body::before {
   align-items: center;
   justify-content: center;
   padding: 18px;
-  background: rgba(2, 8, 23, 0.82);
+  background: var(--qr-modal-bg);
   backdrop-filter: blur(10px);
+  transition: background 300ms ease;
 }
 
 .qr-modal.show {

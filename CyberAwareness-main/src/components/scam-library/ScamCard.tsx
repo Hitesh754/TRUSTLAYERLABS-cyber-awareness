@@ -26,10 +26,10 @@ export default function ScamCard({ scam }: ScamCardProps) {
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="font-semibold text-base mb-1.5 text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-            {scam.name}
+            {t(`scams.${scam.id}.name`, scam.name)}
           </h3>
           <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-500 line-clamp-2">
-            {scam.description}
+            {t(`scams.${scam.id}.description`, scam.description)}
           </p>
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 rounded-full ml-3 flex-shrink-0"

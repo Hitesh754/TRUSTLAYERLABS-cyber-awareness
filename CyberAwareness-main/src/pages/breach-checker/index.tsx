@@ -8,10 +8,10 @@ export default function BreachCheckerPage() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-10 text-center sm:text-left">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500 bg-clip-text text-transparent">
-            Breach Checker
+            {t("pages.breachChecker.title")}
           </h1>
-          <p className="text-slate-655 dark:text-slate-400 text-lg">
-            Check if an email appears in known breaches (mocked for demo).
+          <p className="text-slate-600 dark:text-slate-400 text-lg">
+            {t("pages.breachChecker.description")}
           </p>
         </div>
         <BreachChecker />

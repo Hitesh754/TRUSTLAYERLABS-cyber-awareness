@@ -29,7 +29,7 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
             {t('common.backToLibrary', 'Back to Library')}
           </Link>
           <span className="text-slate-300 dark:text-slate-700">/</span>
-          <span className="text-xs text-slate-650 dark:text-slate-450">{scam.name}</span>
+          <span className="text-xs text-slate-655 dark:text-slate-455">{t(`scams.${scam.id}.name`, scam.name)}</span>
         </div>
       </div>
 
@@ -43,16 +43,22 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
             </span>
             <span className="text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider"
               style={{ background: 'rgba(34,211,238,0.1)', color: '#22d3ee', border: '1px solid rgba(34,211,238,0.2)' }}>
-              {t(`scamLibraryExt.cat.${category}`, category.replace('-', ' '))}
+              {t({
+                'Financial-Fraud': 'scamLibraryExt.cat.financialFraud',
+                'Phishing-Social-Engineering': 'scamLibraryExt.cat.phishingSocial',
+                'Technical-Attacks': 'scamLibraryExt.cat.technicalAttacks',
+                'Crypto-Fraud': 'scamLibraryExt.cat.cryptoFraud',
+                'Identity-Crimes': 'scamLibraryExt.cat.identityCrimes'
+              }[category] || '', category.replace('-', ' '))}
             </span>
           </div>
           
           <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
-            {scam.name}
+            {t(`scams.${scam.id}.name`, scam.name)}
           </h1>
           
-          <p className="text-base text-slate-650 dark:text-slate-400 leading-relaxed">
-            {scam.description}
+          <p className="text-base text-slate-655 dark:text-slate-400 leading-relaxed">
+            {t(`scams.${scam.id}.description`, scam.description)}
           </p>
         </div>
 
@@ -60,7 +66,7 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
         <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-2 mb-4">
             <AlertTriangle className="w-5 h-5 text-amber-500" />
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Common Indicators</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('scamLibrary.commonIndicators', 'Common Indicators')}</h2>
           </div>
           <ul className="space-y-3">
             {scam.commonIndicators.map((indicator, index) => (
@@ -76,7 +82,7 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
         <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-2 mb-4">
             <Shield className="w-5 h-5 text-cyan-500" />
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Prevention Tips</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('scamLibrary.preventionTips', 'Prevention Tips')}</h2>
           </div>
           <ul className="space-y-3">
             {scam.preventionTips.map((tip, index) => (
@@ -93,12 +99,12 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
           <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
             <div className="flex items-center gap-2 mb-4">
               <AlertTriangle className="w-5 h-5 text-red-500" />
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Real-World Examples</h2>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('scamLibrary.realWorldExamples', 'Real-World Examples')}</h2>
             </div>
             <div className="space-y-3">
               {scam.examples.map((example, index) => (
                 <div key={index} className="p-4 rounded-lg bg-slate-50 border border-gray-200 dark:bg-slate-800 dark:border-slate-700">
-                  <p className="text-sm text-slate-600 dark:text-slate-300 italic">"{example}"</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300 italic">"{t(`scams.${scam.id}.examples.${index}`, example)}"</p>
                 </div>
               ))}
             </div>
@@ -109,8 +115,8 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
         <div className="rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5"
           style={{ background: 'linear-gradient(135deg, #0f172a 0%, rgba(14,116,144,0.18) 100%)', border: '1px solid rgba(34,211,238,0.18)' }}>
           <div>
-            <div className="font-bold text-base text-white mb-1">Victim of this scam?</div>
-            <p className="text-sm text-slate-450">Report immediately to help protect others.</p>
+            <div className="font-bold text-base text-white mb-1">{t('scamLibrary.victimTitle', 'Victim of this scam?')}</div>
+            <p className="text-sm text-slate-455">{t('scamLibrary.victimDesc', 'Report immediately to help protect others.')}</p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <a href="tel:1930"

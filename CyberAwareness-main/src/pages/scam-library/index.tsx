@@ -51,13 +51,13 @@ export default function ScamLibrary() {
               <Database className="w-3.5 h-3.5" /> {t('scamLibrary.badgeText')}
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight text-slate-900 dark:text-white text-center">
-              Scam{' '}
+              {t('scamLibrary.heroTitle').split(' ')[0] || 'Scam'}{' '}
               <span className="bg-gradient-to-r from-cyan-600 to-teal-600 dark:from-cyan-400 dark:to-teal-400 bg-clip-text text-transparent">
-                Library
+                {t('scamLibrary.heroTitle').split(' ').slice(1).join(' ') || 'Library'}
               </span>
             </h1>
             <p className="text-sm max-w-lg mx-auto mb-9 text-slate-650 dark:text-slate-300 text-center">
-              Explore {scamDatabase.length-1}+ crypto scams, cyber crimes, and fraud types with detailed indicators and prevention tips.
+              {t('scamLibrary.heroDescription', { count: scamDatabase.length - 1 })}
             </p>
           </div>
         </div>
@@ -96,7 +96,15 @@ export default function ScamLibrary() {
         <div>
           <div className="flex items-center gap-3 mb-6">
             <h2 className="text-base font-bold text-slate-850 dark:text-slate-200">
-              {selectedCategory === 'all' ? t('scamLibrary.allScams') : selectedCategory.replace('-', ' ')}
+              {selectedCategory === 'all' 
+                ? t('scamLibrary.allScams') 
+                : t({
+                    'Financial-Fraud': 'scamLibraryExt.cat.financialFraud',
+                    'Phishing-Social-Engineering': 'scamLibraryExt.cat.phishingSocial',
+                    'Technical-Attacks': 'scamLibraryExt.cat.technicalAttacks',
+                    'Crypto-Fraud': 'scamLibraryExt.cat.cryptoFraud',
+                    'Identity-Crimes': 'scamLibraryExt.cat.identityCrimes'
+                  }[selectedCategory] || '', selectedCategory.replace('-', ' '))}
             </h2>
             <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
               style={{ background: 'rgba(34,211,238,0.1)', color: '#22d3ee', border: '1px solid rgba(34,211,238,0.2)' }}>
