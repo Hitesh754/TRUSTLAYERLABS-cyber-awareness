@@ -1,87 +1,85 @@
 import { Link } from 'react-router-dom';
 import { Shield, ArrowRight } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+
+const modules = [
+  { title: 'Phishing Awareness',  href: '/awareness/phishing',       icon: '🎣', desc: 'Recognize fake emails, SMS, and websites trying to steal your credentials and OTPs.', tag: 'Most Common', tagBg: 'rgba(248,113,113,0.1)', tagColor: '#f87171', tagBorder: 'rgba(248,113,113,0.25)' },
+  { title: 'UPI Fraud',           href: '/awareness/upi-fraud',      icon: '💸', desc: 'Stay safe from fake collect requests, screen-sharing scams, and PIN theft.',           tag: 'High Risk',    tagBg: 'rgba(249,115,22,0.1)',  tagColor: '#f97316', tagBorder: 'rgba(249,115,22,0.25)'  },
+  { title: 'QR Code Scam',        href: '/awareness/qr-scam',        icon: '📷', desc: 'Learn how scammers weaponize QR codes to silently drain your bank account.',           tag: 'Rising Threat',tagBg: 'rgba(234,179,8,0.1)',   tagColor: '#eab308', tagBorder: 'rgba(234,179,8,0.25)'   },
+  { title: 'Social Media Scams',  href: '/awareness/social-media',   icon: '📱', desc: 'Identify fake profiles, lottery fraud, and investment scams on WhatsApp & Instagram.', tag: 'Widespread',   tagBg: 'rgba(96,165,250,0.1)',  tagColor: '#60a5fa', tagBorder: 'rgba(96,165,250,0.25)'  },
+  { title: 'Deepfake Awareness',  href: '/awareness/deepfake',       icon: '🎭', desc: 'Understand AI-generated fake videos used for blackmail, fraud, and misinformation.',   tag: 'AI Threat',    tagBg: 'rgba(34,211,238,0.1)',  tagColor: '#22d3ee', tagBorder: 'rgba(34,211,238,0.25)'  },
+  { title: 'Identity Theft',      href: '/awareness/identity-theft', icon: '🪪', desc: 'Protect your Aadhaar, PAN, and personal data from being stolen and misused.',          tag: 'Critical',     tagBg: 'rgba(248,113,113,0.1)', tagColor: '#f87171', tagBorder: 'rgba(248,113,113,0.25)' },
+  { title: 'Password & MFA',      href: '/awareness/password-mfa',   icon: '🔐', desc: 'Build strong passwords and enable multi-factor authentication on all accounts.',        tag: 'Essential',    tagBg: 'rgba(74,222,128,0.1)',  tagColor: '#4ade80', tagBorder: 'rgba(74,222,128,0.25)'  },
+];
+
+const stats = [
+  { value: '₹1,750 Cr+', label: 'Lost to cybercrime (2023)' },
+  { value: '15.9 Lakh',  label: 'Complaints filed' },
+  { value: '1930',       label: 'National Helpline' },
+  { value: '7 Topics',   label: 'In this module' },
+];
 
 export default function AwarenessIndex() {
-  const { t } = useTranslation();
-
-  const modules = [
-    { key: 'phishing',      href: '/awareness/phishing',       icon: '🎣', tagBg: 'rgba(248,113,113,0.1)', tagColor: '#f87171', tagBorder: 'rgba(248,113,113,0.25)' },
-    { key: 'upiFraud',      href: '/awareness/upi-fraud',      icon: '💸', tagBg: 'rgba(249,115,22,0.1)',  tagColor: '#f97316', tagBorder: 'rgba(249,115,22,0.25)'  },
-    { key: 'qrScam',        href: '/awareness/qr-scam',        icon: '📷', tagBg: 'rgba(234,179,8,0.1)',   tagColor: '#eab308', tagBorder: 'rgba(234,179,8,0.25)'   },
-    { key: 'socialMedia',   href: '/awareness/social-media',   icon: '📱', tagBg: 'rgba(96,165,250,0.1)',  tagColor: '#60a5fa', tagBorder: 'rgba(96,165,250,0.25)'  },
-    { key: 'deepfake',      href: '/awareness/deepfake',       icon: '🎭', tagBg: 'rgba(34,211,238,0.1)',  tagColor: '#22d3ee', tagBorder: 'rgba(34,211,238,0.25)'  },
-    { key: 'identityTheft', href: '/awareness/identity-theft', icon: '🪪', tagBg: 'rgba(248,113,113,0.1)', tagColor: '#f87171', tagBorder: 'rgba(248,113,113,0.25)' },
-    { key: 'passwordMfa',   href: '/awareness/password-mfa',   icon: '🔐', tagBg: 'rgba(74,222,128,0.1)',  tagColor: '#4ade80', tagBorder: 'rgba(74,222,128,0.25)'  },
-  ];
-
-  const stats = [
-    { value: '₹1,750 Cr+', labelKey: 'statsLost'       },
-    { value: '15.9 Lakh',  labelKey: 'statsComplaints'  },
-    { value: '1930',       labelKey: 'statsHelpline'    },
-    { value: '7 Topics',   labelKey: 'statsTopics'      },
-  ];
-
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
+      {/* Top bar */}
+      <div className="border-b border-gray-200 bg-white/90 dark:border-slate-800 dark:bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors">
+          <Link to="/" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
             {t('awareness.backHome')}
           </Link>
-          <span className="text-slate-700">/</span>
-          <span className="text-xs text-slate-400">{t('awareness.breadcrumb')}</span>
+          <span className="text-slate-300 dark:text-slate-700">/</span>
+          <span className="text-xs text-slate-650 dark:text-slate-400">{t('awareness.breadcrumb')}</span>
         </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-14">
-        <div className="relative rounded-2xl overflow-hidden px-8 py-16 text-center"
-          style={{ background: 'linear-gradient(160deg, #0f172a 0%, #0c1a2e 50%, #0f172a 100%)', border: '1px solid #1e293b' }}>
-          <div className="absolute -top-16 left-1/4 w-80 h-80 rounded-full pointer-events-none"
+        <div className="relative rounded-2xl overflow-hidden px-8 py-16 text-center bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 border border-gray-250 dark:border-slate-800 shadow-sm transition-colors duration-300">
+          <div className="absolute -top-16 left-1/4 w-80 h-80 rounded-full pointer-events-none opacity-50 dark:opacity-100"
             style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.12) 0%, transparent 65%)' }} />
-          <div className="absolute -bottom-16 right-1/4 w-80 h-80 rounded-full pointer-events-none"
+          <div className="absolute -bottom-16 right-1/4 w-80 h-80 rounded-full pointer-events-none opacity-50 dark:opacity-100"
             style={{ background: 'radial-gradient(circle, rgba(45,212,191,0.09) 0%, transparent 65%)' }} />
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-7 uppercase tracking-wider"
               style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.2)', color: '#22d3ee' }}>
-              <Shield className="w-3.5 h-3.5" /> {t('awareness.badgeText')}
+              <Shield className="w-3.5 h-3.5" /> {t('awareness.breadcrumb')}
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight text-white">
-              {t('awareness.heroTitle').split(' in the')[0]}{' '}
-              <span style={{ background: 'linear-gradient(90deg,#22d3ee,#2dd4bf)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                {t('awareness.heroTitle').includes(' in the') ? 'Digital World' : ''}
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight text-slate-900 dark:text-white">
+              Stay Safe in the{' '}
+              <span className="bg-gradient-to-r from-cyan-600 to-teal-600 dark:from-cyan-400 dark:to-teal-400 bg-clip-text text-transparent">
+                Digital World
               </span>
             </h1>
-            <p className="text-sm max-w-lg mx-auto mb-9 text-slate-500">
+            <p className="text-sm max-w-lg mx-auto mb-9 text-slate-600 dark:text-slate-300">
               {t('awareness.heroDesc')}
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link to="/awareness/phishing"
-                className="px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 hover:brightness-110 text-slate-950"
+                className="px-6 py-2.5 rounded-xl font-bold text-sm transition-all hover:scale-105 hover:brightness-110 text-white dark:text-slate-950"
                 style={{ background: 'linear-gradient(135deg,#0e7490,#22d3ee)' }}>
                 {t('awareness.startLearning')}
               </Link>
               <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer"
-                className="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 text-slate-300"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid #1e293b' }}>
+                className="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 bg-slate-100 dark:bg-white/5 border border-gray-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
                 {t('awareness.reportCrime')}
               </a>
             </div>
           </div>
         </div>
 
+        {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {stats.map((s) => (
-            <div key={s.labelKey} className="rounded-xl p-4 text-center bg-slate-900 border border-slate-800">
-              <div className="text-xl font-bold mb-1 text-cyan-400">{s.value}</div>
-              <div className="text-xs text-slate-500">{t(`awareness.${s.labelKey}`)}</div>
+            <div key={s.label} className="rounded-xl p-4 text-center bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
+              <div className="text-xl font-bold mb-1 text-cyan-600 dark:text-cyan-400">{s.value}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-500">{s.label}</div>
             </div>
           ))}
         </div>
 
+        {/* Module cards */}
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-base font-bold text-slate-200">{t('awareness.modulesHeading')}</h2>
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">{t('awareness.modulesHeading')}</h2>
             <span className="text-xs px-2.5 py-0.5 rounded-full font-medium"
               style={{ background: 'rgba(34,211,238,0.1)', color: '#22d3ee', border: '1px solid rgba(34,211,238,0.2)' }}>
               7 Topics
@@ -90,7 +88,7 @@ export default function AwarenessIndex() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {modules.map((m) => (
               <Link key={m.href} to={m.href}
-                className="group block rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 bg-slate-900 border border-slate-800 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5">
+                className="group block rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 hover:border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/5 transition-colors duration-300">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
                     style={{ background: 'rgba(34,211,238,0.08)', border: '1px solid rgba(34,211,238,0.15)' }}>
@@ -98,14 +96,14 @@ export default function AwarenessIndex() {
                   </div>
                   <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
                     style={{ background: m.tagBg, color: m.tagColor, border: `1px solid ${m.tagBorder}` }}>
-                    {t(`awareness.modules.${m.key}.tag`)}
+                    {m.tag}
                   </span>
                 </div>
-                <h3 className="font-semibold text-sm mb-1.5 text-white group-hover:text-cyan-400 transition-colors">
-                  {t(`awareness.modules.${m.key}.title`)}
+                <h3 className="font-semibold text-sm mb-1.5 text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                  {m.title}
                 </h3>
-                <p className="text-xs leading-relaxed text-slate-500">{t(`awareness.modules.${m.key}.desc`)}</p>
-                <div className="mt-4 flex items-center gap-1 text-xs font-medium text-cyan-700 group-hover:text-cyan-400 transition-colors">
+                <p className="text-xs leading-relaxed text-slate-650 dark:text-slate-500">{m.desc}</p>
+                <div className="mt-4 flex items-center gap-1 text-xs font-medium text-cyan-700 dark:text-cyan-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   {t('awareness.learnMore')} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
@@ -113,11 +111,11 @@ export default function AwarenessIndex() {
           </div>
         </div>
 
-        <div className="rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5"
-          style={{ background: 'linear-gradient(135deg, #0f172a 0%, rgba(14,116,144,0.18) 100%)', border: '1px solid rgba(34,211,238,0.18)' }}>
+        {/* Helpline banner */}
+        <div className="rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-5 bg-gradient-to-r from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 border border-gray-250 dark:border-slate-800 shadow-sm transition-colors duration-300">
           <div>
-            <div className="font-bold text-base text-white mb-1">{t('awareness.victimTitle')}</div>
-            <p className="text-sm text-slate-500">{t('awareness.victimDesc')}</p>
+            <div className="font-bold text-base text-slate-900 dark:text-white mb-1">{t('awareness.victimTitle')}</div>
+            <p className="text-sm text-slate-600 dark:text-slate-300">{t('awareness.victimDesc')}</p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <a href="tel:1930"
@@ -126,12 +124,12 @@ export default function AwarenessIndex() {
               {t('awareness.callHelpline')}
             </a>
             <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer"
-              className="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
-              style={{ background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.25)', color: '#22d3ee' }}>
+              className="px-5 py-2.5 rounded-xl font-semibold text-sm transition-all hover:scale-105 bg-slate-100 dark:bg-white/5 border border-gray-300 dark:border-slate-800 text-slate-700 dark:text-slate-300">
               {t('awareness.reportOnline')}
             </a>
           </div>
         </div>
+
       </div>
     </div>
   );

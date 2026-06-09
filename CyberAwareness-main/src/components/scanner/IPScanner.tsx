@@ -82,7 +82,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
   const severity = result ? getSeverity(result.abuseConfidenceScore) : null;
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 rounded-lg border border-cyan-900/30 shadow-2xl overflow-hidden">
+    <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 md:p-8 bg-white dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 rounded-lg border border-gray-200 dark:border-cyan-900/30 text-gray-900 dark:text-white shadow-2xl overflow-hidden transition-colors duration-300">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
@@ -91,7 +91,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
             {t('ipScanner.title')}
           </h1>
         </div>
-        <p className="text-slate-400 text-sm">{t('ipScanner.description')}</p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.description')}</p>
       </div>
 
       {/* Info Message Banner */}
@@ -111,7 +111,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
               value={ip}
               onChange={(e) => setIp(e.target.value)}
               placeholder={t('ipScanner.placeholder')}
-              className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-800/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 bg-white border border-gray-300 dark:bg-slate-800/50 dark:border-cyan-800/50 rounded-lg text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-colors duration-300"
             />
             <Globe className="absolute right-3 top-3.5 w-5 h-5 text-slate-500" />
           </div>
@@ -138,28 +138,28 @@ const IPScanner: React.FC<IPScannerProps> = ({
       {result && (
         <div className="space-y-4 animate-in fade-in duration-300">
           {/* IP & Severity */}
-          <div className="flex items-start justify-between p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+          <div className="flex items-start justify-between p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg transition-colors duration-300">
             <div>
-              <p className="text-slate-400 text-sm">{t('ipScanner.scannedIp')}</p>
-              <p className="text-xl font-mono text-cyan-300">{result.ip}</p>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.scannedIp')}</p>
+              <p className="text-xl font-mono text-cyan-600 dark:text-cyan-300">{result.ip}</p>
             </div>
             <div className={`px-3 py-1 rounded-full flex flex-col items-end justify-center ${severity?.bg} border border-cyan-700/30 min-w-0`}>
               <p className={`text-[10px] font-bold tracking-wider uppercase ${severity?.color}`}>
                 {severity?.label}
               </p>
-              <p className="text-xs text-slate-400 mt-1">{result.abuseConfidenceScore}%</p>
+              <p className="text-xs text-slate-550 dark:text-slate-400 mt-1">{result.abuseConfidenceScore}%</p>
             </div>
           </div>
 
           {/* Threat Level Indicator */}
-          <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
+          <div className="p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg transition-colors duration-300">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-slate-400 text-sm">{t('ipScanner.threatLevel')}</span>
+              <span className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.threatLevel')}</span>
               <span className={`text-sm font-semibold ${severity?.color}`}>
                 {result.abuseConfidenceScore}%
               </span>
             </div>
-            <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-300 ${
                   result.abuseConfidenceScore >= 75
@@ -178,40 +178,40 @@ const IPScanner: React.FC<IPScannerProps> = ({
           {/* Details Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* ISP */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+            <div className="p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg min-w-0 transition-colors duration-300">
               <div className="flex items-center gap-2 mb-2">
-                <Building2 className="w-4 h-4 text-blue-400" />
-                <p className="text-slate-400 text-sm">{t('ipScanner.isp')}</p>
+                <Building2 className="w-4 h-4 text-blue-500 dark:text-blue-400" />
+                <p className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.isp')}</p>
               </div>
-              <p className="text-white font-semibold truncate">{result.isp}</p>
+              <p className="text-gray-900 dark:text-white font-semibold truncate">{result.isp}</p>
             </div>
 
             {/* Country */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+            <div className="p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg min-w-0 transition-colors duration-300">
               <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-4 h-4 text-green-400" />
-                <p className="text-slate-400 text-sm">{t('ipScanner.country')}</p>
+                <MapPin className="w-4 h-4 text-green-500 dark:text-green-400" />
+                <p className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.country')}</p>
               </div>
-              <p className="text-white font-semibold">{result.country}</p>
+              <p className="text-gray-900 dark:text-white font-semibold">{result.country}</p>
             </div>
 
             {/* Reports Count */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
+            <div className="p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg min-w-0 transition-colors duration-300">
               <div className="flex items-center gap-2 mb-2">
-                <BarChart3 className="w-4 h-4 text-purple-400" />
-                <p className="text-slate-400 text-sm">{t('ipScanner.abuseReports')}</p>
+                <BarChart3 className="w-4 h-4 text-purple-500 dark:text-purple-400" />
+                <p className="text-slate-500 dark:text-slate-400 text-sm">{t('ipScanner.abuseReports')}</p>
               </div>
-              <p className="text-white font-semibold">{result.reports}</p>
+              <p className="text-gray-900 dark:text-white font-semibold">{result.reports}</p>
             </div>
 
             {/* Status */}
-            <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
-              <p className="text-slate-400 text-sm mb-2">{t('ipScanner.status')}</p>
+            <div className="p-4 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-700/50 rounded-lg min-w-0 transition-colors duration-300">
+              <p className="text-slate-500 dark:text-slate-400 text-sm mb-2">{t('ipScanner.status')}</p>
               <span
                 className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
                   result.isWhitelisted
-                    ? 'bg-green-900/30 text-green-300 border border-green-700/50'
-                    : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
+                    ? 'bg-green-100 text-green-800 border border-green-300 dark:bg-green-900/30 dark:text-green-300 dark:border-green-700/50'
+                    : 'bg-slate-200 text-slate-700 border border-slate-350 dark:bg-slate-700/50 dark:text-slate-300 dark:border-slate-600/50'
                 }`}
               >
                 {result.isWhitelisted ? t('ipScanner.whitelisted') : t('ipScanner.notWhitelisted')}

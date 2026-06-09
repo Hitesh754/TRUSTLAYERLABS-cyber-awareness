@@ -16,7 +16,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={t('scamLibrary.searchPlaceholder')}
-        className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+        className="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 text-slate-900 dark:text-white placeholder-slate-550 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all transition-colors duration-300"
       />
     </div>
   );

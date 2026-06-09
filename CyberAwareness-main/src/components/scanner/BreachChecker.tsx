@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ShieldAlert, CheckCircle, Search, Key, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, Search, Key, ShieldCheck } from 'lucide-react';
 import hibpService from '../../services/hibp';
 import { useTranslation } from 'react-i18next';
 
@@ -88,16 +88,16 @@ export default function BreachChecker() {
 	};
 
 	return (
-		<div className="p-6 rounded-2xl bg-gradient-to-br from-gray-900 via-slate-900 to-black text-slate-200 border border-cyan-900/30 shadow-xl max-w-3xl mx-auto">
+		<div className="p-6 rounded-2xl bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-slate-800 dark:text-slate-200 border border-gray-250 dark:border-cyan-900/30 shadow-xl max-w-3xl mx-auto">
 			<div className="flex items-center justify-between mb-6">
-				<h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+				<h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
 					{t('breachChecker.title')}
 				</h2>
-				<span className="text-xs text-slate-400">{t('breachChecker.subtitle')}</span>
+				<span className="text-xs text-slate-500 dark:text-slate-400">{t('breachChecker.subtitle')}</span>
 			</div>
 
 			{/* Tabs */}
-			<div className="flex gap-2 mb-6 border-b border-slate-800 pb-3">
+			<div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-slate-800 pb-3">
 				<button
 					onClick={() => {
 						setActiveTab('email');
@@ -107,7 +107,7 @@ export default function BreachChecker() {
 						setInfoMessage(null);
 					}}
 					className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${
-						activeTab === 'email' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
+						activeTab === 'email' ? 'bg-cyan-600 text-white dark:bg-cyan-500 dark:text-black' : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
 					}`}
 				>
 					{t('breachChecker.emailTab')}
@@ -121,7 +121,7 @@ export default function BreachChecker() {
 						setInfoMessage(null);
 					}}
 					className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors ${
-						activeTab === 'password' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
+						activeTab === 'password' ? 'bg-cyan-600 text-white dark:bg-cyan-500 dark:text-black' : 'text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white'
 					}`}
 				>
 					{t('breachChecker.passwordTab')}
@@ -130,14 +130,14 @@ export default function BreachChecker() {
 
 			{/* Info Message Banner */}
 			{infoMessage && (
-				<div className="mb-4 p-3 bg-amber-950/40 border border-amber-800/40 text-amber-400 rounded-lg text-xs">
+				<div className="mb-4 p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/40 text-amber-800 dark:text-amber-400 rounded-lg text-xs shadow-sm">
 					⚠️ {infoMessage}
 				</div>
 			)}
 
 			{/* Error Banner */}
 			{error && (
-				<div className="mb-4 p-3 bg-red-950/40 border border-red-800/40 text-red-400 rounded-lg text-xs">
+				<div className="mb-4 p-3 bg-red-905/10 dark:bg-red-950/40 border border-red-200 dark:border-red-800/40 text-red-700 dark:text-red-400 rounded-lg text-xs shadow-sm">
 					{error}
 				</div>
 			)}
@@ -151,7 +151,7 @@ export default function BreachChecker() {
 								value={email}
 								onChange={(e) => setEmail(e.target.value)}
 								placeholder="name@example.com"
-								className="w-full h-12 px-4 rounded-lg bg-slate-850 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder:text-slate-500"
+								className="w-full h-12 px-4 rounded-lg bg-white dark:bg-slate-850 border border-gray-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
 								aria-label="email"
 							/>
 						</div>
@@ -167,8 +167,8 @@ export default function BreachChecker() {
 
 					{loading && (
 						<div className="flex flex-col items-center justify-center py-8 gap-3">
-							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
-							<p className="text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.queryingRegistry')}</p>
+							<div className="w-8 h-8 border-2 border-cyan-200 dark:border-cyan-500/20 border-t-cyan-600 dark:border-t-cyan-400 rounded-full animate-spin" />
+							<p className="text-slate-750 dark:text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.queryingRegistry')}</p>
 						</div>
 					)}
 
@@ -176,26 +176,26 @@ export default function BreachChecker() {
 						<div className="space-y-4">
 							{results.length > 0 ? (
 								<>
-									<div className="text-sm text-red-400 font-semibold flex items-center gap-2">
+									<div className="text-sm text-red-700 dark:text-red-400 font-semibold flex items-center gap-2">
 										<ShieldAlert className="w-4 h-4" /> Found {results.length} breach exposure(s)
 									</div>
 									<ul className="space-y-3">
 										{results.map((b) => (
-											<li key={b.id} className="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+											<li key={b.id} className="p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm animate-fade-in">
 												<div className="flex justify-between items-start">
 													<div>
-														<h4 className="font-bold text-white text-sm">{b.name}</h4>
+														<h4 className="font-bold text-slate-900 dark:text-white text-sm">{b.name}</h4>
 														<p className="text-[10px] text-slate-500 mt-0.5">{b.date}</p>
 													</div>
 												</div>
 												{b.description && (
-													<p className="mt-2 text-xs text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: b.description }}></p>
+													<p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: b.description }}></p>
 												)}
 												<div className="mt-3">
-													<p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">{t('breachChecker.exposedParameters')}</p>
+													<p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider mb-1">{t('breachChecker.exposedParameters')}</p>
 													<div className="flex flex-wrap gap-1.5">
 														{b.compromised_data.map((d) => (
-															<span key={d} className="text-[9px] px-2 py-0.5 bg-red-950/40 text-red-400 border border-red-900/40 rounded-full">
+															<span key={d} className="text-[9px] px-2 py-0.5 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/40 rounded-full">
 																{d}
 															</span>
 														))}
@@ -206,11 +206,11 @@ export default function BreachChecker() {
 									</ul>
 								</>
 							) : (
-								<div className="p-5 bg-emerald-950/15 border border-emerald-900/30 rounded-xl flex gap-3.5 items-center">
-									<ShieldCheck className="w-6 h-6 text-emerald-400" />
+								<div className="p-5 bg-emerald-50/50 dark:bg-emerald-950/15 border border-emerald-200 dark:border-emerald-900/30 rounded-xl flex gap-3.5 items-center shadow-sm">
+									<ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
 									<div>
-										<h3 className="text-sm font-bold text-emerald-300">{t('breachChecker.noLeaks')}</h3>
-										<p className="text-slate-400 text-xs mt-0.5">{t('breachChecker.noLeaksDesc')}</p>
+										<h3 className="text-sm font-bold text-emerald-800 dark:text-emerald-300">{t('breachChecker.noLeaks')}</h3>
+										<p className="text-slate-600 dark:text-slate-400 text-xs mt-0.5">{t('breachChecker.noLeaksDesc')}</p>
 									</div>
 								</div>
 							)}
@@ -226,7 +226,7 @@ export default function BreachChecker() {
 								value={passwordToCheck}
 								onChange={(e) => setPasswordToCheck(e.target.value)}
 								placeholder="Enter password to check..."
-								className="w-full h-12 px-4 rounded-lg bg-slate-850 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-white placeholder:text-slate-500"
+								className="w-full h-12 px-4 rounded-lg bg-white dark:bg-slate-850 border border-gray-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
 							/>
 						</div>
 						<button
@@ -241,29 +241,29 @@ export default function BreachChecker() {
 
 					{loading && (
 						<div className="flex flex-col items-center justify-center py-8 gap-3">
-							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
-							<p className="text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.checkingPasswords')}</p>
+							<div className="w-8 h-8 border-2 border-cyan-200 dark:border-cyan-500/20 border-t-cyan-600 dark:border-t-cyan-400 rounded-full animate-spin" />
+							<p className="text-slate-750 dark:text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.checkingPasswords')}</p>
 						</div>
 					)}
 
 					{pwnedCount !== null && !loading && (
-						<div className="p-5 rounded-xl border transition-all duration-300">
+						<div className="p-5 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 transition-all duration-300 shadow-sm">
 							{pwnedCount > 0 ? (
 								<div className="space-y-2">
-									<div className="text-red-400 font-bold text-sm flex items-center gap-2">
+									<div className="text-red-700 dark:text-red-400 font-bold text-sm flex items-center gap-2">
 										<ShieldAlert className="w-5 h-5" /> {t('breachChecker.passwordLeaked')}
 									</div>
-									<p className="text-xs text-slate-300 leading-relaxed">
-										This password has been seen <span className="text-red-400 font-bold font-mono text-sm">{pwnedCount.toLocaleString()}</span> times in credentials dumps.
-										Do not use this password for any profile or account!
+									<p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+										This password has been seen <span className="text-red-650 dark:text-red-400 font-bold font-mono text-sm">{pwnedCount.toLocaleString()}</span> times in credentials dumps. 
+										**Do not use this password** for any profile or account!
 									</p>
 								</div>
 							) : (
 								<div className="space-y-2">
-									<div className="text-emerald-400 font-bold text-sm flex items-center gap-2">
-										<CheckCircle className="w-5 h-5" /> {t('breachChecker.noPasswordLeaks')}
+									<div className="text-emerald-600 dark:text-emerald-400 font-bold text-sm flex items-center gap-2">
+										<ShieldCheck className="w-5 h-5 text-emerald-650 dark:text-emerald-400" /> {t('breachChecker.noPasswordLeaks')}
 									</div>
-									<p className="text-xs text-slate-300 leading-relaxed">
+									<p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
 										{t('breachChecker.noPasswordLeaksDesc')}
 									</p>
 								</div>

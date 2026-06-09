@@ -42,15 +42,18 @@ export default function UrlScanner() {
     (result?.malicious || 0) > 0 || (result?.suspicious || 0) > 0;
 
   return (
-    <div className="bg-[#111827] border border-cyan-500/20 rounded-3xl p-8 shadow-2xl">
+    <div className="bg-white border border-gray-200 dark:bg-[#111827] dark:border-cyan-500/20 text-slate-900 dark:text-white rounded-3xl p-8 shadow-2xl transition-colors duration-300">
+
       {/* INPUT */}
       <div className="flex flex-col md:flex-row gap-4">
         <input
           type="text"
           placeholder="https://example.com"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="flex-1 bg-[#0f172a] border border-slate-700 rounded-xl px-5 py-4 text-white outline-none focus:border-cyan-400 transition"
+          onChange={(e) =>
+            setUrl(e.target.value)
+          }
+          className="flex-1 bg-white border border-gray-300 dark:bg-[#0f172a] dark:border-slate-700 rounded-xl px-5 py-4 text-slate-900 dark:text-white outline-none focus:border-cyan-400 transition transition-colors duration-300"
         />
         <button
           onClick={handleScan}
@@ -100,27 +103,54 @@ export default function UrlScanner() {
                     ? t('urlScanner.suspiciousDetected')
                     : t('urlScanner.urlSafe')}
                 </h2>
-                <p className="text-slate-400">{t('urlScanner.liveAnalysis')}</p>
+
+                <p className="text-slate-550 dark:text-slate-400">
+                  {t('urlScanner.liveAnalysis')}
+                </p>
               </div>
             </div>
 
             {/* STATS */}
             <div className="grid md:grid-cols-4 gap-4">
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">{t('urlScanner.malicious')}</p>
-                <h3 className="text-3xl font-bold text-red-400">{result.malicious}</h3>
+
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  {t('urlScanner.malicious')}
+                </p>
+
+                <h3 className="text-3xl font-bold text-red-400">
+                  {result.malicious}
+                </h3>
               </div>
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">{t('urlScanner.suspicious')}</p>
-                <h3 className="text-3xl font-bold text-yellow-400">{result.suspicious}</h3>
+
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  {t('urlScanner.suspicious')}
+                </p>
+
+                <h3 className="text-3xl font-bold text-yellow-400">
+                  {result.suspicious}
+                </h3>
               </div>
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">{t('urlScanner.harmless')}</p>
-                <h3 className="text-3xl font-bold text-green-400">{result.harmless}</h3>
+
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  {t('urlScanner.harmless')}
+                </p>
+
+                <h3 className="text-3xl font-bold text-green-400">
+                  {result.harmless}
+                </h3>
               </div>
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">{t('urlScanner.reputation')}</p>
-                <h3 className="text-3xl font-bold text-cyan-400">{result.reputation}</h3>
+
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  {t('urlScanner.reputation')}
+                </p>
+
+                <h3 className="text-3xl font-bold text-cyan-400">
+                  {result.reputation}
+                </h3>
               </div>
             </div>
           </div>

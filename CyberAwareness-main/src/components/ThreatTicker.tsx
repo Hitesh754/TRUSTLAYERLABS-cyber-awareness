@@ -25,9 +25,9 @@ export default function ThreatTicker() {
             key={index}
             className="flex items-center gap-3 px-6 shrink-0"
           >
-            <AlertTriangle className="w-5 h-5 text-red-400" />
+            <AlertTriangle className="w-5 h-5 text-red-650 dark:text-red-400" />
 
-            <span className="text-sm sm:text-base text-red-100">
+            <span className="text-sm sm:text-base text-red-800 dark:text-red-100 font-medium">
               {threat}
             </span>
           </div>
