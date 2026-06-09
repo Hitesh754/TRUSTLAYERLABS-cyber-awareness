@@ -54,9 +54,9 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center text-white px-4">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-black dark:text-white flex items-center justify-center px-4 transition-colors duration-300">
 
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-6 sm:p-10 shadow-2xl">
+      <div className="w-full max-w-md bg-white border border-gray-200 dark:bg-zinc-900 dark:border-zinc-800 rounded-3xl p-6 sm:p-10 shadow-2xl transition-colors duration-300">
 
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10">
@@ -66,11 +66,11 @@ export default function Signup() {
             <UserPlus className="w-8 h-8 text-cyan-400" />
           </div>
 
-          <h1 className="text-3xl sm:text-4xl font-bold">
+          <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white">
             {t('auth.signupTitle')}
           </h1>
 
-          <p className="text-zinc-400 mt-3 text-sm sm:text-base">
+          <p className="text-slate-500 dark:text-zinc-400 mt-3 text-sm sm:text-base">
             {t('auth.signupDescription')}
           </p>
         </div>
@@ -78,13 +78,13 @@ export default function Signup() {
         {/* Email */}
         <div className="mb-5">
 
-          <label className="text-sm text-zinc-400 mb-2 block">
+          <label className="text-sm text-slate-500 dark:text-zinc-400 mb-2 block">
             {t('auth.emailLabel')}
           </label>
 
           <div className="relative">
 
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-zinc-500" />
 
             <input
               type="email"
@@ -93,7 +93,7 @@ export default function Signup() {
               onChange={(e) =>
                 setEmail(e.target.value)
               }
-              className="w-full bg-black border border-zinc-700 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-cyan-500 transition-all text-sm sm:text-base"
+              className="w-full bg-slate-50 border border-gray-300 dark:bg-black dark:border-zinc-700 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-cyan-500 text-slate-900 dark:text-white transition-all text-sm sm:text-base"
             />
           </div>
         </div>
@@ -101,13 +101,13 @@ export default function Signup() {
         {/* Password */}
         <div className="mb-8">
 
-          <label className="text-sm text-zinc-400 mb-2 block">
+          <label className="text-sm text-slate-500 dark:text-zinc-400 mb-2 block">
             {t('auth.passwordLabel')}
           </label>
 
           <div className="relative">
 
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-zinc-500" />
 
             <input
               type="password"
@@ -116,7 +116,7 @@ export default function Signup() {
               onChange={(e) =>
                 setPassword(e.target.value)
               }
-              className="w-full bg-black border border-zinc-700 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-cyan-500 transition-all text-sm sm:text-base"
+              className="w-full bg-slate-50 border border-gray-300 dark:bg-black dark:border-zinc-700 rounded-2xl py-4 pl-12 pr-4 outline-none focus:border-cyan-500 text-slate-900 dark:text-white transition-all text-sm sm:text-base"
             />
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function Signup() {
         </button>
 
         {/* Footer */}
-        <div className="flex items-center justify-center gap-2 mt-6 text-zinc-500 text-sm">
+        <div className="flex items-center justify-center gap-2 mt-6 text-slate-500 dark:text-zinc-500 text-sm">
 
           <Shield className="w-4 h-4" />
 

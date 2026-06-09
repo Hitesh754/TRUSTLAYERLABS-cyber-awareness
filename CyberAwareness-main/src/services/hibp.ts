@@ -205,5 +205,5 @@ class HIBPService {
 }
 
 export const hibpService = new HIBPService();
-export { BreachData, BreachResponse, PasteData, ErrorResponse };
+export type { BreachData, BreachResponse, PasteData, ErrorResponse };
 export default hibpService;

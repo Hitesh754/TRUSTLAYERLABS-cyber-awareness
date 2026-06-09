@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./css/deepfake.css";
 import { DeepfakeModal, useDeepfakeLab, XpDock } from "./deepfakeReact";
+import { useTranslation } from 'react-i18next';
 
 function Awareness() {
+  const { t } = useTranslation();
   const { xp, modal, setModal, awardXp } = useDeepfakeLab();
   const [scanning, setScanning] = useState(false);
 
@@ -16,53 +18,38 @@ function Awareness() {
     <div className="deepfake-shell">
       <main className="df-page">
         <section className="df-section">
-          <span className="df-kicker">Preparedness</span>
+          <span className="df-kicker">{t("deepfake.awarenessPage.kicker")}</span>
 
-          <h1>Awareness Timeline</h1>
+          <h1>{t("deepfake.awarenessPage.timelineTitle")}</h1>
 
-          <p className="df-lead">
-            A practical response flow for suspicious video calls, voice notes,
-            livestreams, and celebrity or executive impersonation.
-          </p>
+          <p className="df-lead">{t("deepfake.awarenessPage.timelineDesc")}</p>
         </section>
 
         <section className="df-grid cols-2">
           <div className="df-panel">
             <div className="timeline">
               <div className="timeline-item">
-                <h3>Minute 0: Pause</h3>
+                <h3>{t("deepfake.awarenessPage.step1Title")}</h3>
 
-                <p>
-                  Do not click, pay, share OTPs, or send files while pressure
-                  is high.
-                </p>
+                <p>{t("deepfake.awarenessPage.step1Desc")}</p>
               </div>
 
               <div className="timeline-item">
-                <h3>Minute 2: Verify</h3>
+                <h3>{t("deepfake.awarenessPage.step2Title")}</h3>
 
-                <p>
-                  Use a known phone number, official website, or internal
-                  directory to confirm identity.
-                </p>
+                <p>{t("deepfake.awarenessPage.step2Desc")}</p>
               </div>
 
               <div className="timeline-item">
-                <h3>Minute 5: Inspect</h3>
+                <h3>{t("deepfake.awarenessPage.step3Title")}</h3>
 
-                <p>
-                  Look for lip-sync drift, repeating gestures, lighting
-                  mismatch, unnatural voice tone, and odd urgency.
-                </p>
+                <p>{t("deepfake.awarenessPage.step3Desc")}</p>
               </div>
 
               <div className="timeline-item">
-                <h3>Minute 10: Escalate</h3>
+                <h3>{t("deepfake.awarenessPage.step4Title")}</h3>
 
-                <p>
-                  Report to platform support, cyber cell, bank, or internal
-                  security team with preserved evidence.
-                </p>
+                <p>{t("deepfake.awarenessPage.step4Desc")}</p>
               </div>
             </div>
           </div>
@@ -71,33 +58,23 @@ function Awareness() {
             className={`df-panel scan-ready ${scanning ? "scanning" : ""}`}
             id="readinessScan"
           >
-            <span className="df-kicker hot">
-              Readiness Checklist
-            </span>
+            <span className="df-kicker hot">{t("deepfake.awarenessPage.checklistTitle")}</span>
 
             <ul className="df-list">
-              <li>
-                Use multi-person approval for payments and account changes.
-              </li>
+              <li>{t("deepfake.awarenessPage.checklist1")}</li>
 
-              <li>
-                Agree on code words for urgent family or executive requests.
-              </li>
+              <li>{t("deepfake.awarenessPage.checklist2")}</li>
 
-              <li>
-                Keep official reporting links bookmarked before an incident.
-              </li>
+              <li>{t("deepfake.awarenessPage.checklist3")}</li>
 
-              <li>
-                Train teams to question media that demands secrecy or speed.
-              </li>
+              <li>{t("deepfake.awarenessPage.checklist4")}</li>
             </ul>
 
             <button
               className="df-button"
               onClick={validateReadiness}
             >
-              Validate Readiness
+              {t("deepfake.awarenessPage.btnValidate")}
             </button>
           </div>
         </section>
@@ -107,7 +84,7 @@ function Awareness() {
       <DeepfakeModal modal={modal} onClose={() => setModal(null)} />
 
       <footer className="df-footer">
-        Awareness playbooks reduce risk before detection tools are needed.
+        {t("deepfake.awarenessPage.footer")}
       </footer>
     </div>
   );

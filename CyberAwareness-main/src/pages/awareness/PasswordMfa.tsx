@@ -1,7 +1,9 @@
 import AwarenessCard from '../../components/awareness/AwarenessCard';
+import { useTranslation } from 'react-i18next';
 import TopicLayout from '../../components/awareness/TopicLayout';
 
 export default function PasswordMfa() {
+  const { t } = useTranslation();
   return (
     <TopicLayout icon="🔐" title="Password & MFA Guidance" accentColor="#4ade80"
       subtitle="Weak passwords and missing multi-factor authentication are the #1 cause of account takeovers. Your credentials are your first line of defense.">
@@ -27,7 +29,7 @@ export default function PasswordMfa() {
         "Enable MFA on: email, banking apps, social media, DigiLocker, and work accounts",
         "Never share your MFA OTP with anyone — no legitimate service will ever ask for it",
       ]} />
-      <AwarenessCard title="🇮🇳 Indian Context" color="cyan" items={[
+      <AwarenessCard title={t("awareness.password.card3Title")} color="cyan" items={[
         "RBI mandates 2FA for all online banking and card transactions in India",
         "Enable MFA on DigiLocker, UMANG, and all government portals",
         "Aadhaar-based OTP is a form of MFA — never share it with anyone",

@@ -1,21 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { QuizCard, QuizShell } from './QuizShell';
 
-const modules = [
-  { to: '/quiz/play', icon: '🧠', title: 'Cyber Awareness Quizzes', desc: 'Scenario-based questions covering phishing, social engineering, and digital hygiene.', color: 'text-cyan-300' },
-  { to: '/quiz/challenge', icon: '🎭', title: 'Scam Simulator', desc: 'Classify suspicious messages under pressure and build decision confidence.', color: 'text-red-300' },
-  { to: '/quiz/case-study', icon: '📋', title: 'Case Studies', desc: 'Analyze real-world incidents and learn response patterns.', color: 'text-purple-300' },
-  { to: '/quiz/leaderboard', icon: '🏆', title: 'Leaderboard', desc: 'Track XP, rank, and training progress.', color: 'text-emerald-300' },
-];
-
 export default function QuizHome() {
+  const { t } = useTranslation();
+
+  const modules = [
+    { to: '/quiz/play', icon: '🧠', title: t('quiz.card1.title'), desc: t('quiz.card1.desc'), color: 'text-cyan-300' },
+    { to: '/quiz/challenge', icon: '🎭', title: t('quiz.card2.title'), desc: t('quiz.card2.desc'), color: 'text-red-300' },
+    { to: '/quiz/case-study', icon: '📋', title: t('quiz.card3.title'), desc: t('quiz.card3.desc'), color: 'text-purple-300' },
+    { to: '/quiz/leaderboard', icon: '🏆', title: t('quiz.card4.title'), desc: t('quiz.card4.desc'), color: 'text-emerald-300' },
+  ];
+
   return (
     <QuizShell>
       <section className="mb-8 transition-colors duration-300">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-300">CyberShield training</p>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Quiz Arena</h1>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-cyan-600 dark:text-cyan-300">{t('quiz.kicker')}</p>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{t('quiz.title')}</h1>
         <p className="mt-3 max-w-2xl text-gray-600 dark:text-gray-300">
-          Complete challenges, detect scams, and master cybersecurity through hands-on simulations and case studies.
+          {t('quiz.desc')}
         </p>
       </section>
 

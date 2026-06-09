@@ -1,9 +1,11 @@
 import AwarenessCard from '../../components/awareness/AwarenessCard';
+import { useTranslation } from 'react-i18next';
 import TopicLayout from '../../components/awareness/TopicLayout';
 
 export default function QrScam() {
+  const { t } = useTranslation();
   return (
-    <TopicLayout icon="📷" title="QR Code Scam Awareness" accentColor="#eab308"
+    <TopicLayout icon="📷" title={t("awareness.qr.title")} accentColor="#eab308"
       subtitle="QR codes can be weaponized to silently initiate payments, steal credentials, or redirect you to phishing sites.">
       <AwarenessCard title="⚠️ Common QR Scam Tactics" color="red" items={[
         "Scammer sends a QR code claiming it will 'send you money' — it actually deducts money",
@@ -19,7 +21,7 @@ export default function QrScam() {
         "Use your bank's official app to scan QR codes, not third-party scanners",
         "Never scan QR codes sent by strangers online or via WhatsApp",
       ]} />
-      <AwarenessCard title="🇮🇳 Indian Context" color="cyan" items={[
+      <AwarenessCard title={t("awareness.qr.card3Title")} color="cyan" items={[
         "Bharat QR and UPI QR are widely misused in scams across India",
         "RBI advisory warns against scanning QR codes from unknown sources",
         "Report to cybercrime.gov.in or call 1930 immediately after fraud",

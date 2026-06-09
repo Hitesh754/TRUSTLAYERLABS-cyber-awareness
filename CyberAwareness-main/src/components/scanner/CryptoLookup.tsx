@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Coins, ShieldAlert, Search, Wallet, ArrowRightLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface TxRecord {
   hash: string;
@@ -27,6 +28,7 @@ interface CryptoResult {
 }
 
 export default function CryptoLookup() {
+  const { t } = useTranslation();
   const [network, setNetwork] = useState('ETH');
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
@@ -222,11 +224,11 @@ export default function CryptoLookup() {
         <div className="flex items-center gap-3 mb-2">
           <Coins className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
           <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
-            Crypto Wallet Intelligence Audit
+            {t('cryptoLookup.title')}
           </h2>
         </div>
         <p className="text-slate-600 dark:text-slate-400 text-sm">
-          Trace wallet transaction logs, fetch balances directly from decentralized ledgers, and check malicious flags.
+          {t('cryptoLookup.description')}
         </p>
       </div>
 
@@ -262,7 +264,7 @@ export default function CryptoLookup() {
             className="h-12 px-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition duration-200 shadow-lg hover:shadow-cyan-500/30 disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" />
-            {loading ? 'Traversing...' : 'Trace'}
+            {loading ? t('cryptoLookup.traversing') : t('cryptoLookup.traceBtn')}
           </button>
         </div>
       </form>
@@ -281,7 +283,7 @@ export default function CryptoLookup() {
           <div className="w-10 h-10 border-3 border-cyan-200 dark:border-cyan-500/20 border-t-cyan-600 dark:border-t-cyan-400 rounded-full animate-spin" />
           <div className="text-center">
             <p className="text-slate-700 dark:text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
-            <p className="text-[11px] text-slate-500 dark:text-slate-600 mt-1 uppercase tracking-widest font-semibold">Traversing Blockchain Ledger...</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-600 mt-1 uppercase tracking-widest font-semibold">{t('cryptoLookup.traversingLedger')}</p>
           </div>
         </div>
       )}
@@ -299,11 +301,11 @@ export default function CryptoLookup() {
             {/* Address Banner */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm">
               <div>
-                <p className="text-slate-550 dark:text-slate-400 text-xs uppercase tracking-wider">{result.network} Public Key</p>
+                <p className="text-slate-550 dark:text-slate-400 text-xs uppercase tracking-wider">{result.network} {t('cryptoLookup.publicKey')}</p>
                 <p className="text-sm font-mono font-bold text-cyan-650 dark:text-cyan-300 mt-1 break-all">{result.address}</p>
               </div>
               <div className={`px-4 py-1.5 rounded-full border text-xs font-extrabold flex items-center gap-2 ${getRiskColor(result.riskCategory)}`}>
-                <ShieldAlert className="w-4 h-4" /> RISK SCORE: {result.riskScore}%
+                <ShieldAlert className="w-4 h-4" /> {t('cryptoLookup.riskScore')}: {result.riskScore}%
               </div>
             </div>
 
@@ -322,22 +324,22 @@ export default function CryptoLookup() {
             {/* Ledger Balances Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm animate-fade-in">
-                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">Current Balance</p>
+                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('cryptoLookup.currentBalance')}</p>
                 <p className="text-sm font-mono font-bold text-slate-800 dark:text-white mt-1.5">{result.balance}</p>
               </div>
 
               <div className="p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm animate-fade-in">
-                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">Tx Count</p>
+                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('cryptoLookup.txCount')}</p>
                 <p className="text-sm font-mono font-bold text-slate-800 dark:text-white mt-1.5">{result.txCount}</p>
               </div>
 
               <div className="p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm animate-fade-in">
-                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">Total Received</p>
+                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('cryptoLookup.totalReceived')}</p>
                 <p className="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-1.5">{result.totalReceived}</p>
               </div>
 
               <div className="p-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm animate-fade-in">
-                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">Total Sent</p>
+                <p className="text-slate-550 dark:text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('cryptoLookup.totalSent')}</p>
                 <p className="text-sm font-mono font-bold text-cyan-600 dark:text-cyan-400 mt-1.5">{result.totalSent}</p>
               </div>
             </div>
@@ -345,7 +347,7 @@ export default function CryptoLookup() {
             {/* Flagged Entity Detections */}
             {result.flaggedEntities.length > 0 && (
               <div className="p-5 bg-red-50/50 dark:bg-red-950/15 border border-red-200 dark:border-red-900/30 rounded-xl space-y-3">
-                <h4 className="text-xs text-red-750 dark:text-red-300 font-bold uppercase tracking-wider">Threat Feed Flags Detected</h4>
+                <h4 className="text-xs text-red-750 dark:text-red-300 font-bold uppercase tracking-wider">{t('cryptoLookup.threatFlags')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {result.flaggedEntities.map((flag, idx) => (
                     <span key={idx} className="px-3 py-1 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700/40 text-red-700 dark:text-red-400 text-xs font-semibold rounded-lg flex items-center gap-1.5">
@@ -361,7 +363,7 @@ export default function CryptoLookup() {
               <div className="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl space-y-4 shadow-sm animate-fade-in">
                 <div className="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2.5">
                   <ArrowRightLeft className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">Recent Ledger Transactions</h3>
+                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">{t('cryptoLookup.recentTransactions')}</h3>
                 </div>
 
                 <div className="space-y-3">
@@ -373,7 +375,7 @@ export default function CryptoLookup() {
                         </span>
                         <div>
                           <p className="text-xs text-slate-700 dark:text-slate-300 font-mono font-semibold">{tx.amount}</p>
-                          <p className="text-[10px] text-slate-500 dark:text-slate-500 font-mono">Partner: {tx.partner}</p>
+                          <p className="text-[10px] text-slate-500 dark:text-slate-500 font-mono">{t('cryptoLookup.partner')}: {tx.partner}</p>
                         </div>
                       </div>
                       <div className="flex flex-col items-end gap-1">
@@ -392,7 +394,7 @@ export default function CryptoLookup() {
 
             {/* Recommendations */}
             <div className="p-5 bg-gradient-to-t from-white to-slate-50 dark:from-slate-950 dark:to-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm">
-              <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Security Action Items</h4>
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">{t('cryptoLookup.securityActions')}</h4>
               <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-2.5 list-inside list-disc">
                 {result.riskCategory === 'MALICIOUS' ? (
                   <>

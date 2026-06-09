@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Phone, ShieldAlert, CheckCircle, Search, Building2, MapPin, Activity, RotateCcw, AlertTriangle, User, Home, Fingerprint, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface PhoneResult {
   number: string;
@@ -24,6 +25,7 @@ interface PhoneResult {
 }
 
 export default function PhoneLookup() {
+  const { t } = useTranslation();
   const [countryCode, setCountryCode] = useState('+91');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
@@ -228,11 +230,11 @@ export default function PhoneLookup() {
   const getReputationBadge = (rep: string) => {
     switch (rep) {
       case 'MALICIOUS':
-        return <span className="px-3 py-1 bg-red-950/60 border border-red-700/60 text-red-400 rounded-full text-xs font-bold flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5" /> MALICIOUS THREAT</span>;
+        return <span className="px-3 py-1 bg-red-950/60 border border-red-700/60 text-red-400 rounded-full text-xs font-bold flex items-center gap-1.5"><ShieldAlert className="w-3.5 h-3.5" /> {t('phoneLookup.reputationMalicious')}</span>;
       case 'SUSPICIOUS':
-        return <span className="px-3 py-1 bg-amber-950/60 border border-amber-700/60 text-amber-400 rounded-full text-xs font-bold flex items-center gap-1.5"><AlertTriangle className="w-3.5 h-3.5" /> SUSPICIOUS</span>;
+        return <span className="px-3 py-1 bg-amber-950/60 border border-amber-700/60 text-amber-400 rounded-full text-xs font-bold flex items-center gap-1.5"><AlertTriangle className="w-3.5 h-3.5" /> {t('phoneLookup.reputationSuspicious')}</span>;
       default:
-        return <span className="px-3 py-1 bg-emerald-950/60 border border-emerald-700/60 text-emerald-400 rounded-full text-xs font-bold flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> VERIFIED SAFE</span>;
+        return <span className="px-3 py-1 bg-emerald-950/60 border border-emerald-700/60 text-emerald-400 rounded-full text-xs font-bold flex items-center gap-1.5"><CheckCircle className="w-3.5 h-3.5" /> {t('phoneLookup.reputationSafe')}</span>;
     }
   };
 
@@ -243,11 +245,11 @@ export default function PhoneLookup() {
         <div className="flex items-center gap-3 mb-2">
           <Phone className="w-6 h-6 text-cyan-450 dark:text-cyan-400" />
           <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
-            Mobile Number OSINT Lookup
+            {t('phoneLookup.title')}
           </h2>
         </div>
         <p className="text-slate-500 dark:text-slate-400 text-sm">
-          Query HLR registries, track carrier metadata, search KYC identity databases, and calculate real-time spam & scam reputation score.
+          {t('phoneLookup.description')}
         </p>
       </div>
 
@@ -263,7 +265,7 @@ export default function PhoneLookup() {
       <form onSubmit={runScan} className="mb-8">
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="w-full sm:w-28">
-            <label className="sr-only">Country Code</label>
+            <label className="sr-only">{t('phoneLookup.subscriberNumber')}</label>
             <select
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
@@ -292,7 +294,7 @@ export default function PhoneLookup() {
             className="h-12 px-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 transition duration-200 shadow-lg hover:shadow-cyan-500/30 disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" />
-            {loading ? 'Querying...' : 'Lookup'}
+            {loading ? t('phoneLookup.querying') : t('phoneLookup.lookupBtn')}
           </button>
         </div>
       </form>
@@ -311,7 +313,7 @@ export default function PhoneLookup() {
           <div className="w-10 h-10 border-3 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
           <div className="text-center">
             <p className="text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
-            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">Running HLR OSINT queries...</p>
+            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">{t('phoneLookup.hlrRunning')}</p>
           </div>
         </div>
       )}
@@ -329,7 +331,7 @@ export default function PhoneLookup() {
             {/* Primary Result Banner */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-slate-50 border border-gray-200 dark:bg-slate-800/40 dark:border-slate-800 rounded-xl transition-colors duration-300">
               <div>
-                <p className="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Subscriber Number</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">{t('phoneLookup.subscriberNumber')}</p>
                 <p className="text-2xl font-mono font-bold text-cyan-600 dark:text-cyan-300 mt-1">{result.number}</p>
               </div>
               <div>
@@ -341,8 +343,8 @@ export default function PhoneLookup() {
             <div className="p-5 bg-slate-50 border border-gray-200 dark:bg-slate-800/30 dark:border-slate-800/60 rounded-xl transition-colors duration-300">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">Aggregated Spam Risk Index</h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Determined by global spam database matches</p>
+                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">{t('phoneLookup.spamRiskIndex')}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{t('phoneLookup.spamRiskDesc')}</p>
                 </div>
                 <span className={`text-xl font-bold font-mono ${
                   result.spamScore > 75 ? 'text-red-500' : result.spamScore > 30 ? 'text-amber-500' : 'text-emerald-500'
@@ -364,7 +366,7 @@ export default function PhoneLookup() {
             <div className="p-5 bg-slate-50 border border-gray-200 dark:bg-slate-900 dark:border-slate-850 rounded-xl space-y-4 transition-colors duration-300">
               <div className="flex items-center gap-2 border-b border-gray-200 dark:border-slate-800 pb-2.5">
                 <User className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
-                <h3 className="text-sm font-semibold text-slate-850 dark:text-white">KYC Registered Identity Details</h3>
+                <h3 className="text-sm font-semibold text-slate-850 dark:text-white">{t('phoneLookup.kycSection')}</h3>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-white border border-gray-200 dark:bg-slate-850 dark:border-slate-800 rounded-xl flex gap-3 transition-colors duration-300">
@@ -372,7 +374,7 @@ export default function PhoneLookup() {
                     <User className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400 text-xs">Owner Full Name</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.ownerName')}</p>
                     <p className="text-slate-900 dark:text-white font-semibold mt-0.5">{result.ownerName}</p>
                   </div>
                 </div>
@@ -382,7 +384,7 @@ export default function PhoneLookup() {
                     <Fingerprint className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400 text-xs">Aadhaar Card Link Status</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.aadhaarStatus')}</p>
                     <p className="text-slate-900 dark:text-white font-semibold mt-0.5 text-xs">{result.aadhaarStatus}</p>
                   </div>
                 </div>
@@ -392,7 +394,7 @@ export default function PhoneLookup() {
                     <Home className="w-5 h-5 text-teal-600 dark:text-teal-400" />
                   </div>
                   <div>
-                    <p className="text-slate-500 dark:text-slate-400 text-xs">Registered Address</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.registeredAddress')}</p>
                     <p className="text-slate-900 dark:text-white font-semibold mt-0.5 text-xs leading-relaxed">{result.address}</p>
                   </div>
                 </div>
@@ -406,7 +408,7 @@ export default function PhoneLookup() {
                   <Building2 className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Carrier Network</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.carrierNetwork')}</p>
                   <p className="text-slate-900 dark:text-white font-semibold mt-0.5">{result.carrier}</p>
                 </div>
               </div>
@@ -416,7 +418,7 @@ export default function PhoneLookup() {
                   <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">HLR Registry Circle</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.hlrCircle')}</p>
                   <p className="text-slate-900 dark:text-white font-semibold mt-0.5">{result.location}</p>
                 </div>
               </div>
@@ -428,7 +430,7 @@ export default function PhoneLookup() {
                   </AnimatePresence>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Public Reported Alias</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.reportedAlias')}</p>
                   <p className="text-slate-900 dark:text-white font-semibold mt-0.5 truncate max-w-[250px]">{result.reportedName}</p>
                 </div>
               </div>
@@ -438,7 +440,7 @@ export default function PhoneLookup() {
                   <RotateCcw className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs">Reports Count / First Active</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{t('phoneLookup.reportsActive')}</p>
                   <p className="text-slate-900 dark:text-white font-semibold mt-0.5 text-sm">
                     {result.details.reportsCount} report(s) · {result.details.activeSince}
                   </p>
@@ -448,7 +450,7 @@ export default function PhoneLookup() {
 
             {/* Custom Recommendations Block */}
             <div className="p-5 bg-slate-50 border border-gray-200 dark:bg-gradient-to-t dark:from-slate-950 dark:to-slate-900 dark:border-slate-850 rounded-xl transition-colors duration-300">
-              <h4 className="text-sm font-semibold text-slate-850 dark:text-white mb-3">Security Action Items</h4>
+              <h4 className="text-sm font-semibold text-slate-850 dark:text-white mb-3">{t('phoneLookup.securityActions')}</h4>
               <ul className="text-xs text-slate-650 dark:text-slate-300 space-y-2.5 list-inside list-disc">
                 {result.reputation === 'MALICIOUS' ? (
                   <>

@@ -1,6 +1,7 @@
 import { ScamType } from '../../data/scamDatabase';
 import { Shield, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface ScamCardProps {
   scam: ScamType;
@@ -14,6 +15,7 @@ const severityColors = {
 };
 
 export default function ScamCard({ scam }: ScamCardProps) {
+  const { t } = useTranslation();
   const severity = severityColors[scam.severity];
   
   return (
@@ -24,10 +26,10 @@ export default function ScamCard({ scam }: ScamCardProps) {
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
           <h3 className="font-semibold text-base mb-1.5 text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
-            {scam.name}
+            {t(`scams.${scam.id}.name`, scam.name)}
           </h3>
           <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-500 line-clamp-2">
-            {scam.description}
+            {t(`scams.${scam.id}.description`, scam.description)}
           </p>
         </div>
         <span className="text-xs font-semibold px-2.5 py-1 rounded-full ml-3 flex-shrink-0"
@@ -39,10 +41,10 @@ export default function ScamCard({ scam }: ScamCardProps) {
       <div className="flex items-center gap-2 mt-4">
         <div className="flex items-center gap-1.5 text-xs text-slate-500">
           <Shield className="w-3 h-3" />
-          <span>{scam.commonIndicators.length} indicators</span>
+          <span>{scam.commonIndicators.length} {t('scamLibrary.cardIndicators')}</span>
         </div>
         <div className="flex items-center gap-1 text-xs font-medium text-cyan-700 dark:text-cyan-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors ml-auto">
-          View details <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+          {t('scamLibrary.cardViewDetails')} <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
         </div>
       </div>
     </Link>

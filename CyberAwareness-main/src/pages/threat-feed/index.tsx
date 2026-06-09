@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import {
   getLiveThreats,
 } from "../../services/phishingFeeds";
+import { useTranslation } from "react-i18next";
 
 interface Threat {
   title: string;
@@ -33,7 +34,7 @@ const severityStyles: Record<string, string> = {
 };
 
 export default function ThreatFeedPage() {
-
+  const { t } = useTranslation();
   const [threats, setThreats] =
     useState<Threat[]>([]);
 
@@ -85,7 +86,7 @@ export default function ThreatFeedPage() {
             <Activity className="w-10 h-10 text-cyan-600 dark:text-cyan-400" />
 
             <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-500 bg-clip-text text-transparent">
-              Live Threat Feed
+              {t('threatFeedPage.title')}
             </h1>
           </div>
 
@@ -101,7 +102,7 @@ export default function ThreatFeedPage() {
           <div className="bg-white dark:bg-[#0f172a] border border-cyan-200 dark:border-cyan-500/20 rounded-2xl p-5 shadow-sm">
 
             <p className="text-slate-500 dark:text-slate-400 mb-2">
-              Active Threats
+              {t('threatFeedPage.activeThreats')}
             </p>
 
             <h2 className="text-4xl font-bold text-cyan-650 dark:text-cyan-400">
@@ -113,7 +114,7 @@ export default function ThreatFeedPage() {
           <div className="bg-white dark:bg-[#0f172a] border border-red-200 dark:border-red-500/20 rounded-2xl p-5 shadow-sm">
 
             <p className="text-slate-500 dark:text-slate-400 mb-2">
-              Critical Alerts
+              {t('threatFeedPage.criticalAlerts')}
             </p>
 
             <h2 className="text-4xl font-bold text-red-650 dark:text-red-400">
@@ -131,7 +132,7 @@ export default function ThreatFeedPage() {
           <div className="bg-white dark:bg-[#0f172a] border border-yellow-250 dark:border-yellow-500/20 rounded-2xl p-5 shadow-sm">
 
             <p className="text-slate-500 dark:text-slate-400 mb-2">
-              Phishing Domains
+              {t('threatFeedPage.phishingDomains')}
             </p>
 
             <h2 className="text-4xl font-bold text-yellow-700 dark:text-yellow-400">
@@ -149,11 +150,11 @@ export default function ThreatFeedPage() {
           <div className="bg-white dark:bg-[#0f172a] border border-green-200 dark:border-green-500/20 rounded-2xl p-5 shadow-sm">
 
             <p className="text-slate-500 dark:text-slate-400 mb-2">
-              Safe Status
+              {t('threatFeedPage.safeStatus')}
             </p>
 
             <h2 className="text-4xl font-bold text-green-650 dark:text-green-400">
-              Stable
+              {t('threatFeedPage.stable')}
             </h2>
 
           </div>
@@ -199,7 +200,7 @@ export default function ThreatFeedPage() {
                           </span>
 
                           <span className="bg-slate-100 dark:bg-[#111827] px-3 py-1 rounded-lg text-sm text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-transparent">
-                            Source: {threat.source}
+                            {t('threatFeedPage.source')}: {threat.source}
                           </span>
 
                         </div>

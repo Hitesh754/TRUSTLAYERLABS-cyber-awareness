@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useQrPage } from './qrUtils';
 import './css/qr.css';
 
 export default function Awareness() {
+  const { t } = useTranslation();
   useQrPage(['./js/scams.js', './js/qr.js'], 'QR Awareness Tips | CyberShield');
 
   return (
@@ -27,43 +29,43 @@ export default function Awareness() {
       </nav>
       <main className="qr-shell">
         <section className="qr-page-intro">
-          <div className="qr-kicker">awareness and Indian cyber law</div>
-          <h1>Verify before you pay</h1>
-          <p className="qr-copy">QR codes are only shortcuts. Treat the destination screen as the real security checkpoint.</p>
+          <div className="qr-kicker">{t('qr.kicker')}</div>
+          <h1>{t('qr.awarenessPage.title')}</h1>
+          <p className="qr-copy">{t('qr.awarenessPage.desc')}</p>
         </section>
         <section className="qr-grid qr-section">
           <article className="qr-card">
             <span className="qr-chip red">UPI rule</span>
-            <h3>PIN means debit risk</h3>
-            <p>If an app asks for UPI PIN, assume money can leave your account. Refunds and prize credits do not need your PIN.</p>
+            <h3>{t('qr.awarenessPage.card1Title')}</h3>
+            <p>{t('qr.awarenessPage.card1Desc')}</p>
           </article>
           <article className="qr-card">
             <span className="qr-chip">domain check</span>
-            <h3>Look beyond the logo</h3>
-            <p>Fake pages can copy brand colors. Check HTTPS, domain spelling, official suffixes, and whether the page asks for OTP or card data.</p>
+            <h3>{t('qr.awarenessPage.card2Title')}</h3>
+            <p>{t('qr.awarenessPage.card2Desc')}</p>
           </article>
           <article className="qr-card">
             <span className="qr-chip red">physical tampering</span>
-            <h3>Public stickers are risky</h3>
-            <p>Parking meters, fuel pumps, cafes, and counters can be relabeled. Ask staff or use the official app when the sticker looks altered.</p>
+            <h3>{t('qr.awarenessPage.card3Title')}</h3>
+            <p>{t('qr.awarenessPage.card3Desc')}</p>
           </article>
         </section>
         <section className="qr-grid two qr-section">
           <article className="qr-card">
-            <h2>Indian reporting tips</h2>
+            <h2>{t('qr.awarenessPage.section2Title')}</h2>
             <ul className="qr-list">
-              <li>Call 1930 quickly for financial cyber fraud assistance.</li>
-              <li>File a complaint at cybercrime.gov.in with screenshots and UTR numbers.</li>
-              <li>Share the VPA, phone number, URL, timestamp, bank, and transaction ID.</li>
-              <li>Ask your bank or UPI app to block/freeze the transaction trail immediately.</li>
+              <li>{t('qr.awarenessPage.tip1')}</li>
+              <li>{t('qr.awarenessPage.tip2')}</li>
+              <li>{t('qr.awarenessPage.tip3')}</li>
+              <li>{t('qr.awarenessPage.tip4')}</li>
             </ul>
           </article>
           <article className="qr-card">
-            <h2>Law awareness</h2>
+            <h2>{t('qr.awarenessPage.section3Title')}</h2>
             <ul className="qr-list">
-              <li>IT Act Section 66C relates to identity theft and credential misuse.</li>
-              <li>IT Act Section 66D relates to cheating by personation using computer resources.</li>
-              <li>IPC/BNS cheating provisions may also be relevant depending on the complaint.</li>
+              <li>{t('qr.awarenessPage.law1')}</li>
+              <li>{t('qr.awarenessPage.law2')}</li>
+              <li>{t('qr.awarenessPage.law3')}</li>
               <li data-law-tip></li>
             </ul>
           </article>

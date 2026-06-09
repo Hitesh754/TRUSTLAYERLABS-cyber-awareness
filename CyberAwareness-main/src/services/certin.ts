@@ -110,5 +110,6 @@ class CertInService {
   }
 }
 
-export { CertInService, CertInAlert, CertInResponse };
+export { CertInService };
+export type { CertInAlert, CertInResponse };
 export default new CertInService();

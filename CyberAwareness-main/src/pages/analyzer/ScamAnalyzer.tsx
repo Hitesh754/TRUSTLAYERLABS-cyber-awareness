@@ -126,7 +126,7 @@ export default function ScamAnalyzer() {
         ? content.flatMap((line) => doc.splitTextToSize(line, usableWidth))
         : doc.splitTextToSize(content, usableWidth);
 
-      lines.forEach((line) => {
+      lines.forEach((line: string) => {
         if (y > 750) {
           doc.addPage();
           y = margin;
@@ -213,31 +213,31 @@ export default function ScamAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 sm:p-6">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-black dark:text-white p-4 sm:p-6 transition-colors duration-300">
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-10">
           <ShieldAlert className="w-12 h-12 text-cyan-400 shrink-0" />
 
           <div>
             <h1 className="text-3xl sm:text-5xl font-bold leading-tight">AI Scam Analyzer</h1>
-            <p className="text-zinc-400 mt-2 text-sm sm:text-base max-w-2xl">
+            <p className="text-slate-650 dark:text-zinc-400 mt-2 text-sm sm:text-base max-w-2xl">
               Analyze phishing messages, scam screenshots, suspicious QR codes, and fraud attempts instantly.
             </p>
           </div>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 sm:p-8">
+        <div className="bg-white border border-gray-250 dark:bg-zinc-900 dark:border-zinc-800 rounded-3xl p-5 sm:p-8 transition-colors duration-300 shadow-sm">
           <textarea
             placeholder="Paste suspicious SMS, phishing email, WhatsApp message, or scam text..."
             value={text}
             onChange={(e) => setText(e.target.value)}
             disabled={loadingPhase !== null}
-            className="w-full h-44 bg-black border border-zinc-700 rounded-2xl p-4 sm:p-5 mb-8 outline-none focus:border-cyan-500 resize-none text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-44 bg-slate-50 border border-gray-300 dark:bg-black dark:border-zinc-700 rounded-2xl p-4 sm:p-5 mb-8 outline-none focus:border-cyan-500 text-slate-900 dark:text-white transition-all resize-none text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
           />
 
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed border-cyan-500 rounded-3xl p-6 sm:p-12 text-center cursor-pointer hover:bg-zinc-800 transition-all mb-8 ${
+            className={`border-2 border-dashed border-cyan-500 rounded-3xl p-6 sm:p-12 text-center cursor-pointer hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all mb-8 ${
               loadingPhase !== null ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -245,7 +245,7 @@ export default function ScamAnalyzer() {
             <div className="flex flex-col items-center">
               <Upload className="w-10 h-10 sm:w-12 sm:h-12 text-cyan-400 mb-4" />
               <p className="text-lg sm:text-2xl font-semibold">Upload Scam Screenshot</p>
-              <p className="text-zinc-400 mt-3 text-sm sm:text-base">Drag & drop image here or click to upload.</p>
+              <p className="text-slate-500 dark:text-zinc-400 mt-3 text-sm sm:text-base">Drag & drop image here or click to upload.</p>
             </div>
           </div>
 
@@ -278,14 +278,14 @@ export default function ScamAnalyzer() {
             <button
               onClick={tryDemoScam}
               disabled={loadingPhase !== null}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-base sm:text-lg font-semibold border-2 border-zinc-600 text-zinc-300 hover:border-zinc-400 hover:text-zinc-100 disabled:opacity-60 disabled:cursor-not-allowed transition-all hover:shadow-lg hover:shadow-zinc-900/50"
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-base sm:text-lg font-semibold border-2 border-gray-300 text-slate-700 hover:border-gray-400 hover:text-slate-900 dark:border-zinc-600 dark:text-zinc-300 dark:hover:border-zinc-400 dark:hover:text-zinc-100 disabled:opacity-60 disabled:cursor-not-allowed transition-all hover:shadow-lg dark:hover:shadow-zinc-900/50"
             >
               Try Demo Scam
             </button>
           </div>
 
           {statusMessage && (
-            <p className="mt-4 text-sm text-zinc-400">{statusMessage}</p>
+            <p className="mt-4 text-sm text-slate-500 dark:text-zinc-400">{statusMessage}</p>
           )}
           {loadingPhase === "scanning" && (
             <div className="mt-4 flex items-center gap-2 text-sm text-cyan-300">
@@ -297,13 +297,13 @@ export default function ScamAnalyzer() {
 
         {image && (
           <div className="mt-8">
-            <img src={image} alt="Uploaded" className="rounded-3xl border border-zinc-800 w-full object-cover max-h-[400px]" />
+            <img src={image} alt="Uploaded" className="rounded-3xl border border-gray-250 dark:border-zinc-800 w-full object-cover max-h-[400px]" />
           </div>
         )}
 
         {result && (
           <div
-            className={`mt-10 bg-zinc-900 border-2 rounded-3xl p-5 sm:p-8 ${
+            className={`mt-10 bg-white dark:bg-zinc-900 border-2 rounded-3xl p-5 sm:p-8 transition-colors duration-300 ${
               getRiskColors(result.risk).border
             } ${getRiskColors(result.risk).bg}`}
           >
@@ -319,7 +319,7 @@ export default function ScamAnalyzer() {
               )}
 
               <div>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
                   <div>
                     <h2 className="text-3xl sm:text-4xl font-bold">Analysis Result</h2>
                     <p
@@ -342,11 +342,11 @@ export default function ScamAnalyzer() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
               <div
-                className={`bg-black border-2 rounded-2xl p-5 sm:p-6 ${
+                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
                   getRiskColors(result.risk).border
                 } ${getRiskColors(result.risk).lightBg}`}
               >
-                <p className="text-zinc-400 mb-2 text-sm">Risk Level</p>
+                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Risk Level</p>
                 <h3
                   className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
                 >
@@ -355,11 +355,11 @@ export default function ScamAnalyzer() {
               </div>
 
               <div
-                className={`bg-black border-2 rounded-2xl p-5 sm:p-6 ${
+                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
                   getRiskColors(result.risk).border
                 } ${getRiskColors(result.risk).lightBg}`}
               >
-                <p className="text-zinc-400 mb-2 text-sm">Scam Score</p>
+                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Scam Score</p>
                 <h3
                   className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
                 >
@@ -367,19 +367,19 @@ export default function ScamAnalyzer() {
                 </h3>
               </div>
 
-              <div className="bg-black border border-zinc-800 rounded-2xl p-5 sm:p-6">
-                <p className="text-zinc-400 mb-2 text-sm">Category</p>
+              <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
+                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Category</p>
                 <h3 className="text-2xl sm:text-3xl font-bold">{result.category}</h3>
               </div>
 
-              <div className="bg-black border border-zinc-800 rounded-2xl p-5 sm:p-6">
-                <p className="text-zinc-400 mb-2 text-sm">Confidence</p>
+              <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
+                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Confidence</p>
                 <h3 className="text-2xl sm:text-3xl font-bold">{result.confidence}%</h3>
               </div>
             </div>
 
             <div
-              className={`bg-black border-2 rounded-2xl overflow-hidden transition-all mb-8 ${
+              className={`bg-slate-50 dark:bg-black border-2 rounded-2xl overflow-hidden transition-all mb-8 ${
                 getRiskColors(result.risk).accentBorder
               }`}
             >
@@ -389,7 +389,7 @@ export default function ScamAnalyzer() {
                     expandedPanel === "why-flagged" ? null : "why-flagged"
                   )
                 }
-                className="w-full flex items-center justify-between p-5 sm:p-6 hover:bg-zinc-900 transition-colors"
+                className="w-full flex items-center justify-between p-5 sm:p-6 hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors"
               >
                 <h3 className="text-xl sm:text-2xl font-semibold text-left">
                   Why Flagged?
@@ -402,11 +402,11 @@ export default function ScamAnalyzer() {
               </button>
 
               {expandedPanel === "why-flagged" && (
-                <div className="border-t border-zinc-800 px-5 sm:px-6 py-5 sm:py-6">
+                <div className="border-t border-gray-200 dark:border-zinc-800 px-5 sm:px-6 py-5 sm:py-6">
                   <ul className="space-y-3">
                     {result.indicators.map((item) => (
                       <li
-                        key={item}
+                         key={item}
                         className="flex items-start gap-3 text-sm sm:text-base"
                       >
                         <div
@@ -414,7 +414,7 @@ export default function ScamAnalyzer() {
                             getRiskColors(result.risk).text
                           }`}
                         />
-                        <span className="text-zinc-300">{item}</span>
+                        <span className="text-slate-700 dark:text-zinc-300">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -424,12 +424,12 @@ export default function ScamAnalyzer() {
 
             {result.suspiciousUrls.length > 0 && (
               <div
-                className={`bg-black border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
+                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
                   getRiskColors(result.risk).accentBorder
                 }`}
               >
                 <h3 className="text-xl sm:text-2xl font-semibold mb-5">Suspicious URLs</h3>
-                <ul className="space-y-3 text-sm sm:text-base text-zinc-300">
+                <ul className="space-y-3 text-sm sm:text-base text-slate-700 dark:text-zinc-300">
                   {result.suspiciousUrls.map((url) => (
                     <li key={url} className="break-all">{url}</li>
                   ))}
@@ -443,16 +443,16 @@ export default function ScamAnalyzer() {
               } ${getRiskColors(result.risk).border}`}
             >
               <h3 className="text-xl sm:text-2xl font-semibold mb-3">Recommendation</h3>
-              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base">{result.recommendation}</p>
+              <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base">{result.recommendation}</p>
             </div>
 
             <div
               className={`border-2 rounded-2xl p-5 sm:p-6 ${
                 getRiskColors(result.risk).accentBorder
-              } bg-zinc-950`}
+              } bg-white dark:bg-zinc-950 transition-colors duration-300`}
             >
               <h3 className="text-xl sm:text-2xl font-semibold mb-4">AI Explanation</h3>
-              <p className="text-zinc-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">{result.explanation}</p>
+              <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">{result.explanation}</p>
             </div>
           </div>
         )}
