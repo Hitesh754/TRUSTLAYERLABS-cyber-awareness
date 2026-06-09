@@ -55,6 +55,7 @@ import BreachCheckerPage from "./pages/breach-checker";
 import PhoneLookupPage from "./pages/phone-lookup";
 import EmailLookupPage from "./pages/email-lookup";
 import DomainLookupPage from "./pages/domain-lookup";
+import UsernameLookupPage from "./pages/username-lookup";
 import CryptoLookupPage from "./pages/crypto-lookup";
 import HomePage from './pages/index';
 import AnalyzerPage from "./pages/analyzer";
@@ -85,6 +86,7 @@ export default function App() {
             <Route path="/phone-lookup" element={<PhoneLookupPage />} />
             <Route path="/email-lookup" element={<EmailLookupPage />} />
             <Route path="/domain-lookup" element={<DomainLookupPage />} />
+            <Route path="/username-lookup" element={<UsernameLookupPage />} />
             <Route path="/crypto-lookup" element={<CryptoLookupPage />} />
             <Route index element={<HomePage />} />
 

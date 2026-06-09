@@ -173,6 +173,10 @@ export default function Navbar() {
       to: "/crypto-lookup",
       label: t("tools.cryptoWalletLookup"),
     },
+    {
+      to: "/username-lookup",
+      label: t("tools.usernameSearch"),
+    },
   ];
 
   const learningLinks = [

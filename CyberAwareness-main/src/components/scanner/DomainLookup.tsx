@@ -21,6 +21,7 @@ interface DomainResult {
   age: string;
   dnsRecords: DnsRecord[];
   riskCategory: 'SAFE' | 'SUSPICIOUS' | 'MALICIOUS';
+  rawWhois?: string;
 }
 
 export default function DomainLookup() {
@@ -70,6 +71,7 @@ export default function DomainLookup() {
       let sslStatus: 'VALID' | 'EXPIRED_OR_SELF_SIGNED' | 'NONE' = 'VALID';
       let age = 'N/A';
       let riskCategory: 'SAFE' | 'SUSPICIOUS' | 'MALICIOUS' = 'SAFE';
+      let rawWhois = '';
 
       // 1. RDAP Registry Query (Modern open WHOIS protocol)
       try {
@@ -165,6 +167,19 @@ export default function DomainLookup() {
         if (riskCategory === 'SAFE') riskCategory = 'SUSPICIOUS';
       }
 
+      setScanStep('Fetching RAW WHOIS data...');
+      await new Promise((r) => setTimeout(r, 200));
+
+      // 5. Raw WHOIS via HackerTarget
+      try {
+        const whoisRes = await fetch(`https://api.hackertarget.com/whois/?q=${cleanDomain}`);
+        if (whoisRes.ok) {
+          rawWhois = await whoisRes.text();
+        }
+      } catch (e) {
+        console.warn('HackerTarget WHOIS fetch failed');
+      }
+
       setResult({
         domain: cleanDomain,
         safetyScore,
@@ -175,7 +190,8 @@ export default function DomainLookup() {
         sslStatus,
         age,
         dnsRecords,
-        riskCategory
+        riskCategory,
+        rawWhois
       });
     } catch (err) {
       setError('An error occurred during domain lookup. Please try again.');
@@ -391,6 +407,21 @@ export default function DomainLookup() {
                 )}
               </ul>
             </div>
+
+            {/* Raw WHOIS output */}
+            {result.rawWhois && (
+              <details className="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm group cursor-pointer">
+                <summary className="text-sm font-semibold text-slate-850 dark:text-white flex items-center justify-between outline-none">
+                  {t('domainLookup.rawWhois', 'Raw WHOIS Data')}
+                  <span className="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-800">
+                  <pre className="whitespace-pre-wrap font-mono text-[10px] sm:text-xs text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-950 p-4 rounded-lg overflow-x-auto border border-gray-100 dark:border-slate-800">
+                    {result.rawWhois}
+                  </pre>
+                </div>
+              </details>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

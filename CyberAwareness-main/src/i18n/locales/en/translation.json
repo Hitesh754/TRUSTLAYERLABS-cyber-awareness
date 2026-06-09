@@ -22,7 +22,8 @@
     "mobileNumberLookup": "Mobile Number Lookup",
     "emailAddressLookup": "Email Address Lookup",
     "domainWhoisLookup": "Domain WHOIS Lookup",
-    "cryptoWalletLookup": "Crypto Wallet Lookup"
+    "cryptoWalletLookup": "Crypto Wallet Lookup",
+    "usernameSearch": "Username OSINT Search"
   },
   "hero": {
     "badgeText": "AI Powered Cyber Awareness Platform",
@@ -305,7 +306,21 @@
     "cleanFeed": "Clean / Clean Feed",
     "riskProfile": "Risk Profile",
     "dnsRecords": "Resolved DNS Records",
-    "securityActions": "Security Action Items"
+    "securityActions": "Security Action Items",
+    "rawWhois": "Raw WHOIS Data"
+  },
+  "usernameLookup": {
+    "title": "Username OSINT Search",
+    "description": "Check username availability and presence across digital platforms and social media.",
+    "searchBtn": "Search",
+    "searching": "Searching...",
+    "targetUsername": "Target Username",
+    "platform": "Platform",
+    "status": "Status",
+    "found": "Found",
+    "notFound": "Not Found",
+    "error": "Error",
+    "viewProfile": "View Profile"
   },
   "cryptoLookup": {
     "title": "Crypto Wallet Intelligence Audit",
@@ -385,6 +400,10 @@
     "cryptoLookup": {
       "title": "Crypto Wallet Lookup",
       "description": "Trace crypto wallet transactions, check balances, and detect malicious flags."
+    },
+    "usernameLookup": {
+      "title": "Username OSINT Search",
+      "description": "Search for usernames across social media and digital platforms."
     },
     "threatFeed": {
       "title": "Threat Feed",
