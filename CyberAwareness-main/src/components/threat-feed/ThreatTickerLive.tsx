@@ -28,13 +28,13 @@ const ThreatTickerLive: React.FC<ThreatTickerLiveProps> = ({
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical':
-        return 'text-red-500 bg-red-900/20 border-red-500/50 shadow-red-500/50';
+        return 'text-red-750 dark:text-red-500 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-500/50 shadow-red-500/10';
       case 'high':
-        return 'text-orange-400 bg-orange-900/20 border-orange-500/50 shadow-orange-500/50';
+        return 'text-orange-800 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-500/50 shadow-orange-500/10';
       case 'medium':
-        return 'text-yellow-400 bg-yellow-900/20 border-yellow-500/50 shadow-yellow-500/50';
+        return 'text-yellow-800 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-500/50 shadow-yellow-500/10';
       default:
-        return 'text-green-400 bg-green-900/20 border-green-500/50 shadow-green-500/50';
+        return 'text-green-750 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-500/50 shadow-green-500/10';
     }
   };
 
@@ -54,16 +54,16 @@ const ThreatTickerLive: React.FC<ThreatTickerLiveProps> = ({
   };
 
   return (
-    <div className="w-full bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-t border-b border-cyan-900/30 overflow-hidden">
+    <div className="w-full bg-gradient-to-r from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-t border-b border-gray-200 dark:border-cyan-900/30 overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-slate-900/50 border-b border-cyan-900/20">
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-100/50 dark:bg-slate-900/50 border-b border-gray-200 dark:border-cyan-900/20">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-          <span className="text-xs font-semibold text-cyan-400 uppercase tracking-widest">LIVE THREAT FEED</span>
+          <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">LIVE THREAT FEED</span>
         </div>
         <button
           onClick={() => setIsPaused(!isPaused)}
-          className="px-3 py-1 text-xs bg-cyan-900/30 hover:bg-cyan-900/50 text-cyan-300 rounded border border-cyan-700/50 transition-colors"
+          className="px-3 py-1 text-xs bg-cyan-50 dark:bg-cyan-900/30 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 text-cyan-600 dark:text-cyan-300 rounded border border-cyan-200 dark:border-cyan-700/50 transition-colors"
         >
           {isPaused ? 'Resume' : 'Pause'}
         </button>
@@ -86,7 +86,7 @@ const ThreatTickerLive: React.FC<ThreatTickerLiveProps> = ({
           .ticker-scroll.paused {
             animation-play-state: paused;
           }
-          .glow-threat {
+          .dark .glow-threat {
             text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
           }
         `}</style>
@@ -102,7 +102,7 @@ const ThreatTickerLive: React.FC<ThreatTickerLiveProps> = ({
             >
               <span className="text-lg">{getTypeIcon(alert.type)}</span>
               <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-semibold text-white">{alert.title}</span>
+                <span className="text-sm font-semibold text-slate-800 dark:text-white">{alert.title}</span>
                 <span className="text-xs opacity-75">{alert.timestamp}</span>
               </div>
             </div>
@@ -111,9 +111,9 @@ const ThreatTickerLive: React.FC<ThreatTickerLiveProps> = ({
       </div>
 
       {/* Stats Bar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-slate-900/50 border-t border-cyan-900/20 text-xs text-cyan-300">
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-100/50 dark:bg-slate-900/50 border-t border-gray-200 dark:border-cyan-900/20 text-xs text-cyan-600 dark:text-cyan-300">
         <span>{alerts.length} Active Threats</span>
-        <span className="text-green-400">● System Protected</span>
+        <span className="text-green-600 dark:text-green-400">● System Protected</span>
       </div>
     </div>
   );

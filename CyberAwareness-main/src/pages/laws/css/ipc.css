@@ -13,10 +13,10 @@
 .section-node {
   width: 100%;
   padding: 16px;
-  border: 1px solid rgba(0, 220, 255, 0.22);
+  border: 1px solid var(--law-border);
   border-radius: var(--law-radius);
   color: var(--law-text);
-  background: rgba(6, 16, 30, 0.78);
+  background: var(--law-panel);
   text-align: left;
   cursor: pointer;
   transition: transform var(--law-smooth), border-color var(--law-fast), box-shadow var(--law-fast);

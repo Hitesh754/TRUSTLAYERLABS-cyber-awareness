@@ -21,18 +21,21 @@ export default function CategoryFilter({ selectedCategory, onCategoryChange }: C
           <button
             key={category}
             onClick={() => onCategoryChange(category)}
-            className={`px-4 py-2 rounded-xl font-semibold text-sm transition-all hover:scale-105 ${
+            className={`px-4 py-2 rounded-xl border font-semibold text-sm transition-all hover:scale-105 ${
               isSelected
-                ? 'text-white'
-                : 'text-slate-400 hover:text-white'
+                ? ''
+                : 'bg-slate-100 hover:bg-slate-200 border-gray-200 text-slate-600 hover:text-slate-900 dark:bg-white/5 dark:hover:bg-white/10 dark:border-slate-800 dark:text-slate-400 dark:hover:text-white'
             }`}
             style={{
               background: isSelected
-                ? `linear-gradient(135deg, ${categoryInfo.color}40, ${categoryInfo.color}20)`
-                : 'rgba(255,255,255,0.04)',
-              border: isSelected
-                ? `1px solid ${categoryInfo.color}40`
-                : '1px solid #1e293b'
+                ? `linear-gradient(135deg, ${categoryInfo.color}30, ${categoryInfo.color}15)`
+                : undefined,
+              borderColor: isSelected
+                ? `${categoryInfo.color}40`
+                : undefined,
+              color: isSelected
+                ? categoryInfo.color
+                : undefined
             }}
           >
             <span className="mr-1.5">{categoryInfo.icon}</span>

@@ -18,16 +18,16 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
   const category = scam.category;
   
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
       {/* Header */}
-      <div className="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
+      <div className="border-b border-gray-200 bg-white/90 dark:border-slate-800 dark:bg-slate-950/90 backdrop-blur-md sticky top-0 z-40">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link to="/scam-library" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-400 transition-colors">
+          <Link to="/scam-library" className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-cyan-600 dark:text-slate-400 dark:hover:text-cyan-400 transition-colors">
             <ArrowLeft className="w-3 h-3" />
             Back to Library
           </Link>
-          <span className="text-slate-700">/</span>
-          <span className="text-xs text-slate-400">{scam.name}</span>
+          <span className="text-slate-300 dark:text-slate-700">/</span>
+          <span className="text-xs text-slate-650 dark:text-slate-450">{scam.name}</span>
         </div>
       </div>
 
@@ -45,24 +45,24 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
             </span>
           </div>
           
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white">
             {scam.name}
           </h1>
           
-          <p className="text-base text-slate-400 leading-relaxed">
+          <p className="text-base text-slate-650 dark:text-slate-400 leading-relaxed">
             {scam.description}
           </p>
         </div>
 
         {/* Common Indicators */}
-        <div className="rounded-2xl p-6 bg-slate-900 border border-slate-800">
+        <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-2 mb-4">
             <AlertTriangle className="w-5 h-5 text-amber-500" />
-            <h2 className="text-lg font-bold text-white">Common Indicators</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Common Indicators</h2>
           </div>
           <ul className="space-y-3">
             {scam.commonIndicators.map((indicator, index) => (
-              <li key={index} className="flex items-start gap-3 text-sm text-slate-300">
+              <li key={index} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mt-1.5 flex-shrink-0" />
                 {indicator}
               </li>
@@ -71,14 +71,14 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
         </div>
 
         {/* Prevention Tips */}
-        <div className="rounded-2xl p-6 bg-slate-900 border border-slate-800">
+        <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
           <div className="flex items-center gap-2 mb-4">
             <Shield className="w-5 h-5 text-cyan-500" />
-            <h2 className="text-lg font-bold text-white">Prevention Tips</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">Prevention Tips</h2>
           </div>
           <ul className="space-y-3">
             {scam.preventionTips.map((tip, index) => (
-              <li key={index} className="flex items-start gap-3 text-sm text-slate-300">
+              <li key={index} className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-300">
                 <CheckCircle className="w-4 h-4 text-cyan-500 mt-0.5 flex-shrink-0" />
                 {tip}
               </li>
@@ -88,15 +88,15 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
 
         {/* Examples (if available) */}
         {scam.examples && scam.examples.length > 0 && (
-          <div className="rounded-2xl p-6 bg-slate-900 border border-slate-800">
+          <div className="rounded-2xl p-6 bg-white border border-gray-200 dark:bg-slate-900 dark:border-slate-800 transition-colors duration-300">
             <div className="flex items-center gap-2 mb-4">
               <AlertTriangle className="w-5 h-5 text-red-500" />
-              <h2 className="text-lg font-bold text-white">Real-World Examples</h2>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Real-World Examples</h2>
             </div>
             <div className="space-y-3">
               {scam.examples.map((example, index) => (
-                <div key={index} className="p-4 rounded-lg bg-slate-800 border border-slate-700">
-                  <p className="text-sm text-slate-300 italic">"{example}"</p>
+                <div key={index} className="p-4 rounded-lg bg-slate-50 border border-gray-200 dark:bg-slate-800 dark:border-slate-700">
+                  <p className="text-sm text-slate-600 dark:text-slate-300 italic">"{example}"</p>
                 </div>
               ))}
             </div>
@@ -108,7 +108,7 @@ export default function ScamDetail({ scam }: ScamDetailProps) {
           style={{ background: 'linear-gradient(135deg, #0f172a 0%, rgba(14,116,144,0.18) 100%)', border: '1px solid rgba(34,211,238,0.18)' }}>
           <div>
             <div className="font-bold text-base text-white mb-1">Victim of this scam?</div>
-            <p className="text-sm text-slate-500">Report immediately to help protect others.</p>
+            <p className="text-sm text-slate-450">Report immediately to help protect others.</p>
           </div>
           <div className="flex gap-3 flex-shrink-0">
             <a href="tel:1930"

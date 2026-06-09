@@ -183,22 +183,22 @@ export default function DomainLookup() {
   };
 
   const getSafetyColor = (score: number) => {
-    if (score >= 80) return 'text-emerald-400';
-    if (score >= 45) return 'text-amber-400';
-    return 'text-red-400';
+    if (score >= 80) return 'text-emerald-600 dark:text-emerald-400';
+    if (score >= 45) return 'text-amber-700 dark:text-amber-400';
+    return 'text-red-650 dark:text-red-400';
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 rounded-2xl border border-cyan-900/30 shadow-2xl overflow-hidden">
+    <div className="w-full max-w-3xl mx-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 rounded-2xl border border-gray-250 dark:border-cyan-900/30 shadow-2xl overflow-hidden text-slate-800 dark:text-slate-100">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
-          <Globe className="w-6 h-6 text-cyan-400" />
-          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+          <Globe className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
             Domain & WHOIS OSINT Analyzer
           </h2>
         </div>
-        <p className="text-slate-400 text-sm">
+        <p className="text-slate-600 dark:text-slate-400 text-sm">
           Queries real WHOIS databases dynamically and checks live DNS resolutions to test safety reputation.
         </p>
       </div>
@@ -212,9 +212,9 @@ export default function DomainLookup() {
               value={domain}
               onChange={(e) => setDomain(e.target.value)}
               placeholder="Enter domain (e.g. google.com)..."
-              className="w-full h-12 pl-4 pr-12 bg-slate-800/40 border border-cyan-800/40 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
+              className="w-full h-12 pl-4 pr-12 bg-white dark:bg-slate-800/40 border border-gray-300 dark:border-cyan-800/40 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition"
             />
-            <Globe className="absolute right-4 top-3.5 w-5 h-5 text-slate-500" />
+            <Globe className="absolute right-4 top-3.5 w-5 h-5 text-slate-400 dark:text-slate-500" />
           </div>
           <button
             type="submit"
@@ -229,19 +229,19 @@ export default function DomainLookup() {
 
       {/* Error Output */}
       {error && (
-        <div className="mb-6 p-4 bg-red-900/20 border border-red-700/50 rounded-lg flex items-center gap-3">
-          <ShieldAlert className="w-5 h-5 text-red-400 flex-shrink-0" />
-          <p className="text-red-300 text-sm">{error}</p>
+        <div className="mb-6 p-4 bg-red-900/10 dark:bg-red-900/20 border border-red-200 dark:border-red-700/50 rounded-lg flex items-center gap-3">
+          <ShieldAlert className="w-5 h-5 text-red-650 dark:text-red-400 flex-shrink-0" />
+          <p className="text-red-700 dark:text-red-300 text-sm">{error}</p>
         </div>
       )}
 
       {/* Scanning Step animation */}
       {loading && (
         <div className="flex flex-col items-center justify-center py-12 gap-4">
-          <div className="w-10 h-10 border-3 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
+          <div className="w-10 h-10 border-3 border-cyan-200 dark:border-cyan-500/20 border-t-cyan-600 dark:border-t-cyan-400 rounded-full animate-spin" />
           <div className="text-center">
-            <p className="text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
-            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">Running Domain WHOIS queries...</p>
+            <p className="text-slate-700 dark:text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
+            <p className="text-[11px] text-slate-500 dark:text-slate-600 mt-1 uppercase tracking-widest font-semibold">Running Domain WHOIS queries...</p>
           </div>
         </div>
       )}
@@ -257,13 +257,13 @@ export default function DomainLookup() {
             className="space-y-6"
           >
             {/* Primary Result Banner */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-slate-800/40 border border-slate-800 rounded-xl">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-white dark:bg-slate-800/40 border border-gray-200 dark:border-slate-800 rounded-xl shadow-sm">
               <div>
-                <p className="text-slate-400 text-xs uppercase tracking-wider">Target Domain Name</p>
-                <p className="text-xl font-mono font-bold text-cyan-300 mt-1 break-all">{result.domain}</p>
+                <p className="text-slate-550 dark:text-slate-400 text-xs uppercase tracking-wider">Target Domain Name</p>
+                <p className="text-xl font-mono font-bold text-cyan-650 dark:text-cyan-300 mt-1 break-all">{result.domain}</p>
               </div>
               <div className="flex flex-col items-end">
-                <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Safety Rating</span>
+                <span className="text-[10px] text-slate-550 dark:text-slate-400 uppercase font-bold tracking-wider">Safety Rating</span>
                 <span className={`text-2xl font-bold font-mono ${getSafetyColor(result.safetyScore)}`}>
                   {result.safetyScore}/100
                 </span>
@@ -271,8 +271,8 @@ export default function DomainLookup() {
             </div>
 
             {/* Visual Gauge Bar */}
-            <div className="p-5 bg-slate-800/30 border border-slate-800/60 rounded-xl">
-              <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+            <div className="p-5 bg-slate-50 dark:bg-slate-800/30 border border-gray-200 dark:border-slate-800/60 rounded-xl shadow-sm">
+              <div className="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${
                     result.safetyScore >= 80 ? 'bg-emerald-500' : result.safetyScore >= 45 ? 'bg-amber-500' : 'bg-red-500'
@@ -285,66 +285,66 @@ export default function DomainLookup() {
             {/* Metadata Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* WHOIS Core */}
-              <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3.5">
-                <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
-                  <Calendar className="w-4 h-4 text-cyan-400" />
-                  <h3 className="text-sm font-semibold text-white">WHOIS Registrar Info</h3>
+              <div className="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl space-y-3.5 shadow-sm">
+                <div className="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2.5">
+                  <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">WHOIS Registrar Info</h3>
                 </div>
 
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Registrar</span>
-                    <span className="text-white font-mono font-medium truncate max-w-[180px]">{result.registrar}</span>
+                    <span className="text-slate-550 dark:text-slate-400">Registrar</span>
+                    <span className="text-slate-800 dark:text-white font-mono font-medium truncate max-w-[180px]">{result.registrar}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Creation Date</span>
-                    <span className="text-white font-mono">{result.creationDate}</span>
+                    <span className="text-slate-550 dark:text-slate-400">Creation Date</span>
+                    <span className="text-slate-800 dark:text-white font-mono">{result.creationDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Expiration Date</span>
-                    <span className="text-white font-mono">{result.expirationDate}</span>
+                    <span className="text-slate-550 dark:text-slate-400">Expiration Date</span>
+                    <span className="text-slate-800 dark:text-white font-mono">{result.expirationDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Domain Age</span>
-                    <span className={`font-mono font-bold ${result.riskCategory === 'MALICIOUS' ? 'text-red-400' : 'text-emerald-400'}`}>{result.age}</span>
+                    <span className="text-slate-550 dark:text-slate-400">Domain Age</span>
+                    <span className={`font-mono font-bold ${result.riskCategory === 'MALICIOUS' ? 'text-red-650 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{result.age}</span>
                   </div>
                 </div>
               </div>
 
               {/* Security Audit */}
-              <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3.5">
-                <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
-                  <Lock className="w-4 h-4 text-blue-400" />
-                  <h3 className="text-sm font-semibold text-white">Security Status</h3>
+              <div className="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl space-y-3.5 shadow-sm">
+                <div className="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2.5">
+                  <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <h3 className="text-sm font-semibold text-slate-850 dark:text-white">Security Status</h3>
                 </div>
 
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">SSL Certificate</span>
-                    <span className="text-white font-mono font-medium">
+                    <span className="text-slate-550 dark:text-slate-400">SSL Certificate</span>
+                    <span className="text-slate-800 dark:text-white font-mono font-medium">
                       {result.sslStatus === 'VALID' ? (
-                        <span className="text-emerald-400">✓ Active SSL</span>
+                        <span className="text-emerald-600 dark:text-emerald-400">✓ Active SSL</span>
                       ) : result.sslStatus === 'EXPIRED_OR_SELF_SIGNED' ? (
-                        <span className="text-amber-400 font-bold">⚠️ Self-Signed/Expired</span>
+                        <span className="text-amber-700 dark:text-amber-400 font-bold">⚠️ Self-Signed/Expired</span>
                       ) : (
-                        <span className="text-red-400 font-bold">✗ Unencrypted/None</span>
+                        <span className="text-red-650 dark:text-red-400 font-bold">✗ Unencrypted/None</span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Blacklisted Feed</span>
+                    <span className="text-slate-550 dark:text-slate-400">Blacklisted Feed</span>
                     <span className="font-mono">
                       {result.isBlacklisted ? (
-                        <span className="text-red-400 font-bold">Flagged / Phishing Risk</span>
+                        <span className="text-red-650 dark:text-red-400 font-bold">Flagged / Phishing Risk</span>
                       ) : (
-                        <span className="text-emerald-400 font-medium">Clean / Clean Feed</span>
+                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">Clean / Clean Feed</span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Risk Profile</span>
+                    <span className="text-slate-550 dark:text-slate-400">Risk Profile</span>
                     <span className={`font-bold uppercase ${
-                      result.riskCategory === 'MALICIOUS' ? 'text-red-400' : result.riskCategory === 'SUSPICIOUS' ? 'text-amber-400' : 'text-emerald-400'
+                      result.riskCategory === 'MALICIOUS' ? 'text-red-650 dark:text-red-400' : result.riskCategory === 'SUSPICIOUS' ? 'text-amber-700 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'
                     }`}>{result.riskCategory}</span>
                   </div>
                 </div>
@@ -352,39 +352,39 @@ export default function DomainLookup() {
             </div>
 
             {/* DNS Records */}
-            <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3">
-              <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
-                <List className="w-4 h-4 text-purple-400" />
-                <h3 className="text-sm font-semibold text-white">Resolved DNS Records</h3>
+            <div className="p-5 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl space-y-3 shadow-sm">
+              <div className="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2">
+                <List className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <h3 className="text-sm font-semibold text-slate-850 dark:text-white">Resolved DNS Records</h3>
               </div>
               <div className="space-y-2">
                 {result.dnsRecords.map((rec, i) => (
-                  <div key={i} className="flex font-mono text-xs items-center gap-4 py-1 border-b border-slate-850 last:border-b-0">
-                    <span className="w-12 text-cyan-400 font-bold">{rec.type}</span>
-                    <span className="text-slate-300 break-all">{rec.value}</span>
+                  <div key={i} className="flex font-mono text-xs items-center gap-4 py-1 border-b border-gray-100 dark:border-slate-850 last:border-b-0">
+                    <span className="w-12 text-cyan-600 dark:text-cyan-400 font-bold">{rec.type}</span>
+                    <span className="text-slate-700 dark:text-slate-300 break-all">{rec.value}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Recommendations */}
-            <div className="p-5 bg-gradient-to-t from-slate-950 to-slate-900 border border-slate-850 rounded-xl">
-              <h4 className="text-sm font-semibold text-white mb-3">Security Action Items</h4>
-              <ul className="text-xs text-slate-300 space-y-2.5 list-inside list-disc">
+            <div className="p-5 bg-gradient-to-t from-white to-slate-50 dark:from-slate-950 dark:to-slate-900 border border-gray-200 dark:border-slate-850 rounded-xl shadow-sm">
+              <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Security Action Items</h4>
+              <ul className="text-xs text-slate-700 dark:text-slate-300 space-y-2.5 list-inside list-disc">
                 {result.riskCategory === 'MALICIOUS' ? (
                   <>
-                    <li className="text-red-300">**Critical Phishing Risk**: Do not log in, do not enter sensitive credentials or UPI pins on this domain.</li>
+                    <li className="text-red-750 dark:text-red-300">**Critical Phishing Risk**: Do not log in, do not enter sensitive credentials or UPI pins on this domain.</li>
                     <li>**Verify Typography**: Check if this domain is typosquatting (e.g. `paypa1` instead of `paypal`).</li>
                     <li>**Block Connections**: Close any connections and clear cookies immediately.</li>
                   </>
                 ) : result.riskCategory === 'SUSPICIOUS' ? (
                   <>
-                    <li className="text-amber-300">**Newly Registered Domain**: This domain was registered very recently. Exercise caution.</li>
+                    <li className="text-amber-700 dark:text-amber-300">**Newly Registered Domain**: This domain was registered very recently. Exercise caution.</li>
                     <li>**Validate Certificate**: Check SSL credentials. Do not trust if warnings appear.</li>
                   </>
                 ) : (
                   <>
-                    <li className="text-emerald-300">**High Credibility Profile**: Age and reputation checks look healthy. Verify matching domain whenever navigating through emails.</li>
+                    <li className="text-emerald-700 dark:text-emerald-300">**High Credibility Profile**: Age and reputation checks look healthy. Verify matching domain whenever navigating through emails.</li>
                   </>
                 )}
               </ul>

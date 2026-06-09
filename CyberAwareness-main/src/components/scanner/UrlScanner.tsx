@@ -55,7 +55,7 @@ export default function UrlScanner() {
     (result?.suspicious || 0) > 0;
 
   return (
-    <div className="bg-[#111827] border border-cyan-500/20 rounded-3xl p-8 shadow-2xl">
+    <div className="bg-white border border-gray-200 dark:bg-[#111827] dark:border-cyan-500/20 text-slate-900 dark:text-white rounded-3xl p-8 shadow-2xl transition-colors duration-300">
 
       {/* INPUT */}
       <div className="flex flex-col md:flex-row gap-4">
@@ -67,7 +67,7 @@ export default function UrlScanner() {
           onChange={(e) =>
             setUrl(e.target.value)
           }
-          className="flex-1 bg-[#0f172a] border border-slate-700 rounded-xl px-5 py-4 text-white outline-none focus:border-cyan-400 transition"
+          className="flex-1 bg-white border border-gray-300 dark:bg-[#0f172a] dark:border-slate-700 rounded-xl px-5 py-4 text-slate-900 dark:text-white outline-none focus:border-cyan-400 transition transition-colors duration-300"
         />
 
         <button
@@ -123,7 +123,7 @@ export default function UrlScanner() {
                     : "URL Appears Safe"}
                 </h2>
 
-                <p className="text-slate-400">
+                <p className="text-slate-550 dark:text-slate-400">
                   Live VirusTotal analysis
                 </p>
               </div>
@@ -132,8 +132,8 @@ export default function UrlScanner() {
             {/* STATS */}
             <div className="grid md:grid-cols-4 gap-4">
 
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Malicious
                 </p>
 
@@ -142,8 +142,8 @@ export default function UrlScanner() {
                 </h3>
               </div>
 
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Suspicious
                 </p>
 
@@ -152,8 +152,8 @@ export default function UrlScanner() {
                 </h3>
               </div>
 
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Harmless
                 </p>
 
@@ -162,8 +162,8 @@ export default function UrlScanner() {
                 </h3>
               </div>
 
-              <div className="bg-[#0f172a] rounded-xl p-4">
-                <p className="text-slate-400 text-sm">
+              <div className="bg-slate-50 border border-gray-200 dark:border-transparent dark:bg-[#0f172a] rounded-xl p-4 transition-colors duration-300">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Reputation
                 </p>
 
