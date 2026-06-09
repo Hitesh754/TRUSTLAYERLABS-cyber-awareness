@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { AlertCircle, Search, Globe, Building2, MapPin, BarChart3, Zap, Info } from 'lucide-react';
 import { checkIP } from '../../services/abuseipdb';
+import { useTranslation } from 'react-i18next';
 
 interface IPReputation {
   ip: string;
@@ -20,8 +21,8 @@ interface IPScannerProps {
 
 const IPScanner: React.FC<IPScannerProps> = ({
   onScan,
-  placeholder = 'Enter IP address to scan...',
 }) => {
+  const { t } = useTranslation();
   const [ip, setIp] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<IPReputation | null>(null);
@@ -29,10 +30,10 @@ const IPScanner: React.FC<IPScannerProps> = ({
   const [infoMessage, setInfoMessage] = useState('');
 
   const getSeverity = (score: number): { label: string; color: string; bg: string } => {
-    if (score >= 75) return { label: 'CRITICAL', color: 'text-red-400', bg: 'bg-red-900/30' };
-    if (score >= 50) return { label: 'HIGH', color: 'text-orange-400', bg: 'bg-orange-900/30' };
-    if (score >= 25) return { label: 'MEDIUM', color: 'text-yellow-400', bg: 'bg-yellow-900/30' };
-    return { label: 'LOW', color: 'text-green-400', bg: 'bg-green-900/30' };
+    if (score >= 75) return { label: t('ipScanner.severity.CRITICAL'), color: 'text-red-400', bg: 'bg-red-900/30' };
+    if (score >= 50) return { label: t('ipScanner.severity.HIGH'), color: 'text-orange-400', bg: 'bg-orange-900/30' };
+    if (score >= 25) return { label: t('ipScanner.severity.MEDIUM'), color: 'text-yellow-400', bg: 'bg-yellow-900/30' };
+    return { label: t('ipScanner.severity.LOW'), color: 'text-green-400', bg: 'bg-green-900/30' };
   };
 
   const validateIP = (ipStr: string): boolean => {
@@ -87,10 +88,10 @@ const IPScanner: React.FC<IPScannerProps> = ({
         <div className="flex items-center gap-3 mb-2">
           <Zap className="w-6 h-6 text-cyan-400" />
           <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-            IP Reputation Scanner
+            {t('ipScanner.title')}
           </h1>
         </div>
-        <p className="text-slate-400 text-sm">Malicious IP Detection & Threat Assessment</p>
+        <p className="text-slate-400 text-sm">{t('ipScanner.description')}</p>
       </div>
 
       {/* Info Message Banner */}
@@ -109,7 +110,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
               type="text"
               value={ip}
               onChange={(e) => setIp(e.target.value)}
-              placeholder={placeholder}
+              placeholder={t('ipScanner.placeholder')}
               className="w-full px-4 py-3 bg-slate-800/50 border border-cyan-800/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
             />
             <Globe className="absolute right-3 top-3.5 w-5 h-5 text-slate-500" />
@@ -120,7 +121,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
             className="px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-cyan-500/50 disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" />
-            {loading ? 'Scanning...' : 'Scan'}
+            {loading ? t('ipScanner.scanning') : t('ipScanner.scanBtn')}
           </button>
         </div>
       </form>
@@ -139,7 +140,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
           {/* IP & Severity */}
           <div className="flex items-start justify-between p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
             <div>
-              <p className="text-slate-400 text-sm">Scanned IP</p>
+              <p className="text-slate-400 text-sm">{t('ipScanner.scannedIp')}</p>
               <p className="text-xl font-mono text-cyan-300">{result.ip}</p>
             </div>
             <div className={`px-3 py-1 rounded-full flex flex-col items-end justify-center ${severity?.bg} border border-cyan-700/30 min-w-0`}>
@@ -153,7 +154,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
           {/* Threat Level Indicator */}
           <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-slate-400 text-sm">Threat Level</span>
+              <span className="text-slate-400 text-sm">{t('ipScanner.threatLevel')}</span>
               <span className={`text-sm font-semibold ${severity?.color}`}>
                 {result.abuseConfidenceScore}%
               </span>
@@ -180,7 +181,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
             <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <Building2 className="w-4 h-4 text-blue-400" />
-                <p className="text-slate-400 text-sm">ISP</p>
+                <p className="text-slate-400 text-sm">{t('ipScanner.isp')}</p>
               </div>
               <p className="text-white font-semibold truncate">{result.isp}</p>
             </div>
@@ -189,7 +190,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
             <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <MapPin className="w-4 h-4 text-green-400" />
-                <p className="text-slate-400 text-sm">Country</p>
+                <p className="text-slate-400 text-sm">{t('ipScanner.country')}</p>
               </div>
               <p className="text-white font-semibold">{result.country}</p>
             </div>
@@ -198,14 +199,14 @@ const IPScanner: React.FC<IPScannerProps> = ({
             <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <BarChart3 className="w-4 h-4 text-purple-400" />
-                <p className="text-slate-400 text-sm">Abuse Reports</p>
+                <p className="text-slate-400 text-sm">{t('ipScanner.abuseReports')}</p>
               </div>
               <p className="text-white font-semibold">{result.reports}</p>
             </div>
 
             {/* Status */}
             <div className="p-4 bg-slate-800/30 border border-slate-700/50 rounded-lg min-w-0">
-              <p className="text-slate-400 text-sm mb-2">Status</p>
+              <p className="text-slate-400 text-sm mb-2">{t('ipScanner.status')}</p>
               <span
                 className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
                   result.isWhitelisted
@@ -213,7 +214,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
                     : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
                 }`}
               >
-                {result.isWhitelisted ? '✓ Whitelisted' : 'Not Whitelisted'}
+                {result.isWhitelisted ? t('ipScanner.whitelisted') : t('ipScanner.notWhitelisted')}
               </span>
             </div>
           </div>
@@ -224,7 +225,7 @@ const IPScanner: React.FC<IPScannerProps> = ({
       {loading && (
         <div className="flex flex-col items-center justify-center py-12 gap-3">
           <div className="w-8 h-8 border-2 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin" />
-          <p className="text-slate-400 text-sm">Analyzing IP reputation...</p>
+          <p className="text-slate-400 text-sm">{t('ipScanner.analyzingIp')}</p>
         </div>
       )}
     </div>

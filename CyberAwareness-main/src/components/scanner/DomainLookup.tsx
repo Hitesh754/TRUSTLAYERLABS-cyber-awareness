@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Globe, ShieldAlert, Search, Calendar, Lock, List } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface DnsRecord {
   type: string;
@@ -23,6 +24,7 @@ interface DomainResult {
 }
 
 export default function DomainLookup() {
+  const { t } = useTranslation();
   const [domain, setDomain] = useState('');
   const [loading, setLoading] = useState(false);
   const [scanStep, setScanStep] = useState('');
@@ -195,11 +197,11 @@ export default function DomainLookup() {
         <div className="flex items-center gap-3 mb-2">
           <Globe className="w-6 h-6 text-cyan-400" />
           <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-            Domain & WHOIS OSINT Analyzer
+            {t('domainLookup.title')}
           </h2>
         </div>
         <p className="text-slate-400 text-sm">
-          Queries real WHOIS databases dynamically and checks live DNS resolutions to test safety reputation.
+          {t('domainLookup.description')}
         </p>
       </div>
 
@@ -222,7 +224,7 @@ export default function DomainLookup() {
             className="h-12 px-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition duration-200 shadow-lg hover:shadow-cyan-500/30 disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" />
-            {loading ? 'Analyzing...' : 'Scan'}
+            {loading ? t('domainLookup.analyzing') : t('domainLookup.scanBtn')}
           </button>
         </div>
       </form>
@@ -241,7 +243,7 @@ export default function DomainLookup() {
           <div className="w-10 h-10 border-3 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
           <div className="text-center">
             <p className="text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
-            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">Running Domain WHOIS queries...</p>
+            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">{t('domainLookup.queryingWhois')}</p>
           </div>
         </div>
       )}
@@ -259,11 +261,11 @@ export default function DomainLookup() {
             {/* Primary Result Banner */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-slate-800/40 border border-slate-800 rounded-xl">
               <div>
-                <p className="text-slate-400 text-xs uppercase tracking-wider">Target Domain Name</p>
+                <p className="text-slate-400 text-xs uppercase tracking-wider">{t('domainLookup.targetDomain')}</p>
                 <p className="text-xl font-mono font-bold text-cyan-300 mt-1 break-all">{result.domain}</p>
               </div>
               <div className="flex flex-col items-end">
-                <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Safety Rating</span>
+                <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">{t('domainLookup.safetyRating')}</span>
                 <span className={`text-2xl font-bold font-mono ${getSafetyColor(result.safetyScore)}`}>
                   {result.safetyScore}/100
                 </span>
@@ -288,24 +290,24 @@ export default function DomainLookup() {
               <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3.5">
                 <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
                   <Calendar className="w-4 h-4 text-cyan-400" />
-                  <h3 className="text-sm font-semibold text-white">WHOIS Registrar Info</h3>
+                  <h3 className="text-sm font-semibold text-white">{t('domainLookup.whoisInfo')}</h3>
                 </div>
 
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Registrar</span>
+                    <span className="text-slate-400">{t('domainLookup.registrar')}</span>
                     <span className="text-white font-mono font-medium truncate max-w-[180px]">{result.registrar}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Creation Date</span>
+                    <span className="text-slate-400">{t('domainLookup.creationDate')}</span>
                     <span className="text-white font-mono">{result.creationDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Expiration Date</span>
+                    <span className="text-slate-400">{t('domainLookup.expirationDate')}</span>
                     <span className="text-white font-mono">{result.expirationDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Domain Age</span>
+                    <span className="text-slate-400">{t('domainLookup.domainAge')}</span>
                     <span className={`font-mono font-bold ${result.riskCategory === 'MALICIOUS' ? 'text-red-400' : 'text-emerald-400'}`}>{result.age}</span>
                   </div>
                 </div>
@@ -315,34 +317,34 @@ export default function DomainLookup() {
               <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3.5">
                 <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
                   <Lock className="w-4 h-4 text-blue-400" />
-                  <h3 className="text-sm font-semibold text-white">Security Status</h3>
+                  <h3 className="text-sm font-semibold text-white">{t('domainLookup.securityStatus')}</h3>
                 </div>
 
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">SSL Certificate</span>
+                    <span className="text-slate-400">{t('domainLookup.sslCertificate')}</span>
                     <span className="text-white font-mono font-medium">
                       {result.sslStatus === 'VALID' ? (
-                        <span className="text-emerald-400">✓ Active SSL</span>
+                        <span className="text-emerald-400">{t('domainLookup.activeSsl')}</span>
                       ) : result.sslStatus === 'EXPIRED_OR_SELF_SIGNED' ? (
-                        <span className="text-amber-400 font-bold">⚠️ Self-Signed/Expired</span>
+                        <span className="text-amber-400 font-bold">{t('domainLookup.selfSignedSsl')}</span>
                       ) : (
-                        <span className="text-red-400 font-bold">✗ Unencrypted/None</span>
+                        <span className="text-red-400 font-bold">{t('domainLookup.noSsl')}</span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Blacklisted Feed</span>
+                    <span className="text-slate-400">{t('domainLookup.blacklistedFeed')}</span>
                     <span className="font-mono">
                       {result.isBlacklisted ? (
-                        <span className="text-red-400 font-bold">Flagged / Phishing Risk</span>
+                        <span className="text-red-400 font-bold">{t('domainLookup.flaggedPhishing')}</span>
                       ) : (
-                        <span className="text-emerald-400 font-medium">Clean / Clean Feed</span>
+                        <span className="text-emerald-400 font-medium">{t('domainLookup.cleanFeed')}</span>
                       )}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Risk Profile</span>
+                    <span className="text-slate-400">{t('domainLookup.riskProfile')}</span>
                     <span className={`font-bold uppercase ${
                       result.riskCategory === 'MALICIOUS' ? 'text-red-400' : result.riskCategory === 'SUSPICIOUS' ? 'text-amber-400' : 'text-emerald-400'
                     }`}>{result.riskCategory}</span>
@@ -355,7 +357,7 @@ export default function DomainLookup() {
             <div className="p-5 bg-slate-900 border border-slate-850 rounded-xl space-y-3">
               <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
                 <List className="w-4 h-4 text-purple-400" />
-                <h3 className="text-sm font-semibold text-white">Resolved DNS Records</h3>
+                <h3 className="text-sm font-semibold text-white">{t('domainLookup.dnsRecords')}</h3>
               </div>
               <div className="space-y-2">
                 {result.dnsRecords.map((rec, i) => (
@@ -369,7 +371,7 @@ export default function DomainLookup() {
 
             {/* Recommendations */}
             <div className="p-5 bg-gradient-to-t from-slate-950 to-slate-900 border border-slate-850 rounded-xl">
-              <h4 className="text-sm font-semibold text-white mb-3">Security Action Items</h4>
+              <h4 className="text-sm font-semibold text-white mb-3">{t('domainLookup.securityActions')}</h4>
               <ul className="text-xs text-slate-300 space-y-2.5 list-inside list-disc">
                 {result.riskCategory === 'MALICIOUS' ? (
                   <>

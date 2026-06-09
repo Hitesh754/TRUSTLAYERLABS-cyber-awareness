@@ -126,7 +126,7 @@ export default function ScamAnalyzer() {
         ? content.flatMap((line) => doc.splitTextToSize(line, usableWidth))
         : doc.splitTextToSize(content, usableWidth);
 
-      lines.forEach((line) => {
+      lines.forEach((line: string) => {
         if (y > 750) {
           doc.addPage();
           y = margin;

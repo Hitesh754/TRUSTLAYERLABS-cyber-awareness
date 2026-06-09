@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ShieldAlert, CheckCircle, Search, Key, ShieldCheck } from 'lucide-react';
 import hibpService from '../../services/hibp';
+import { useTranslation } from 'react-i18next';
 
 type Breach = {
 	id: string;
@@ -13,6 +14,7 @@ type Breach = {
 };
 
 export default function BreachChecker() {
+	const { t } = useTranslation();
 	const [email, setEmail] = useState('');
 	const [passwordToCheck, setPasswordToCheck] = useState('');
 	const [activeTab, setActiveTab] = useState<'email' | 'password'>('email');
@@ -76,7 +78,6 @@ export default function BreachChecker() {
 		setLoading(true);
 
 		try {
-			// Password checker endpoint is completely keyless and open!
 			const count = await hibpService.checkPassword(passwordToCheck);
 			setPwnedCount(count);
 		} catch (e: any) {
@@ -90,9 +91,9 @@ export default function BreachChecker() {
 		<div className="p-6 rounded-2xl bg-gradient-to-br from-gray-900 via-slate-900 to-black text-slate-200 border border-cyan-900/30 shadow-xl max-w-3xl mx-auto">
 			<div className="flex items-center justify-between mb-6">
 				<h2 className="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-					Data Breach Auditor
+					{t('breachChecker.title')}
 				</h2>
-				<span className="text-xs text-slate-400">Secure Live OSINT Scan</span>
+				<span className="text-xs text-slate-400">{t('breachChecker.subtitle')}</span>
 			</div>
 
 			{/* Tabs */}
@@ -109,7 +110,7 @@ export default function BreachChecker() {
 						activeTab === 'email' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
 					}`}
 				>
-					Email Leak Audit
+					{t('breachChecker.emailTab')}
 				</button>
 				<button
 					onClick={() => {
@@ -123,7 +124,7 @@ export default function BreachChecker() {
 						activeTab === 'password' ? 'bg-cyan-500 text-black' : 'text-slate-400 hover:text-white'
 					}`}
 				>
-					Keyless Password Leak Checker
+					{t('breachChecker.passwordTab')}
 				</button>
 			</div>
 
@@ -160,14 +161,14 @@ export default function BreachChecker() {
 							className="h-12 w-full px-4 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold flex items-center justify-center gap-2 transition duration-200"
 						>
 							<Search className="w-4 h-4" />
-							{loading ? 'Auditing...' : 'Audit Email'}
+							{loading ? t('breachChecker.auditing') : t('breachChecker.auditBtn')}
 						</button>
 					</div>
 
 					{loading && (
 						<div className="flex flex-col items-center justify-center py-8 gap-3">
 							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
-							<p className="text-slate-400 text-xs font-mono animate-pulse">Running data registry query...</p>
+							<p className="text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.queryingRegistry')}</p>
 						</div>
 					)}
 
@@ -191,7 +192,7 @@ export default function BreachChecker() {
 													<p className="mt-2 text-xs text-slate-400 leading-relaxed" dangerouslySetInnerHTML={{ __html: b.description }}></p>
 												)}
 												<div className="mt-3">
-													<p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Exposed Parameters</p>
+													<p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">{t('breachChecker.exposedParameters')}</p>
 													<div className="flex flex-wrap gap-1.5">
 														{b.compromised_data.map((d) => (
 															<span key={d} className="text-[9px] px-2 py-0.5 bg-red-950/40 text-red-400 border border-red-900/40 rounded-full">
@@ -208,8 +209,8 @@ export default function BreachChecker() {
 								<div className="p-5 bg-emerald-950/15 border border-emerald-900/30 rounded-xl flex gap-3.5 items-center">
 									<ShieldCheck className="w-6 h-6 text-emerald-400" />
 									<div>
-										<h3 className="text-sm font-bold text-emerald-300">No public leaks discovered</h3>
-										<p className="text-slate-400 text-xs mt-0.5">This email address was not found in known public cyber breach datasets.</p>
+										<h3 className="text-sm font-bold text-emerald-300">{t('breachChecker.noLeaks')}</h3>
+										<p className="text-slate-400 text-xs mt-0.5">{t('breachChecker.noLeaksDesc')}</p>
 									</div>
 								</div>
 							)}
@@ -234,14 +235,14 @@ export default function BreachChecker() {
 							className="h-12 w-full px-4 rounded-lg bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold flex items-center justify-center gap-2 transition duration-200"
 						>
 							<Key className="w-4 h-4" />
-							{loading ? 'Evaluating...' : 'Check Leak'}
+							{loading ? t('breachChecker.checking') : t('breachChecker.checkBtn')}
 						</button>
 					</div>
 
 					{loading && (
 						<div className="flex flex-col items-center justify-center py-8 gap-3">
 							<div className="w-8 h-8 border-2 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
-							<p className="text-slate-400 text-xs font-mono animate-pulse">Checking pwned passwords database...</p>
+							<p className="text-slate-400 text-xs font-mono animate-pulse">{t('breachChecker.checkingPasswords')}</p>
 						</div>
 					)}
 
@@ -250,20 +251,20 @@ export default function BreachChecker() {
 							{pwnedCount > 0 ? (
 								<div className="space-y-2">
 									<div className="text-red-400 font-bold text-sm flex items-center gap-2">
-										<ShieldAlert className="w-5 h-5" /> This password was leaked in data breaches!
+										<ShieldAlert className="w-5 h-5" /> {t('breachChecker.passwordLeaked')}
 									</div>
 									<p className="text-xs text-slate-300 leading-relaxed">
-										This password has been seen <span className="text-red-400 font-bold font-mono text-sm">{pwnedCount.toLocaleString()}</span> times in credentials dumps. 
-										**Do not use this password** for any profile or account!
+										This password has been seen <span className="text-red-400 font-bold font-mono text-sm">{pwnedCount.toLocaleString()}</span> times in credentials dumps.
+										Do not use this password for any profile or account!
 									</p>
 								</div>
 							) : (
 								<div className="space-y-2">
 									<div className="text-emerald-400 font-bold text-sm flex items-center gap-2">
-										<CheckCircle className="w-5 h-5" /> No exposures found
+										<CheckCircle className="w-5 h-5" /> {t('breachChecker.noPasswordLeaks')}
 									</div>
 									<p className="text-xs text-slate-300 leading-relaxed">
-										This password has not been found in any known compromised datasets. It is currently safe to use, provided it meets complexity guidelines.
+										{t('breachChecker.noPasswordLeaksDesc')}
 									</p>
 								</div>
 							)}

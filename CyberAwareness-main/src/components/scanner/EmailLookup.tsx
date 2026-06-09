@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, ShieldAlert, Search, Database, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface BreachRecord {
   name: string;
@@ -22,6 +23,7 @@ interface EmailResult {
 }
 
 export default function EmailLookup() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [scanStep, setScanStep] = useState('');
@@ -147,11 +149,11 @@ export default function EmailLookup() {
         <div className="flex items-center gap-3 mb-2">
           <Mail className="w-6 h-6 text-cyan-400" />
           <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-            Email Reputation & Breach Audit
+            {t('emailLookup.title')}
           </h2>
         </div>
         <p className="text-slate-400 text-sm">
-          Run syntactic validity tests, inspect MX records, detect disposable mail networks, and scan credential leak registries.
+          {t('emailLookup.description')}
         </p>
       </div>
 
@@ -174,7 +176,7 @@ export default function EmailLookup() {
             className="h-12 px-6 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:from-slate-700 disabled:to-slate-600 text-white font-semibold rounded-lg flex items-center gap-2 transition duration-200 shadow-lg hover:shadow-cyan-500/30 disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" />
-            {loading ? 'Searching...' : 'Audit'}
+            {loading ? t('emailLookup.searching') : t('emailLookup.auditBtn')}
           </button>
         </div>
       </form>
@@ -193,7 +195,7 @@ export default function EmailLookup() {
           <div className="w-10 h-10 border-3 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin" />
           <div className="text-center">
             <p className="text-slate-400 text-sm font-mono animate-pulse">{scanStep}</p>
-            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">Running data registry query...</p>
+            <p className="text-[11px] text-slate-600 mt-1 uppercase tracking-widest font-semibold">{t('emailLookup.queryingRegistry')}</p>
           </div>
         </div>
       )}
@@ -211,56 +213,56 @@ export default function EmailLookup() {
             {/* Banner Header */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 bg-slate-800/40 border border-slate-800 rounded-xl">
               <div>
-                <p className="text-slate-400 text-xs uppercase tracking-wider">Target Mail Address</p>
+                <p className="text-slate-400 text-xs uppercase tracking-wider">{t('emailLookup.targetAddress')}</p>
                 <p className="text-xl font-mono font-bold text-cyan-300 mt-1 break-all">{result.email}</p>
               </div>
               <div className={`px-4 py-1.5 rounded-full border text-xs font-extrabold flex items-center gap-2 ${getRiskColor(result.riskLevel)}`}>
-                <AlertTriangle className="w-4 h-4" /> RISK LEVEL: {result.riskLevel}
+                <AlertTriangle className="w-4 h-4" /> {t('emailLookup.riskLevel')}: {result.riskLevel}
               </div>
             </div>
 
             {/* Verification Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="p-4 bg-slate-900 border border-slate-850 rounded-xl">
-                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">SMTP Server</p>
+                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('emailLookup.smtpServer')}</p>
                 <p className="text-sm font-semibold text-white mt-1.5">
                   {result.smtpCheck === 'ACTIVE' ? (
-                    <span className="text-emerald-400">✓ Deliverable</span>
+                    <span className="text-emerald-400">{t('emailLookup.deliverable')}</span>
                   ) : (
-                    <span className="text-red-400">✗ Dead/Invalid</span>
+                    <span className="text-red-400">{t('emailLookup.deadInvalid')}</span>
                   )}
                 </p>
               </div>
 
               <div className="p-4 bg-slate-900 border border-slate-850 rounded-xl">
-                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">MX Records</p>
+                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('emailLookup.mxRecords')}</p>
                 <p className="text-sm font-semibold text-white mt-1.5">
                   {result.mxRecordsFound ? (
-                    <span className="text-emerald-400">✓ Resolved</span>
+                    <span className="text-emerald-400">{t('emailLookup.resolved')}</span>
                   ) : (
-                    <span className="text-red-400">✗ None</span>
+                    <span className="text-red-400">{t('emailLookup.noneRecords')}</span>
                   )}
                 </p>
               </div>
 
               <div className="p-4 bg-slate-900 border border-slate-850 rounded-xl">
-                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Temp Mailbox</p>
+                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('emailLookup.tempMailbox')}</p>
                 <p className="text-sm font-semibold text-white mt-1.5">
                   {result.isDisposable ? (
-                    <span className="text-red-400 font-bold">Yes</span>
+                    <span className="text-red-400 font-bold">{t('emailLookup.yes')}</span>
                   ) : (
-                    <span className="text-emerald-400 font-medium">No</span>
+                    <span className="text-emerald-400 font-medium">{t('emailLookup.no')}</span>
                   )}
                 </p>
               </div>
 
               <div className="p-4 bg-slate-900 border border-slate-850 rounded-xl">
-                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Data Leaks</p>
+                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('emailLookup.dataLeaks')}</p>
                 <p className="text-sm font-semibold text-white mt-1.5">
                   {result.breaches.length > 0 ? (
                     <span className="text-red-400 font-bold">{result.breaches.length} Breach(es)</span>
                   ) : (
-                    <span className="text-emerald-400">✓ Clean</span>
+                    <span className="text-emerald-400">{t('emailLookup.clean')}</span>
                   )}
                 </p>
               </div>
@@ -271,7 +273,7 @@ export default function EmailLookup() {
               <div className="p-5 bg-red-950/10 border border-red-900/30 rounded-xl space-y-4">
                 <div className="flex items-center gap-2.5">
                   <Database className="w-5 h-5 text-red-400" />
-                  <h3 className="text-sm font-semibold text-red-300">Data Leak Registry Records</h3>
+                  <h3 className="text-sm font-semibold text-red-300">{t('emailLookup.dataLeakRegistry')}</h3>
                 </div>
 
                 <div className="space-y-4">
@@ -282,7 +284,7 @@ export default function EmailLookup() {
                         <span className="text-[10px] text-slate-500 font-semibold">{breach.date}</span>
                       </div>
                       <div className="mt-3">
-                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1.5">Exposed parameters</p>
+                        <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1.5">{t('emailLookup.exposedParameters')}</p>
                         <div className="flex flex-wrap gap-1.5">
                           {breach.compromisedData.map((d, i) => (
                             <span key={i} className="text-[10px] px-2 py-0.5 bg-red-950/40 text-red-400 border border-red-900/40 rounded-full">
@@ -299,15 +301,15 @@ export default function EmailLookup() {
               <div className="p-5 bg-emerald-950/10 border border-emerald-900/30 rounded-xl flex gap-3.5 items-center">
                 <ShieldCheck className="w-6 h-6 text-emerald-400" />
                 <div>
-                  <h3 className="text-sm font-bold text-emerald-300">No public leaks discovered</h3>
-                  <p className="text-slate-400 text-xs mt-0.5">This email address was not found in known public cyber breach datasets.</p>
+                  <h3 className="text-sm font-bold text-emerald-300">{t('emailLookup.noLeaks')}</h3>
+                  <p className="text-slate-400 text-xs mt-0.5">{t('emailLookup.noLeaksDesc')}</p>
                 </div>
               </div>
             )}
 
             {/* Recommendations Card */}
             <div className="p-5 bg-gradient-to-t from-slate-950 to-slate-900 border border-slate-850 rounded-xl">
-              <h4 className="text-sm font-semibold text-white mb-3">Security Action Items</h4>
+              <h4 className="text-sm font-semibold text-white mb-3">{t('emailLookup.securityActions')}</h4>
               <ul className="text-xs text-slate-300 space-y-2.5 list-inside list-disc">
                 {result.riskLevel === 'HIGH' ? (
                   <>

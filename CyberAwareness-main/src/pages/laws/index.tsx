@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import "./css/laws.css";
 import "./js/laws.js";
 
 export default function LawsDashboard() {
+  const { t } = useTranslation();
   return (
     <main className="law-shell">
       <nav className="law-nav" aria-label="Cyber law navigation">
@@ -11,7 +13,7 @@ export default function LawsDashboard() {
         </Link>
         <div className="law-links">
           <Link className="dashboard-link" to="/">
-            Back to Dashboard
+            {t('common.backToDashboard')}
           </Link>
           <Link className="active" to="/laws/dashboard">
             Dashboard
@@ -30,34 +32,34 @@ export default function LawsDashboard() {
       <section className="hero-grid">
         <div className="hero-panel">
           <div>
-            <span className="eyebrow">Legal threat intelligence online</span>
-            <h1>Cyber Law Command Dashboard</h1>
+            <span className="eyebrow">{t('laws.socKicker')}</span>
+            <h1>{t('laws.socTitle')}</h1>
             <p className="lead">
               Explore Indian cyber law pathways through a SOC-style interface with searchable sections, reporting workflows, penalties, rights,
               awareness tips, and case-response drills.
             </p>
             <div className="hero-actions">
               <Link className="law-btn primary" to="/laws/ipc">
-                Explore sections
+                {t('laws.btnSections')}
               </Link>
               <Link className="law-btn danger" to="/laws/reporting">
-                Start report flow
+                {t('laws.btnReport')}
               </Link>
             </div>
           </div>
 
           <div className="progress-panel">
-            <strong>Training progress</strong>
+            <strong>{t('laws.socProgress')}</strong>
             <div className="progress-track">
               <div className="progress-fill" data-progress-fill></div>
             </div>
-            <span data-progress-text>0/9 modules</span>
+            <span data-progress-text>0/9 {t('laws.socModules')}</span>
           </div>
         </div>
 
         <aside className="soc-panel">
           <div className="soc-header">
-            <h2>SOC Terminal</h2>
+            <h2>{t('laws.socTerminal')}</h2>
             <div className="terminal-dots">
               <span></span>
               <span></span>
@@ -76,69 +78,69 @@ export default function LawsDashboard() {
 
       <section className="metric-grid" aria-label="Cyber law stats">
         <article className="metric-card">
-          <span>Response target</span>
+          <span>{t('laws.metric1.label')}</span>
           <span className="metric-value" data-count="24" data-suffix="h">0h</span>
-          <p>Report financial cyber fraud quickly for better fund tracing.</p>
+          <p>{t('laws.metric1.desc')}</p>
         </article>
         <article className="metric-card">
-          <span>Core tracks</span>
+          <span>{t('laws.metric2.label')}</span>
           <span className="metric-value" data-count="9">0</span>
-          <p>Dashboard, IPC, BNS, IT Act, reporting, rights, cases, awareness, penalties.</p>
+          <p>{t('laws.metric2.desc')}</p>
         </article>
         <article className="metric-card">
-          <span>Evidence kit</span>
+          <span>{t('laws.metric3.label')}</span>
           <span className="metric-value" data-count="6">0</span>
-          <p>URLs, screenshots, headers, transaction IDs, device logs, timelines.</p>
+          <p>{t('laws.metric3.desc')}</p>
         </article>
         <article className="metric-card">
-          <span>Risk zones</span>
+          <span>{t('laws.metric4.label')}</span>
           <span className="metric-value" data-count="7">0</span>
-          <p>Fraud, stalking, identity theft, privacy breach, extortion, malware, data leak.</p>
+          <p>{t('laws.metric4.desc')}</p>
         </article>
       </section>
 
       <section className="section-block">
         <div className="section-head">
           <div>
-            <h2>Mission Modules</h2>
-            <p>Choose a station and build a practical legal response map.</p>
+            <h2>{t('laws.stationTitle')}</h2>
+            <p>{t('laws.stationDesc')}</p>
           </div>
         </div>
         <div className="card-grid">
           <Link className="law-card" to="/laws/ipc">
             <span className="card-code">IPC</span>
-            <h3>Legacy Section Explorer</h3>
-            <p>Search key IPC provisions that still appear in older FIRs, references, and case materials.</p>
+            <h3>{t('laws.card1.title')}</h3>
+            <p>{t('laws.card1.desc')}</p>
           </Link>
           <Link className="law-card" to="/laws/bns">
             <span className="card-code">BNS</span>
-            <h3>New Code Mapping</h3>
-            <p>Understand how modern cyber offences connect to the Bharatiya Nyaya Sanhita.</p>
+            <h3>{t('laws.card2.title')}</h3>
+            <p>{t('laws.card2.desc')}</p>
           </Link>
           <Link className="law-card" to="/laws/it-act">
             <span className="card-code">IT</span>
-            <h3>Information Technology Act</h3>
-            <p>Review privacy, identity, obscene content, hacking, and intermediary duties.</p>
+            <h3>{t('laws.card3.title')}</h3>
+            <p>{t('laws.card3.desc')}</p>
           </Link>
           <Link className="law-card danger" to="/laws/penalties">
             <span className="card-code">PENALTY</span>
-            <h3>Punishment Cards</h3>
-            <p>Scan offence types, consequences, and escalation triggers.</p>
+            <h3>{t('laws.card4.title')}</h3>
+            <p>{t('laws.card4.desc')}</p>
           </Link>
           <Link className="law-card" to="/laws/rights">
             <span className="card-code">RIGHTS</span>
-            <h3>Citizen Rights</h3>
-            <p>Review practical rights, evidence preservation, and support options after a cyber incident.</p>
+            <h3>{t('laws.card5.title')}</h3>
+            <p>{t('laws.card5.desc')}</p>
           </Link>
           <Link className="law-card" to="/laws/awareness">
             <span className="card-code">AWARE</span>
-            <h3>Awareness Briefing</h3>
-            <p>Learn everyday legal awareness habits for safer reporting, response, and online conduct.</p>
+            <h3>{t('laws.card6.title')}</h3>
+            <p>{t('laws.card6.desc')}</p>
           </Link>
           <Link className="law-card" to="/laws/case-study">
             <span className="card-code">CASES</span>
-            <h3>Case Response Drills</h3>
-            <p>Practice choosing sections, evidence paths, and reporting steps from realistic incident stories.</p>
+            <h3>{t('laws.card7.title')}</h3>
+            <p>{t('laws.card7.desc')}</p>
           </Link>
         </div>
       </section>

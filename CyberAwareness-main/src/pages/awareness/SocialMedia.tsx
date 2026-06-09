@@ -1,7 +1,9 @@
 import AwarenessCard from '../../components/awareness/AwarenessCard';
+import { useTranslation } from 'react-i18next';
 import TopicLayout from '../../components/awareness/TopicLayout';
 
 export default function SocialMedia() {
+  const { t } = useTranslation();
   return (
     <TopicLayout icon="📱" title="Social Media Scams" accentColor="#60a5fa"
       subtitle="Fake profiles, lottery fraud, romance scams, and investment traps are rampant across WhatsApp, Instagram, and Telegram.">
@@ -21,7 +23,7 @@ export default function SocialMedia() {
         "Report fake profiles directly on the platform and to cybercrime.gov.in",
         "Think before you share — fake news spreads fast and can harm others",
       ]} />
-      <AwarenessCard title="🇮🇳 Indian Context" color="cyan" items={[
+      <AwarenessCard title={t("awareness.social.card3Title")} color="cyan" items={[
         "WhatsApp is the #1 platform for scam forwards in India",
         "Fake PM/CM scheme links are widely circulated to steal Aadhaar details",
         "IT Act Section 66D covers cheating by impersonation online — up to 3 years",

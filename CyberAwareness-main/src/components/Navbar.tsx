@@ -60,94 +60,9 @@ export default function Navbar() {
       nativeLabel: "EN",
     },
     {
-      code: "as",
-      label: "Assamese",
-      nativeLabel: "অসমীয়া",
-    },
-    {
-      code: "bn",
-      label: "Bengali",
-      nativeLabel: "বাংলা",
-    },
-    {
-      code: "brx",
-      label: "Bodo",
-      nativeLabel: "बर'",
-    },
-    {
-      code: "doi",
-      label: "Dogri",
-      nativeLabel: "डोगरी",
-    },
-    {
-      code: "gu",
-      label: "Gujarati",
-      nativeLabel: "ગુજરાતી",
-    },
-    {
       code: "hi",
       label: "Hindi",
       nativeLabel: "हिन्दी",
-    },
-    {
-      code: "kn",
-      label: "Kannada",
-      nativeLabel: "ಕನ್ನಡ",
-    },
-    {
-      code: "ks",
-      label: "Kashmiri",
-      nativeLabel: "कॉशुर",
-    },
-    {
-      code: "kok",
-      label: "Konkani",
-      nativeLabel: "कोंकणी",
-    },
-    {
-      code: "mai",
-      label: "Maithili",
-      nativeLabel: "मैथिली",
-    },
-    {
-      code: "ml",
-      label: "Malayalam",
-      nativeLabel: "മലയാളം",
-    },
-    {
-      code: "mni",
-      label: "Manipuri",
-      nativeLabel: "ꯃꯤꯇꯩ",
-    },
-    {
-      code: "mr",
-      label: "Marathi",
-      nativeLabel: "मराठी",
-    },
-    {
-      code: "or",
-      label: "Odia",
-      nativeLabel: "ଓଡ଼ିଆ",
-    },
-    {
-      code: "pa",
-      label: "Punjabi",
-      nativeLabel: "ਪੰਜਾਬੀ",
-    },
-    {
-      code: "sa",
-      label: "Sanskrit",
-      nativeLabel: "संस्कृतम्",
-    },
-    {
-      code: "sat",
-      label: "Santali",
-      nativeLabel: "ᱥᱟᱱᱛᱟᱲᱤ",
-    },
-    {
-      code: "sd",
-      label: "Sindhi",
-      nativeLabel: "سنڌي",
     },
     {
       code: "ta",
@@ -160,11 +75,37 @@ export default function Navbar() {
       nativeLabel: "తెలుగు",
     },
     {
+      code: "gu",
+      label: "Gujarati",
+      nativeLabel: "ગુજરાતી",
+    },
+    {
       code: "ur",
       label: "Urdu",
       nativeLabel: "اردو",
     },
+    {
+      code: "mr",
+      label: "Marathi",
+      nativeLabel: "मराठी",
+    },
+    {
+      code: "bn",
+      label: "Bengali",
+      nativeLabel: "বাংলা",
+    },
+    {
+      code: "sd",
+      label: "Sindhi",
+      nativeLabel: "سنڌि",
+    },
+    {
+      code: "ml",
+      label: "Malayalam",
+      nativeLabel: "മലയാളം",
+    },
   ];
+
 
   const currentLanguageCode =
     (i18n.resolvedLanguage || i18n.language || "en")
@@ -178,59 +119,59 @@ export default function Navbar() {
     ) || languageOptions[0];
 
   const navLinks = [
-      {
-        label: t("navbar.awareness"),
-        to: "/awareness",
-      },
+    {
+      label: t("navbar.awareness"),
+      to: "/awareness",
+    },
 
-      {
-        label: t("navbar.cyberLaws"),
-        to: "/laws",
-      },
+    {
+      label: t("navbar.cyberLaws"),
+      to: "/laws",
+    },
 
-      {
-        label: "Scam Library",
-        to: "/scam-library",
-      },
+    {
+      label: t("navbar.scamLibrary"),
+      to: "/scam-library",
+    },
 
-      {
-        label: t("navbar.report"),
-        to: "/reporting",
-      },
-    ];
+    {
+      label: t("navbar.report"),
+      to: "/reporting",
+    },
+  ];
 
   const toolsLinks = [
     {
       to: "/threat-feed",
-      label: "Threat Feed",
+      label: t("tools.threatFeed"),
     },
     {
       to: "/url-scanner",
-      label: "URL Reputation Scanner",
+      label: t("tools.urlScanner"),
     },
     {
       to: "/ip-scanner",
-      label: "IP Reputation Scanner",
+      label: t("tools.ipScanner"),
     },
     {
       to: "/breach-checker",
-      label: "Data Breach Checker",
+      label: t("tools.dataBreachChecker"),
     },
     {
       to: "/phone-lookup",
-      label: "Mobile Number Lookup",
+      label: t("tools.mobileNumberLookup"),
     },
     {
       to: "/email-lookup",
-      label: "Email Address Lookup",
+      label: t("tools.emailAddressLookup"),
     },
     {
       to: "/domain-lookup",
-      label: "Domain & WHOIS Lookup",
+      label: t("tools.domainWhoisLookup"),
     },
     {
       to: "/crypto-lookup",
-      label: "Crypto Wallet Lookup",
+      label: t("tools.cryptoWalletLookup"),
     },
   ];
 
@@ -418,7 +359,7 @@ export default function Navbar() {
               }
             >
               <button className="flex items-center gap-1 h-16 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-cyan-400 transition-colors">
-                OSINT Tools
+                {t("navbar.osintTools")}
                 <ChevronDown className="w-4 h-4" />
               </button>
 
@@ -436,7 +377,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            
+
             {/* Theme Toggle */}
             <div className="flex items-center gap-2">
               <button
@@ -549,14 +490,14 @@ export default function Navbar() {
               ))}
 
               {/* Mobile OSINT Tools */}
-              <div className="pt-2 border-t border-slate-700 dark:border-gray-700">
-                <button
-                  onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
-                  className="flex w-full items-center justify-between text-2xl font-semibold text-slate-200 dark:text-gray-200 hover:text-cyan-400 transition text-left"
-                >
-                  OSINT Tools
-                  <ChevronDown className={`w-6 h-6 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
-                </button>
+                <div className="pt-2 border-t border-slate-700 dark:border-gray-700">
+                  <button
+                    onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
+                    className="flex w-full items-center justify-between text-2xl font-semibold text-slate-200 dark:text-gray-200 hover:text-cyan-400 transition text-left"
+                  >
+                    {t("navbar.osintTools")} 
+                    <ChevronDown className={`w-6 h-6 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
+                  </button>
                 {mobileToolsOpen && (
                   <div className="mt-3 pl-4 space-y-3 border-l border-slate-700 dark:border-gray-700 max-h-48 overflow-y-auto">
                     {toolsLinks.map((link) => (

@@ -1,12 +1,38 @@
 import { Shield, Phone, Lock, ExternalLink, Twitter, Youtube, Instagram } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const footerLinks = {
-  Platform: ['Cyber Awareness', 'Indian Cyber Law', 'Incident Reporting', 'Interactive Learning'],
-  Resources: ['IPC/BNS Guide', 'IT Act Simplified', 'Scam Alert Database', 'Victim Support'],
-  Legal: ['Privacy Policy', 'Terms of Use', 'Disclaimer', 'Cookie Policy'],
+  platform: {
+    title: 'Platform',
+    links: [
+      { label: 'Cyber Awareness', path: '#' },
+      { label: 'Indian Cyber Law', path: '#' },
+      { label: 'Incident Reporting', path: '#' },
+      { label: 'Interactive Learning', path: '#' },
+    ]
+  },
+  resources: {
+    title: 'Resources',
+    links: [
+      { label: 'IPC/BNS Guide', path: '#' },
+      { label: 'IT Act Simplified', path: '#' },
+      { label: 'Scam Alert Database', path: '#' },
+      { label: 'Victim Support', path: '#' },
+    ]
+  },
+  legal: {
+    title: 'Legal',
+    links: [
+      { label: 'Privacy Policy', path: '#' },
+      { label: 'Terms of Use', path: '#' },
+      { label: 'Disclaimer', path: '#' },
+      { label: 'Cookie Policy', path: '#' },
+    ]
+  }
 };
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
       {/* Emergency Banner */}
@@ -18,8 +44,12 @@ export default function Footer() {
                 <Phone className="w-5 h-5 text-red-500" />
               </div>
               <div>
-                <p className="text-gray-900 dark:text-white font-bold text-sm">National Cyber Crime Helpline</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs">Report cyber crimes 24/7 — Free &amp; Confidential</p>
+                <p className="text-gray-900 dark:text-white font-bold text-sm">
+                  {t('footer.helplineTitle', 'National Cyber Crime Helpline')}
+                </p>
+                <p className="text-gray-600 dark:text-gray-400 text-xs">
+                  {t('footer.helplineSubtitle', 'Report cyber crimes 24/7 — Free & Confidential')}
+                </p>
               </div>
             </div>
             <a
@@ -47,18 +77,18 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
-              India's trusted platform for cyber awareness, digital safety education, and legal guidance under the IT Act and IPC/BNS.
+              {t('footer.description', "India's trusted platform for cyber awareness, digital safety education, and legal guidance under the IT Act and IPC/BNS.")}
             </p>
 
             {/* Trust Badges */}
             <div className="flex flex-col gap-2 mb-6">
               <div className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 w-fit transition-colors duration-300">
                 <Lock className="w-3.5 h-3.5 text-green-400" />
-                <span>Secure &amp; Encrypted Communication</span>
+                <span>{t('footer.secureBanner', 'Secure & Encrypted Communication')}</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-700 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 w-fit transition-colors duration-300">
                 <Shield className="w-3.5 h-3.5 text-cyan-400" />
-                <span>User Privacy Protected — No Data Sold</span>
+                <span>{t('footer.privacyBanner', 'User Privacy Protected — No Data Sold')}</span>
               </div>
             </div>
 
@@ -76,17 +106,19 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4 className="text-gray-900 dark:text-white font-semibold text-sm mb-4 transition-colors duration-300">{category}</h4>
+          {Object.entries(footerLinks).map(([key, section]) => (
+            <div key={key}>
+              <h4 className="text-gray-900 dark:text-white font-semibold text-sm mb-4 transition-colors duration-300">
+                {t(`footer.sections.${key}.title`, section.title)}
+              </h4>
               <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link}>
+                {section.links.map((link, idx) => (
+                  <li key={idx}>
                     <a
-                      href="#"
+                      href={link.path}
                       className="text-gray-600 dark:text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300 flex items-center gap-1 group"
                     >
-                      {link}
+                      {t(`footer.sections.${key}.links.${idx}`, link.label)}
                       <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                   </li>
@@ -98,16 +130,14 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-gray-300 dark:border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600 dark:text-gray-500 transition-colors duration-300">
-          <p>
-            &copy; {new Date().getFullYear()} Cybershield. All rights reserved. Educational use only.
-          </p>
+          <p>{t('footer.copyright', { year: new Date().getFullYear() })}</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              All systems operational
+              {t('footer.operational')}
             </span>
-            <span>MeitY Compliant</span>
-            <span>CERT-In Aligned</span>
+            <span>{t('footer.meity')}</span>
+            <span>{t('footer.certIn')}</span>
           </div>
         </div>
       </div>

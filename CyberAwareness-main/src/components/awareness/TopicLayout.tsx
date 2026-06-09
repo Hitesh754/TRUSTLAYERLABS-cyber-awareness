@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface TopicLayoutProps {
   icon: string;
@@ -9,6 +10,7 @@ interface TopicLayoutProps {
 }
 
 export default function TopicLayout({ icon, title, subtitle, accentColor, children }: TopicLayoutProps) {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-white text-gray-900 dark:bg-slate-950 dark:text-white transition-colors duration-300">
       {/* Top bar */}
@@ -16,7 +18,7 @@ export default function TopicLayout({ icon, title, subtitle, accentColor, childr
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3">
           <Link to="/awareness"
             className="flex items-center gap-1.5 text-xs text-gray-700 dark:text-slate-400 hover:text-cyan-400 transition-colors">
-            ← Back to Awareness
+            {t('common.backToAwareness')}
           </Link>
           <span className="text-gray-700">/</span>
           <span className="text-xs text-slate-400">{title}</span>
@@ -50,7 +52,7 @@ export default function TopicLayout({ icon, title, subtitle, accentColor, childr
 
         {/* Report CTA */}
         <div className="rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 transition-colors duration-300">
-          <p className="text-sm text-gray-600 dark:text-slate-400">🚨 Been targeted? Report immediately — every minute counts.</p>
+          <p className="text-sm text-gray-600 dark:text-slate-400">{t('common.targetedReport')}</p>
           <div className="flex gap-3 flex-shrink-0">
             <a href="tel:1930"
               className="px-4 py-2 rounded-lg text-sm font-bold text-white transition-all hover:scale-105 bg-gradient-to-r from-red-600 to-red-500 shadow-lg shadow-red-500/20">
@@ -58,7 +60,7 @@ export default function TopicLayout({ icon, title, subtitle, accentColor, childr
             </a>
             <a href="https://cybercrime.gov.in" target="_blank" rel="noreferrer"
               className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105 text-cyan-700 dark:text-cyan-200 bg-cyan-50 dark:bg-cyan-900/20 border border-cyan-200 dark:border-cyan-500/20">
-              cybercrime.gov.in ↗
+              {t('common.cybercrimeLink')}
             </a>
           </div>
         </div>
