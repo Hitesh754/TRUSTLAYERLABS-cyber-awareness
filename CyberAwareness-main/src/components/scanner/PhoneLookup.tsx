@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Phone, ShieldAlert, CheckCircle, Search, Building2, MapPin, Activity, RotateCcw, AlertTriangle, User, Home, Fingerprint, Info } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,16 @@ export default function PhoneLookup() {
   const [error, setError] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
 
-  const apiKey = import.meta.env.VITE_NUMLOOKUP_API_KEY;
+  const numverifyKey = import.meta.env.VITE_NUMVERIFY_API_KEY;
+  const numlookupKey = import.meta.env.VITE_NUMLOOKUP_API_KEY;
+  const apiKey = numverifyKey || numlookupKey;
+  const apiType = numverifyKey ? 'numverify' : (numlookupKey ? 'numlookupapi' : null);
+
+  useEffect(() => {
+    if (!apiKey) {
+      setInfoMessage('No VITE_NUMVERIFY_API_KEY configured. Running offline lookup simulation. To enable live validation, sign up at numverify.com to get a free API key and add VITE_NUMVERIFY_API_KEY to your .env.local file.');
+    }
+  }, [apiKey]);
 
   const validatePhone = (num: string): boolean => {
     const clean = num.replace(/\D/g, '');
@@ -75,34 +84,62 @@ export default function PhoneLookup() {
       let address = '45, MG Road, Bengaluru, Karnataka, 560001, India';
       let aadhaarStatus = 'Linked (Masked: XXXX-XXXX-5821)';
 
-      if (apiKey) {
-        setScanStep('Querying live HLR network (via Numlookupapi)...');
+      if (apiKey && apiType) {
+        const isNumverify = apiType === 'numverify';
+        const typeLabel = isNumverify ? 'Numverify' : 'Numlookupapi';
+        setScanStep(`Querying live HLR network (via ${typeLabel})...`);
         await new Promise((r) => setTimeout(r, 450));
         
+        let liveDataOk = false;
         try {
-          const response = await fetch(`https://api.numlookupapi.com/v1/validate/${countryCode}${numericPart}?apikey=${apiKey}`);
-          if (response.ok) {
-            const data = await response.json();
-            if (data.valid) {
-              carrier = data.carrier || 'Unknown Carrier';
-              location = data.location || data.country_name || 'Global Terminal';
-              ownerName = data.name || 'Private Subscriber Name';
-              type = data.line_type || 'Mobile';
-              address = 'Private Registered Address (Access Restricted by Telecom Privacy Laws)';
-              aadhaarStatus = 'Aadhaar Link Verification (Access Restricted: UIDAI KYC Requires OTP/Consent)';
-            } else {
-              setError('Invalid number format reported by the HLR carrier.');
-              setLoading(false);
-              return;
-            }
-          } else {
-            throw new Error('API request failed');
+          // Strip the '+' from country code for clean URL — Numverify expects e.g. 919876543210
+          const cleanCC = countryCode.replace('+', '');
+          const fullNumber = cleanCC + numericPart;
+          
+          const endpoint = isNumverify
+            ? `/api/numverify?number=${fullNumber}`
+            : `https://api.numlookupapi.com/v1/validate/${countryCode}${numericPart}?apikey=${apiKey}`;
+            
+          const response = await fetch(endpoint);
+          const data = await response.json();
+          
+          // Numverify returns { success: false, error: {...} } on auth/quota errors
+          if (data.success === false && data.error) {
+            console.warn(`${typeLabel} API error:`, data.error);
+            // Fall through to offline simulation
+          } else if (data.valid === true) {
+            carrier = data.carrier || 'Unknown Carrier';
+            location = data.location || data.country_name || 'Global Terminal';
+            ownerName = isNumverify ? 'Private Subscriber Name' : (data.name || 'Private Subscriber Name');
+            type = data.line_type || 'Mobile';
+            address = 'Private Registered Address (Access Restricted by Telecom Privacy Laws)';
+            aadhaarStatus = 'Aadhaar Link Verification (Access Restricted: UIDAI KYC Requires OTP/Consent)';
+            liveDataOk = true;
+          } else if (data.valid === false) {
+            // Number was checked but is invalid
+            setError('Invalid number format reported by the HLR carrier.');
+            setLoading(false);
+            return;
           }
-        } catch (err) {
-          console.warn('Numlookupapi failed, using fallback...');
+        } catch (err: any) {
+          console.warn(`${typeLabel} failed, falling back to offline:`, err);
+        }
+        
+        // If live API succeeded, skip offline simulation
+        if (liveDataOk) {
+          // Spam score and reputation are simulated (Numverify doesn't provide these)
+          const digitVal = parseInt(numericPart.substring(numericPart.length - 2) || '0');
+          spamScore = digitVal % 30; // Keep it low for live-validated numbers
+          reputation = 'SAFE';
+          reportedName = 'No public reports found';
+          reportsCount = 0;
+          activeSince = new Date().toISOString().split('T')[0];
+        } else {
+          // Fall through to offline simulation below
+          setInfoMessage('Live API unavailable. Showing offline simulation results.');
         }
       } else {
-        setInfoMessage('No VITE_NUMLOOKUP_API_KEY configured. Running offline lookup simulation.');
+        setInfoMessage('No VITE_NUMVERIFY_API_KEY configured. Running offline lookup simulation. To enable live validation, sign up at numverify.com to get a free API key and add VITE_NUMVERIFY_API_KEY to your .env.local file.');
         
         const steps = [
           'Normalizing input format...',

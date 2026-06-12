@@ -85,11 +85,51 @@ function createAbuseIpdbHandler(apiKey?: string) {
   };
 }
 
+function createNumverifyHandler(apiKey?: string) {
+  return async (req: any, res: any, next: any) => {
+    if (!req.url?.startsWith('/api/numverify')) {
+      next();
+      return;
+    }
+
+    if (!apiKey) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: { message: 'VITE_NUMVERIFY_API_KEY is missing. Add it to .env.local' } }));
+      return;
+    }
+
+    const requestUrl = new URL(req.url, 'http://localhost');
+    const queryNumber = requestUrl.searchParams.get('number') || '';
+    
+    // Numverify free plan only supports http, not https
+    const upstreamUrl = `http://apilayer.net/api/validate?access_key=${apiKey}&number=${encodeURIComponent(queryNumber)}&country_code=&format=1`;
+
+    try {
+      const response = await fetch(upstreamUrl, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+      });
+
+      const responseText = await response.text();
+      
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(responseText);
+    } catch (err: any) {
+      res.statusCode = 500;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ error: { message: 'Failed to reach Numverify: ' + (err?.message || 'unknown error') } }));
+    }
+  };
+}
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const virusTotalHandler = createVirusTotalHandler(env.VITE_VIRUSTOTAL_API_KEY);
   const abuseIpdbHandler = createAbuseIpdbHandler(env.VITE_ABUSEIPDB_API_KEY || env.VITE_ABUSEIPDB_KEY);
+  const numverifyHandler = createNumverifyHandler(env.VITE_NUMVERIFY_API_KEY);
 
   return {
     plugins: [
@@ -99,10 +139,12 @@ export default defineConfig(({ mode }) => {
         configureServer(server) {
           server.middlewares.use(virusTotalHandler);
           server.middlewares.use(abuseIpdbHandler);
+          server.middlewares.use(numverifyHandler);
         },
         configurePreviewServer(server) {
           server.middlewares.use(virusTotalHandler);
           server.middlewares.use(abuseIpdbHandler);
+          server.middlewares.use(numverifyHandler);
         },
       },
     ],
