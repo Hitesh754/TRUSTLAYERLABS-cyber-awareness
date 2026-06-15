@@ -10,11 +10,16 @@ import {
   Upload,
   Loader,
   ChevronDown,
+  FileWarning,
+  ExternalLink,
+  Phone,
 } from "lucide-react";
 
 import type { AnalysisResult } from "./types";
 
 import { analyzeScamText, scanImageFile } from "./analyzerUtils";
+import { getCrimeContext, getCrimeContextMeta } from "./crimeContextMap";
+import CrimeReportForm from "./CrimeReportForm";
 
 type LoadingPhase = null | "scanning" | "analyzing" | "generating";
 
@@ -80,6 +85,7 @@ export default function ScamAnalyzer() {
   const [loadingPhase, setLoadingPhase] = useState<LoadingPhase>(null);
   const [expandedPanel, setExpandedPanel] = useState<string | null>("why-flagged");
   const [generatingPdf, setGeneratingPdf] = useState(false);
+  const [showReportForm, setShowReportForm] = useState(false);
 
   const downloadPdfReport = () => {
     if (!result) return;
@@ -138,8 +144,46 @@ export default function ScamAnalyzer() {
       y += 12;
     };
 
+    const getLegalSections = (category: string): string[] => {
+      const context = getCrimeContext(category);
+      if (context === 'financial') {
+        return [
+          'IT Act, 2000 - Sec 43/66: Unauthorized access, hacking, and computer systems damage.',
+          'IT Act, 2000 - Sec 66C: Identity Theft (unauthorized password/OTP usage).',
+          'IT Act, 2000 - Sec 66D: Cheating by Personation using communication resources.',
+          'BNS, 2023 - Sec 318 / IPC - Sec 420: Cheating and dishonestly inducing delivery of property.'
+        ];
+      } else if (context === 'harassment') {
+        return [
+          'IT Act, 2000 - Sec 66E: Privacy violation (unauthorized image capture/transmission).',
+          'IT Act, 2000 - Sec 67/67A: Publishing obscene or sexually explicit content.',
+          'BNS, 2023 - Sec 351 / IPC - Sec 503/506: Criminal intimidation, blackmail, and threats.',
+          'BNS, 2023 - Sec 78/79: Stalking and insulting modesty of women.'
+        ];
+      } else if (context === 'data_theft') {
+        return [
+          'IT Act, 2000 - Sec 43/66: Unauthorized access and data extraction.',
+          'IT Act, 2000 - Sec 66C: Identity Theft (stealing login credentials/credentials).',
+          'IT Act, 2000 - Sec 66D: Cheating by personation (phishing forms/links).',
+          'BNS, 2023 - Sec 336/340: Forgery and fabrication of electronic records.'
+        ];
+      } else if (context === 'ransomware') {
+        return [
+          'IT Act, 2000 - Sec 43/66: Introducing malware/ransomware and altering/locking files.',
+          'BNS, 2023 - Sec 308 / IPC - Sec 384: Extortion (crypto/monetary ransom demands).',
+          'BNS, 2023 - Sec 351 / IPC - Sec 506: Criminal intimidation.'
+        ];
+      } else {
+        return [
+          'IT Act, 2000 - Sec 43/66: Unauthorized computer access and hacking.',
+          'IT Act, 2000 - Sec 66C/66D: Identity theft and cheating by personation.'
+        ];
+      }
+    };
+
     addSection("Detected Indicators:", result.indicators.length > 0 ? result.indicators : ["None"]);
     addSection("Suspicious URLs:", result.suspiciousUrls.length > 0 ? result.suspiciousUrls : ["None"]);
+    addSection("Applicable Legal Provisions:", getLegalSections(result.category));
     addSection("Recommendation:", result.recommendation);
     addSection("AI Explanation:", result.explanation);
 
@@ -302,159 +346,225 @@ export default function ScamAnalyzer() {
         )}
 
         {result && (
-          <div
-            className={`mt-10 bg-white dark:bg-zinc-900 border-2 rounded-3xl p-5 sm:p-8 transition-colors duration-300 ${
-              getRiskColors(result.risk).border
-            } ${getRiskColors(result.risk).bg}`}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-8">
-              {result.risk === "High" || result.risk === "Critical" ? (
-                <AlertTriangle
-                  className={`w-10 h-10 shrink-0 ${getRiskColors(result.risk).text}`}
-                />
-              ) : (
-                <ShieldCheck
-                  className={`w-10 h-10 shrink-0 ${getRiskColors(result.risk).text}`}
-                />
-              )}
+          <>
+            <div
+              className={`mt-10 bg-white dark:bg-zinc-900 border-2 rounded-3xl p-5 sm:p-8 transition-colors duration-300 ${
+                getRiskColors(result.risk).border
+              } ${getRiskColors(result.risk).bg}`}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-8">
+                {result.risk === "High" || result.risk === "Critical" ? (
+                  <AlertTriangle
+                    className={`w-10 h-10 shrink-0 ${getRiskColors(result.risk).text}`}
+                  />
+                ) : (
+                  <ShieldCheck
+                    className={`w-10 h-10 shrink-0 ${getRiskColors(result.risk).text}`}
+                  />
+                )}
 
-              <div>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
-                  <div>
-                    <h2 className="text-3xl sm:text-4xl font-bold">Analysis Result</h2>
-                    <p
-                      className={`mt-2 text-sm sm:text-base max-w-2xl ${getRiskColors(result.risk).text}`}
+                <div>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
+                    <div>
+                      <h2 className="text-3xl sm:text-4xl font-bold">Analysis Result</h2>
+                      <p
+                        className={`mt-2 text-sm sm:text-base max-w-2xl ${getRiskColors(result.risk).text}`}
+                      >
+                        {result.category} — {result.score}/100 risk score with {result.confidence}% confidence.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={downloadPdfReport}
+                      disabled={generatingPdf}
+                      className="inline-flex items-center justify-center rounded-2xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      {result.category} — {result.score}/100 risk score with {result.confidence}% confidence.
-                    </p>
+                      {generatingPdf ? "Preparing PDF..." : "Download Report"}
+                    </button>
                   </div>
-
-                  <button
-                    onClick={downloadPdfReport}
-                    disabled={generatingPdf}
-                    className="inline-flex items-center justify-center rounded-2xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-60 disabled:cursor-not-allowed"
-                  >
-                    {generatingPdf ? "Preparing PDF..." : "Download Report"}
-                  </button>
                 </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-              <div
-                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
-                  getRiskColors(result.risk).border
-                } ${getRiskColors(result.risk).lightBg}`}
-              >
-                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Risk Level</p>
-                <h3
-                  className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+                <div
+                  className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
+                    getRiskColors(result.risk).border
+                  } ${getRiskColors(result.risk).lightBg}`}
                 >
-                  {result.risk}
-                </h3>
+                  <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Risk Level</p>
+                  <h3
+                    className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
+                  >
+                    {result.risk}
+                  </h3>
+                </div>
+
+                <div
+                  className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
+                    getRiskColors(result.risk).border
+                  } ${getRiskColors(result.risk).lightBg}`}
+                >
+                  <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Scam Score</p>
+                  <h3
+                    className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
+                  >
+                    {result.score}/100
+                  </h3>
+                </div>
+
+                <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
+                  <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Category</p>
+                  <h3 className="text-2xl sm:text-3xl font-bold">{result.category}</h3>
+                </div>
+
+                <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
+                  <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Confidence</p>
+                  <h3 className="text-2xl sm:text-3xl font-bold">{result.confidence}%</h3>
+                </div>
               </div>
 
               <div
-                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 ${
-                  getRiskColors(result.risk).border
-                } ${getRiskColors(result.risk).lightBg}`}
+                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl overflow-hidden transition-all mb-8 ${
+                  getRiskColors(result.risk).accentBorder
+                }`}
               >
-                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Scam Score</p>
-                <h3
-                  className={`text-2xl sm:text-3xl font-bold ${getRiskColors(result.risk).text}`}
+                <button
+                  onClick={() =>
+                    setExpandedPanel(
+                      expandedPanel === "why-flagged" ? null : "why-flagged"
+                    )
+                  }
+                  className="w-full flex items-center justify-between p-5 sm:p-6 hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors"
                 >
-                  {result.score}/100
-                </h3>
+                  <h3 className="text-xl sm:text-2xl font-semibold text-left">
+                    Why Flagged?
+                  </h3>
+                  <ChevronDown
+                    className={`w-6 h-6 transition-transform ${
+                      expandedPanel === "why-flagged" ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {expandedPanel === "why-flagged" && (
+                  <div className="border-t border-gray-200 dark:border-zinc-800 px-5 sm:px-6 py-5 sm:py-6">
+                    <ul className="space-y-3">
+                      {result.indicators.map((item) => (
+                        <li
+                           key={item}
+                          className="flex items-start gap-3 text-sm sm:text-base"
+                        >
+                          <div
+                            className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
+                              getRiskColors(result.risk).text
+                            }`}
+                          />
+                          <span className="text-slate-700 dark:text-zinc-300">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
 
-              <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
-                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Category</p>
-                <h3 className="text-2xl sm:text-3xl font-bold">{result.category}</h3>
-              </div>
-
-              <div className="bg-slate-50 border border-gray-250 dark:bg-black dark:border-zinc-800 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
-                <p className="text-slate-550 dark:text-zinc-400 mb-2 text-sm">Confidence</p>
-                <h3 className="text-2xl sm:text-3xl font-bold">{result.confidence}%</h3>
-              </div>
-            </div>
-
-            <div
-              className={`bg-slate-50 dark:bg-black border-2 rounded-2xl overflow-hidden transition-all mb-8 ${
-                getRiskColors(result.risk).accentBorder
-              }`}
-            >
-              <button
-                onClick={() =>
-                  setExpandedPanel(
-                    expandedPanel === "why-flagged" ? null : "why-flagged"
-                  )
-                }
-                className="w-full flex items-center justify-between p-5 sm:p-6 hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors"
-              >
-                <h3 className="text-xl sm:text-2xl font-semibold text-left">
-                  Why Flagged?
-                </h3>
-                <ChevronDown
-                  className={`w-6 h-6 transition-transform ${
-                    expandedPanel === "why-flagged" ? "rotate-180" : ""
+              {result.suspiciousUrls.length > 0 && (
+                <div
+                  className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
+                    getRiskColors(result.risk).accentBorder
                   }`}
-                />
-              </button>
-
-              {expandedPanel === "why-flagged" && (
-                <div className="border-t border-gray-200 dark:border-zinc-800 px-5 sm:px-6 py-5 sm:py-6">
-                  <ul className="space-y-3">
-                    {result.indicators.map((item) => (
-                      <li
-                         key={item}
-                        className="flex items-start gap-3 text-sm sm:text-base"
-                      >
-                        <div
-                          className={`w-2 h-2 rounded-full mt-2 shrink-0 ${
-                            getRiskColors(result.risk).text
-                          }`}
-                        />
-                        <span className="text-slate-700 dark:text-zinc-300">{item}</span>
-                      </li>
+                >
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-5">Suspicious URLs</h3>
+                  <ul className="space-y-3 text-sm sm:text-base text-slate-700 dark:text-zinc-300">
+                    {result.suspiciousUrls.map((url) => (
+                      <li key={url} className="break-all">{url}</li>
                     ))}
                   </ul>
                 </div>
               )}
-            </div>
 
-            {result.suspiciousUrls.length > 0 && (
               <div
-                className={`bg-slate-50 dark:bg-black border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
-                  getRiskColors(result.risk).accentBorder
-                }`}
+                className={`border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
+                  getRiskColors(result.risk).lightBg
+                } ${getRiskColors(result.risk).border}`}
               >
-                <h3 className="text-xl sm:text-2xl font-semibold mb-5">Suspicious URLs</h3>
-                <ul className="space-y-3 text-sm sm:text-base text-slate-700 dark:text-zinc-300">
-                  {result.suspiciousUrls.map((url) => (
-                    <li key={url} className="break-all">{url}</li>
-                  ))}
-                </ul>
+                <h3 className="text-xl sm:text-2xl font-semibold mb-3">Recommendation</h3>
+                <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base">{result.recommendation}</p>
               </div>
+
+              <div
+                className={`border-2 rounded-2xl p-5 sm:p-6 ${
+                  getRiskColors(result.risk).accentBorder
+                } bg-white dark:bg-zinc-950 transition-colors duration-300`}
+              >
+                <h3 className="text-xl sm:text-2xl font-semibold mb-4">AI Explanation</h3>
+                <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">{result.explanation}</p>
+              </div>
+
+              {/* File Crime Report button — only for Medium/High/Critical */}
+              {(result.risk === "Medium" || result.risk === "High" || result.risk === "Critical") && !showReportForm && (
+                <div className="mt-8">
+                  <div className="p-5 rounded-2xl bg-gradient-to-r from-red-500/5 via-orange-500/5 to-amber-500/5 border-2 border-red-500/20 dark:border-red-500/30">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                      <div className="flex items-center gap-3 flex-1">
+                        <FileWarning className="w-8 h-8 text-red-400 shrink-0" />
+                        <div>
+                          <p className="font-bold text-slate-900 dark:text-white text-lg">
+                            {getCrimeContextMeta(getCrimeContext(result.category)).icon}{" "}
+                            {getCrimeContextMeta(getCrimeContext(result.category)).label}
+                          </p>
+                          <p className="text-sm text-slate-500 dark:text-zinc-400 mt-0.5">
+                            Fill in details to generate a complaint report for cybercrime.gov.in
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setShowReportForm(true)}
+                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-500 hover:bg-red-400 text-white font-bold text-sm transition-all shadow-lg shadow-red-500/25 whitespace-nowrap"
+                      >
+                        <FileWarning className="w-4 h-4" />
+                        File Cyber Crime Report
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Quick action links */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                    <a
+                      href="https://cybercrime.gov.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 hover:border-cyan-500/50 transition-all group"
+                    >
+                      <ExternalLink className="w-5 h-5 text-cyan-500 shrink-0 group-hover:scale-110 transition-transform" />
+                      <div>
+                        <p className="font-semibold text-sm text-slate-900 dark:text-white">cybercrime.gov.in</p>
+                        <p className="text-xs text-slate-500 dark:text-zinc-500">File complaint online</p>
+                      </div>
+                    </a>
+                    <a
+                      href="tel:1930"
+                      className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 border border-gray-200 dark:border-zinc-700 hover:border-emerald-500/50 transition-all group"
+                    >
+                      <Phone className="w-5 h-5 text-emerald-500 shrink-0 group-hover:scale-110 transition-transform" />
+                      <div>
+                        <p className="font-semibold text-sm text-slate-900 dark:text-white">Helpline: 1930</p>
+                        <p className="text-xs text-slate-500 dark:text-zinc-500">24×7 Cyber Crime Helpline</p>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Crime Report Form — shown after clicking the button */}
+            {showReportForm && (
+              <CrimeReportForm
+                analysisResult={result}
+                crimeContext={getCrimeContext(result.category)}
+                analyzedText={text}
+              />
             )}
-
-            <div
-              className={`border-2 rounded-2xl p-5 sm:p-6 mb-8 ${
-                getRiskColors(result.risk).lightBg
-              } ${getRiskColors(result.risk).border}`}
-            >
-              <h3 className="text-xl sm:text-2xl font-semibold mb-3">Recommendation</h3>
-              <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base">{result.recommendation}</p>
-            </div>
-
-            <div
-              className={`border-2 rounded-2xl p-5 sm:p-6 ${
-                getRiskColors(result.risk).accentBorder
-              } bg-white dark:bg-zinc-950 transition-colors duration-300`}
-            >
-              <h3 className="text-xl sm:text-2xl font-semibold mb-4">AI Explanation</h3>
-              <p className="text-slate-700 dark:text-zinc-300 leading-relaxed text-sm sm:text-base whitespace-pre-line">{result.explanation}</p>
-            </div>
-          </div>
+          </>
         )}
       </div>
     </div>
